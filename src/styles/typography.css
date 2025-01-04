@@ -1,0 +1,39 @@
+@font-face {
+    font-family: "Merriweather";
+    src: local("Merriweather-Regular"),
+        url("../fonts/Merriweather-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Merriweather";
+    font-weight: bold;
+    src: local("Merriweather-Bold"),
+        url("../fonts/Merriweather-Bold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Merriweather";
+    font-weight: lighter;
+    src: local("Merriweather-Light"),
+        url("../fonts/Merriweather-Light.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Merriweather";
+    font-style: italic;
+    src: local("Merriweather-Italic"),
+        url("../fonts/Merriweather-Italic.ttf") format("truetype");
+}
+
+html {
+    font-family: "Merriweather", serif;
+    font-size: 16px;
+}
+
+/* h1 {
+    font-size: 6rem;
+}
+
+p {
+    font-size: 1.125rem;
+} */
