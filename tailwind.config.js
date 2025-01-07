@@ -1,18 +1,30 @@
 /** @type {import('tailwindcss').Config} */
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+    safelist: ["font-bold"],
     theme: {
         container: {
             center: true,
             padding: {
-                DEFUALT: "1rem",
+                DEFAULT: "1rem",
                 lg: "4rem",
             },
         },
         extend: {
             colors: {
-                // "primary-color": "var(--primary-color)",
-                // "secondary-color": "var(--secondary-color)",
+                pink: {
+                    50: "#F8F1F1",
+                    100: "#F1E4E4",
+                    200: "#EBD5D5",
+                    300: "#D5AEAE",
+                    400: "#C89393",
+                    450: "#CA9191",
+                    500: "#B26C6C",
+                    600: "#934D4D",
+                    700: "#6B3838",
+                    800: "#432323",
+                    900: "#1B0E0E",
+                },
             },
         },
         // default breakpoints
