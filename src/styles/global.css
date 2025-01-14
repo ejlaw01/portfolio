@@ -1,0 +1,7 @@
+@tailwind utilities;
+
+@layer utilities {
+    .btn {
+        @apply inline-block font-bold py-2 px-4 text-pink-900 bg-pink-50 border-pink-200 border-4 rounded-xl hover:no-underline;
+    }
+}
