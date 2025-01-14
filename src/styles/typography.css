@@ -1,44 +1,35 @@
 @tailwind base;
 @tailwind utilities;
 
-@font-face {
-    font-family: "Merriweather";
-    src: local("Merriweather-Regular"),
-        url("../fonts/Merriweather-Regular.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Merriweather";
-    font-weight: bold;
-    src: local("Merriweather-Bold"),
-        url("../fonts/Merriweather-Bold.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Merriweather";
-    font-weight: lighter;
-    src: local("Merriweather-Light"),
-        url("../fonts/Merriweather-Light.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Merriweather";
-    font-style: italic;
-    src: local("Merriweather-Italic"),
-        url("../fonts/Merriweather-Italic.ttf") format("truetype");
-}
-
 :root {
     --bg: white;
 }
 
 @layer base {
+    @font-face {
+        font-family: "Bitter";
+        src: local("Bitter"), local("Bitter-Regular"),
+            url("../fonts/Bitter-VariableFont.ttf") format("truetype");
+    }
+    
+    @font-face {
+        font-family: "Bitter";
+        font-style: italic;
+        src: local("Bitter-Italic"),
+            url("../fonts/Bitter-Italic-VarableFont.ttf") format("truetype");
+    }
+    
     html {
-        font-family: "Merriweather", serif;
-        @apply text-gray-800;
+        @apply font-serif text-pink-900;
         background-color: var(--bg);
     }
-
+    h1 {
+        @apply text-5xl md:text-7xl leading-tight md:leading-tight text-outline;
+    }
+    h2 {
+        @apply text-4xl md:text-6xl leading-tight md:leading-tight font-semibold;
+    }
+    a { @apply text-cyan-700 hover:underline hover:decoration-cyan-600; }
 }
 
 @layer utilities {

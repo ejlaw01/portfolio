@@ -1,8 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-    safelist: ["font-bold"],
+    safelist: ["font-semibold", "font-bold"],
     theme: {
+        fontFamily: {
+            serif: ["Bitter", "Courier", "Georgia", "Times New Roman", "serif"],
+        },
         container: {
             center: true,
             padding: {
