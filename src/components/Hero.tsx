@@ -1,4 +1,4 @@
-import data from "/public/data.json";
+import data from "../../public/data.json";
 import parse from "html-react-parser";
 import Checkerboard from "./Checkerboard";
 import Scroller from "./Scroller";
