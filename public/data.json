@@ -1,0 +1,84 @@
+{
+    "hero": {
+        "headline": "Hi, my name is <span className='font-semibold'>Ethan</span>",
+        "subheadline":
+            "I am a front&nbsp;end <span className='font-semibold'>web&nbsp;developer</span> from <span class='font-semibold'>Portland,&nbsp;OR</span>"
+    },
+    "work": {
+        "headline": "Work",
+        "projects": [
+            {
+                "title": "OnlineEd",
+                "description":
+                    "Redesigned and rebuilt the user interface of educational course-taking and course-building software as a single page application.",
+                "features": [],
+                "btnLink": {
+                    "text": "Go to course demo",
+                    "url": "https://demo.onlineed.com/app/mono/#/scourse/186881"
+                },
+                "media": {
+                    "url": "/public/img/onlineed/testresults.png",
+                    "alt": "OnlineEd demo course test results page"
+                }
+            },
+            {
+                "title": "gMC Snowflake Simulator",
+                "description": "Symptom assessment for patients with generalized myasthenia gravis (gMG).",
+                "features": [],
+                "media": {
+                    "url": "/public/img/alexion/landing.png",
+                    "alt": "Alexion Snowflake simulator landing page"
+                }
+            },
+            {
+                "title": "A-dec Rebrand",
+                "description": "Website refresh",
+                "features": [
+                    {
+                        "text": "Home page refresh and navigation rebuild",
+                        "url": "https://www.a-dec.com/"
+                    },
+                    {
+                        "text": "Color sample picker",
+                        "url": "https://www.a-dec.com/color"
+                    },
+                    {
+                        "text": "Blog",
+                        "url": "https://www.a-dec.com/blog"
+                    },
+                    {
+                        "text": "Video Library",
+                        "url": "https://www.a-dec.com/video-library"
+                    },
+                    {
+                        "text": "Search",
+                        "url": "https://www.a-dec.com/search-results"
+                    }
+                ],
+                "media": {
+                    "url": "/public/img/adec/colorpicker.png",
+                    "alt": "A-dec upholstery Color Picker page"
+                }
+            },
+            {
+                "title": "Providence Health Plan",
+                "description": "Rebrand",
+                "features": [],
+                "media": {
+                    "url": "/public/img/providence/homepage.png",
+                    "alt": "Providence Health Plan home page"
+                }
+            },
+            {
+                "title": "Bit Lore",
+                "description": "Website built in React with Next JS.",
+                "features": [],
+                "media": {
+                    "url": "/public/img/bitlore/about.png",
+                    "alt": "Bit Lore website about page"
+                },
+                "repoUrl": "https://github.com/bitlore/bitlore-react"
+            }
+        ]
+    }
+}

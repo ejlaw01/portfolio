@@ -1,4 +1,8 @@
-function Checkerboard({ classes }) {
+type CheckerboardProps = {
+    classes?: string;
+}
+
+function Checkerboard({ classes } : CheckerboardProps) {
     return (
         <div
             className={`checkerboard ${classes}`}

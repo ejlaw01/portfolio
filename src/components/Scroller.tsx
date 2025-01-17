@@ -3,12 +3,16 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { FiChevronDown } from "react-icons/fi";
 
-function Scroller({ target }) {
-    const iconSize = 70;
-    const arrowClasses =
+type ScrollerProps = {
+    target: string;
+}
+
+function Scroller({ target } : ScrollerProps) {
+    const iconSize : number = 70;
+    const arrowClasses : string =
         "arrow relative h-5 opacity-50 group-hover:opacity-100 text-pink-450";
 
-    const arrows = useRef();
+    const arrows = useRef(null);
     useGSAP(
         () => {
             gsap.timeline({

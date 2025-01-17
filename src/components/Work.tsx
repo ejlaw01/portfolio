@@ -1,20 +1,33 @@
-import { pageData } from "/public/data";
+import data from "/public/data.json";
 import parse from "html-react-parser";
 
-function Work() {
-    const { headline, projects } = pageData.work;
+type pageData = {
+    headline: string;
+    projects: Array<project>;
+}
 
-    const sectionClasses = `min-h-screen py-12`;
+type project = {
+    title: string;
+    description: string;
+    features?: Array<{ text: string; url?: string }>;
+    media: { url: string; alt: string };
+    btnLink?: { url: string; text: string };
+}
+
+function Work() {
+    const { headline, projects } : pageData = data.work;
 
     return (
-        <section id="work-section" className={sectionClasses}>
+        <section id="work-section" className="min-h-screen py-12">
             <h2>{parse(headline)}</h2>
             <ul className="projects">
-                {projects.map(({ title, description, features, media, btnLink }, index) => {
+                {projects.map(({ title, description, features, media, btnLink } : project, index : number) => {
                     return (
                         <li
                             key={`project-${index}`}
-                            className="project flex flex-col md:flex-row gap-10 py-10 border-b-2 border-pink-100"
+                            className={`project flex flex-col md:flex-row gap-10 py-10 ${
+                                index > 0 && " border-t-2 border-pink-100"
+                            }`}
                         >
                             <div className="md:basis-2/5 border-8 border-white">
                                 <img src={media.url || "https://placehold.co/1440x1024"} alt={media.alt} />

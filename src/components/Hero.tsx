@@ -1,15 +1,18 @@
-import { pageData } from "/public/data";
+import data from "/public/data.json";
 import parse from "html-react-parser";
 import Checkerboard from "./Checkerboard";
 import Scroller from "./Scroller";
 
-function Hero() {
-    const { headline, subheadline } = pageData.hero;
+type pageData = {
+    headline: string;
+    subheadline: string;
+}
 
-    const sectionClasses = `min-h-screen md:h-screen py-12 flex justify-between items-center gap-12`;
+function Hero() {
+    const { headline, subheadline } : pageData = data.hero;
 
     return (
-        <section className={sectionClasses}>
+        <section className="min-h-screen md:h-screen py-12 flex justify-between items-center gap-12">
             <div className="flex flex-col justify-between md:h-3/4 z-20">
                 <div>
                     <h1>{parse(headline)}</h1>

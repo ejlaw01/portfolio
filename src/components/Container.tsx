@@ -1,8 +1,12 @@
-import React from "react";
+import { ReactNode } from 'react';
 
-const Container = ({ children, classes }) => {
-    const containerClasses = `container${classes ? " " + classes : ""}`;
+type ContainerProps = {
+    children: ReactNode;
+    classes?: string;
+}
 
+const Container = ({ children, classes }: ContainerProps) => {
+    const containerClasses : string = `container${classes ? " " + classes : ""}`;
     return <div className={containerClasses}>{children}</div>;
 };
 
