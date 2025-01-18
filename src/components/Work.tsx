@@ -10,12 +10,16 @@ type project = {
     title: string;
     description: string;
     features?: Array<{ text: string; url?: string }>;
-    media: { url: string; alt: string };
+    media: { filename: string; alt: string };
     btnLink?: { url: string; text: string };
 }
 
 function Work() {
     const { headline, projects } : pageData = data.work;
+
+    function getImgPath(filename: string) {
+        return filename ? `/img/work/${filename}` : "https://placehold.co/1440x1024";
+    }
 
     return (
         <section id="work-section" className="min-h-screen py-12">
@@ -30,7 +34,7 @@ function Work() {
                             }`}
                         >
                             <div className="md:basis-2/5 border-8 border-white">
-                                <img src={media.url || "https://placehold.co/1440x1024"} alt={media.alt} />
+                                <img src={getImgPath(media.filename)} alt={media.alt} />
                             </div>
                             <div className="md:basis-3/5 flex flex-col">
                                 <h3 className="font-bold">{title}</h3>

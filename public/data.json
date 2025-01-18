@@ -17,7 +17,7 @@
                     "url": "https://demo.onlineed.com/app/mono/#/scourse/186881"
                 },
                 "media": {
-                    "url": "/public/img/onlineed/testresults.png",
+                    "filename": "onlineed_testresults.png",
                     "alt": "OnlineEd demo course test results page"
                 }
             },
@@ -26,7 +26,7 @@
                 "description": "Symptom assessment for patients with generalized myasthenia gravis (gMG).",
                 "features": [],
                 "media": {
-                    "url": "/public/img/alexion/landing.png",
+                    "filename": "snowflake_landing.png",
                     "alt": "Alexion Snowflake simulator landing page"
                 }
             },
@@ -56,7 +56,7 @@
                     }
                 ],
                 "media": {
-                    "url": "/public/img/adec/colorpicker.png",
+                    "filename": "adec_colorpicker.png",
                     "alt": "A-dec upholstery Color Picker page"
                 }
             },
@@ -65,7 +65,7 @@
                 "description": "Rebrand",
                 "features": [],
                 "media": {
-                    "url": "/public/img/providence/homepage.png",
+                    "filename": "providence_homepage.png",
                     "alt": "Providence Health Plan home page"
                 }
             },
@@ -74,7 +74,7 @@
                 "description": "Website built in React with Next JS.",
                 "features": [],
                 "media": {
-                    "url": "/public/img/bitlore/about.png",
+                    "filename": "bitlore_about.png",
                     "alt": "Bit Lore website about page"
                 },
                 "repoUrl": "https://github.com/bitlore/bitlore-react"
