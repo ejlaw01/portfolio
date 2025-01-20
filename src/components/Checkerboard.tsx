@@ -7,7 +7,7 @@ function Checkerboard({ classes } : CheckerboardProps) {
         <div
             className={`checkerboard ${classes}`}
             style={{
-                backgroundImage: "url('/public/img/checkers.svg')",
+                backgroundImage: "url('/img/checkers.svg')",
                 clipPath: "inset(1px)",
             }}
         ></div>
