@@ -6,10 +6,11 @@ import Scroller from "./Scroller";
 type pageData = {
     headline: string;
     subheadline: string;
+    avatarImg: { filename: string; alt: string };
 }
 
 function Hero() {
-    const { headline, subheadline } : pageData = data.hero;
+    const { headline, subheadline, avatarImg } : pageData = data.hero;
 
     return (
         <section className="min-h-screen md:h-screen py-12 flex justify-between items-center gap-12">
@@ -24,8 +25,8 @@ function Hero() {
             </div>
             <div className="relative self-stretch flex flex-col">
                 <img
-                    src="/public/img/portfolio-avatar.jpeg"
-                    alt="hero image"
+                    src={`/img/hero/${avatarImg.filename}`}
+                    alt={avatarImg.alt}
                     className="relative rounded-2xl object-fit max-h-full my-auto z-10"
                 />
                 <Checkerboard classes="absolute h-[550px] w-80 top-32 -left-[190px] rounded-2xl bg-[length:100px]" />

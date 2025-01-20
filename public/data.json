@@ -2,7 +2,11 @@
     "hero": {
         "headline": "Hi, my name is <span className='font-semibold'>Ethan</span>",
         "subheadline":
-            "I am a front&nbsp;end <span className='font-semibold'>web&nbsp;developer</span> from <span class='font-semibold'>Portland,&nbsp;OR</span>"
+            "I am a front&nbsp;end <span className='font-semibold'>web&nbsp;developer</span> from <span class='font-semibold'>Portland,&nbsp;OR</span>",
+        "avatarImg": {
+            "filename": "portfolio-avatar.jpeg",
+            "alt": "Ethan's headshot"
+        }
     },
     "work": {
         "headline": "Work",
