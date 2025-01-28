@@ -7,6 +7,7 @@ export default {
     theme: {
         fontFamily: {
             serif: ["Bitter", "Courier", "Georgia", "Times New Roman", "serif"],
+            sans: ["Plus Jakarta Sans", "Arial", "Helvetica", "sans-serif"],
         },
         container: {
             center: true,
