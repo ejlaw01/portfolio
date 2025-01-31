@@ -3,7 +3,7 @@ import typographyPlugin from "@tailwindcss/typography";
 
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-    safelist: ["font-semibold", "font-bold"],
+    safelist: ["font-light", "font-regular", "font-semibold", "font-bold", "italic", "underline", "line-through", "text-sm", "text-base"],
     theme: {
         fontFamily: {
             serif: ["Bitter", "Courier", "Georgia", "Times New Roman", "serif"],
