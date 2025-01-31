@@ -3,7 +3,8 @@
         "headline": "Hi, my name is <span className='font-semibold'>Ethan</span>",
         "subheadline":
             "I am a front&nbsp;end <span className='font-semibold'>web&nbsp;developer</span> from <span class='font-semibold'>Portland,&nbsp;OR</span>",
-        "avatarImg": {
+        "bodyText" : "I specialize in building user interfaces and experiences with modern web technologies.  This site is a showcase of my work and skills built in <span class='fw-semibold'>React</span> with <span class='fw-semibold'>Typescript</span>.",
+            "avatarImg": {
             "filename": "portfolio-avatar.jpeg",
             "alt": "Ethan's headshot"
         }
@@ -12,10 +13,42 @@
         "headline": "Work",
         "projects": [
             {
+                "title": "Bit Lore",
+                "type": "website",
+                "description": "Design and build of a website for my wife's and my freelance web development company.",
+                "media": {
+                    "filename": "bitlore_about.png",
+                    "alt": "Bit Lore website about page"
+                },
+                "btnLink": {
+                    "text": "Go to website",
+                    "url": "https://www.bitlore.io"
+                },
+                "tech": ["React", "Next.js", "Vercel"],
+                "repoUrl": "https://github.com/bitlore/bitlore-react"
+            },
+            {
                 "title": "OnlineEd",
+                "type": "single page application",
                 "description":
-                    "Redesigned and rebuilt the user interface of educational course-taking and course-building software as a single page application.",
-                "features": [],
+                    "Redesign and rebuild the user interface of online educational tool as a single page application. Features include:",
+                "features" : [
+                    {
+                        "text": "custom-built CMS for creating and managing courses"
+                    },
+                    {
+                        "text": "course taking interface with video, quizzes, and test results"
+                    },
+                    {
+                        "text": "timed test taking and grading engine with randomized questions and answers"
+                    },
+                    {
+                        "text": "user dashboard with course progress and certificate download"
+                    },
+                    {
+                        "text": "admin dashboard for managing users, courses, and certificates"
+                    }
+                ],
                 "btnLink": {
                     "text": "Go to course demo",
                     "url": "https://demo.onlineed.com/app/mono/#/scourse/186881"
@@ -23,65 +56,83 @@
                 "media": {
                     "filename": "onlineed_testresults.png",
                     "alt": "OnlineEd demo course test results page"
-                }
+                },
+                "tech": ["Aurelia (JS framework)", "Moment.js", "CKEditor", "JW Player", "SCSS"]
             },
             {
                 "title": "gMC Snowflake Simulator",
-                "description": "Symptom assessment for patients with generalized myasthenia gravis (gMG).",
-                "features": [],
+                "type": "mini web app",
+                "description": "User interface build and quiz logic of symptom assessment for patients with generalized myasthenia gravis (gMG).",
+                "btnLink": {
+                    "text": "Go to quiz demo",
+                    "url": "https://snowflake.bitlore.io/"
+                },
                 "media": {
                     "filename": "snowflake_landing.png",
                     "alt": "Alexion Snowflake simulator landing page"
-                }
+                },
+                "tech": ["Javascript", "jQuery", "SCSS"]
             },
             {
-                "title": "A-dec Rebrand",
-                "description": "Website refresh",
+                "title": "A-dec",
+                "type": "website",
+                "description": "Website design refresh and new features, including:",
                 "features": [
                     {
-                        "text": "Home page refresh and navigation rebuild",
-                        "url": "https://www.a-dec.com/"
+                        "text": "Home page redesign",
+                        "url": "https://www.a-dec.com/",
+                        "filename": "adec_homepage.png"
                     },
                     {
                         "text": "Color sample picker",
-                        "url": "https://www.a-dec.com/color"
+                        "url": "https://www.a-dec.com/color",
+                        "filename": "adec_colorpicker.png"
                     },
                     {
                         "text": "Blog",
-                        "url": "https://www.a-dec.com/blog"
+                        "url": "https://www.a-dec.com/blog",
+                        "filename": "adec_blog.png"
                     },
                     {
                         "text": "Video Library",
-                        "url": "https://www.a-dec.com/video-library"
+                        "url": "https://www.a-dec.com/video-library",
+                        "filename": "adec_videolibrary.png"
                     },
                     {
                         "text": "Search",
-                        "url": "https://www.a-dec.com/search-results"
+                        "url": "https://www.a-dec.com/search-results",
+                        "filename": "adec_search.png"
                     }
                 ],
+                "btnLink": {
+                    "text": "Go to website",
+                    "url": "https://www.a-dec.com/"
+                },
                 "media": {
                     "filename": "adec_colorpicker.png",
                     "alt": "A-dec upholstery Color Picker page"
-                }
+                },
+                "tech": ["Javascript", "jQuery", "Slick JS", "Bootstrap", "SCSS"]
             },
             {
                 "title": "Providence Health Plan",
-                "description": "Rebrand",
-                "features": [],
+                "type": "website",
+                "description": "Rebrand of the PHP website including a new home page design, navigation, and level-of-business portals for medicare providers, employers, and individuals/families. Adding features such as a plan selection wizard and plan compare module.",
                 "media": {
                     "filename": "providence_homepage.png",
                     "alt": "Providence Health Plan home page"
-                }
+                },
+                "btnLink": {
+                    "text": "Go to website",
+                    "url": "https://www.providencehealthplan.com/"
+                },
+                "tech": ["Javascript", "Foundation", "Brightcove", "SCSS"]
             },
             {
-                "title": "Bit Lore",
-                "description": "Website built in React with Next JS.",
-                "features": [],
-                "media": {
-                    "filename": "bitlore_about.png",
-                    "alt": "Bit Lore website about page"
-                },
-                "repoUrl": "https://github.com/bitlore/bitlore-react"
+                "title": "...and this site!",
+                "description": "My personal portfolio site built with React, Typescript, Tailwind CSS, and GSAP animations.",
+                "tech": ["React", "Typescript", "Tailwind", "GSAP", "Vite", "Vercel"],
+                "repoUrl": "https://github.com/ejlaw01/portfolio"
             }
         ]
     }

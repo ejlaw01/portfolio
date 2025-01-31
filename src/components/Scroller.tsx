@@ -5,12 +5,11 @@ import { FiChevronDown } from "react-icons/fi";
 
 type ScrollerProps = {
     target: string;
-}
+};
 
-function Scroller({ target } : ScrollerProps) {
-    const iconSize : number = 70;
-    const arrowClasses : string =
-        "arrow relative h-5 opacity-50 group-hover:opacity-100 text-pink-450";
+function Scroller({ target }: ScrollerProps) {
+    const iconSize: number = 70;
+    const arrowClasses: string = "arrow relative top-0 h-5 opacity-50 group-hover:opacity-100 text-pink-450";
 
     const arrows = useRef(null);
     useGSAP(
@@ -40,10 +39,10 @@ function Scroller({ target } : ScrollerProps) {
 
     return (
         <a
-            className='group relative flex flex-col justify-between items-center h-16 hover:h-24 top-0 hover:top-2 transition-all'
+            className="group relative flex flex-col justify-between items-center h-16 hover:h-24 top-0 hover:top-2 transition-all"
             href={`#${target}`}
             ref={arrows}
-            aria-label='scroll to next section'
+            aria-label="scroll to next section"
         >
             <div className={arrowClasses}>
                 <FiChevronDown size={iconSize} />
