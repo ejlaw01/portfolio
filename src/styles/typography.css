@@ -60,4 +60,10 @@
     .text-outline {
         text-shadow: -1px -1px var(--bg),0 -1px var(--bg),1px -1px var(--bg),-1px 0 var(--bg),1px 0 var(--bg),-1px 1px var(--bg),0 1px var(--bg),1px 1px var(--bg),-2px -2px var(--bg),0 -2px var(--bg),2px -2px var(--bg),-2px 0 var(--bg),2px 0 var(--bg),-2px 2px var(--bg),0 2px var(--bg),2px 2px var(--bg),-3px -3px var(--bg),0 -3px var(--bg),3px -3px var(--bg),-3px 0 var(--bg),3px 0 var(--bg),-3px 3px var(--bg),0 3px var(--bg),3px 3px var(--bg),-4px -4px var(--bg),0 -4px var(--bg),4px -4px var(--bg),-4px 0 var(--bg),4px 0 var(--bg),-4px 4px var(--bg),0 4px var(--bg),4px 4px var(--bg);
     }
+    .text-background {
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        background-color: white;
+        padding: 4px 8px 4px 0;
+    }
 }
