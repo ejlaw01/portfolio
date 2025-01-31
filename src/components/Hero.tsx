@@ -6,7 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import parse from "html-react-parser";
 import Checkerboard from "./Checkerboard";
 import Scroller from "./Scroller";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
 
