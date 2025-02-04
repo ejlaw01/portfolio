@@ -8,6 +8,7 @@
 @layer base {
     @font-face {
         font-family: "Bitter";
+        font-display: swap;
         src: local("Bitter"), local("Bitter-Regular"),
             url("../fonts/Bitter-VariableFont.ttf") format("truetype");
     }
@@ -15,12 +16,14 @@
     @font-face {
         font-family: "Bitter";
         font-style: italic;
+        font-display: swap;
         src: local("Bitter-Italic"),
             url("../fonts/Bitter-Italic-VariableFont.ttf") format("truetype");
     }
 
     @font-face {
         font-family: "Plus Jakarta Sans";
+        font-display: swap;
         src: local("Plus-Jakarta-Sans"), local("Plus-Jakarta-Sans-Regular"),
             url("../fonts/PlusJakartaSans-VariableFont_wght.ttf") format("truetype");
     }
@@ -28,6 +31,7 @@
     @font-face {
         font-family: "Plus Jakarta Sans Italic";
         font-style: italic;
+        font-display: swap;
         src: local("Plus-Jakarta-Sans-Italic"),
             url("../fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf") format("truetype");
     }
