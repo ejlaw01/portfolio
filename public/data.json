@@ -1,4 +1,11 @@
 {
+    "contact": {
+        "headline": "Questions? Let's connect.",
+        "name": "Ethan Law",
+        "title": "Front End Web Developer",
+        "email": "ethan@bitlore.io",
+        "location": "Portland, OR"
+    },
     "hero": {
         "headline": "Hi, my name is <span className='font-semibold'>Ethan</span>",
         "subheadline":

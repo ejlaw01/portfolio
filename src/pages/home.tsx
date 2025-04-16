@@ -1,6 +1,7 @@
 import Container from "../components/Container";
 import Hero from "../components/Hero";
 import Work from "../components/Work";
+import Footer from "../components/Footer";
 
 function Home() {
     return (
@@ -13,6 +14,9 @@ function Home() {
                     <Work />
                 </Container>
             </div>
+            <Container>
+                <Footer />
+            </Container>
         </main>
     );
 }
