@@ -40,17 +40,20 @@
         @apply font-serif text-pink-900;
         background-color: var(--bg);
     }
-    h1 {
-        @apply text-5xl md:text-7xl leading-tight md:leading-tight text-outline;
+    h1, .h1 {
+        @apply text-5xl lg:text-7xl leading-tight lg:leading-tight text-outline;
     }
-    h2 {
-        @apply text-4xl md:text-6xl leading-tight md:leading-tight font-semibold;
+    h2, .h2 {
+        @apply text-4xl lg:text-6xl leading-tight lg:leading-tight font-semibold;
     }
-    h3 {
+    h3, .h3 {
         @apply text-3xl font-bold;
     }
-    h4 {
+    h4, .h4 {
         @apply text-xl font-semibold;
+    }
+    h5, .h5 {
+        @apply text-lg;
     }
 
     p {
