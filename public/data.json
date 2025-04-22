@@ -1,6 +1,6 @@
 {
     "contact": {
-        "headline": "Questions? Let's connect.",
+        "headline": "Let's build something <span class='italic'>great</span> together.",
         "name": "Ethan Law",
         "title": "Front End Web Developer",
         "email": "ethan@bitlore.io",
@@ -21,7 +21,7 @@
         "projects": [
             {
                 "title": "Bit Lore",
-                "type": "website",
+                "type": "Next JS website",
                 "description": "Design and build of a website for my wife's and my freelance web development company.",
                 "media": {
                     "filename": "bitlore_about.png",

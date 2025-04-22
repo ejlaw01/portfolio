@@ -1,4 +1,9 @@
 import data from "../../public/data.json";
+import parse from "html-react-parser";
+import { FaRegEnvelope } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 type pageData = {
     headline: string;
@@ -12,47 +17,49 @@ const Footer = () => {
     const { headline, name, title, email, location }: pageData = data.contact;
 
     return (
-        <footer className="footer py-12">
-            <h3>{headline}</h3>
-            <form className="w-full max-w-sm font-sans mt-6" method="POST" action="https://formspree.io/f/mblgeknb">
-                <div className="mb-4">
-                    <input
-                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="name"
-                        name="name"
-                        type="text"
-                        placeholder="Name"
-                        required
-                    />
+        <>
+            <footer className="relative overflow-y-hidden py-12">
+                <h3 className="font-normal">{parse(headline)}</h3>
+                <div className="pt-10 flex flex-wrap gap-10">
+                    <a
+                        href="mailto:ethan@bitlore.io"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-pink-700 font-semibold flex items-center gap-3"
+                    >
+                        <FaRegEnvelope size="32" />
+                        <span>Email</span>
+                    </a>
+                    <a
+                        href="https://www.linkedin.com/in/ethan-law/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-pink-700 font-semibold flex items-center gap-1"
+                    >
+                        <FaLinkedin size="32" />
+                        <span>LinkedIn</span>
+                    </a>
+                    <a
+                        href="https://github.com/ejlaw01"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-pink-700 font-semibold flex items-center gap-1"
+                    >
+                        <FaGithub size="32" />
+                        <span>GitHub</span>
+                    </a>
+                    <a
+                        href="https://drive.google.com/file/d/1WO4KvKPa6YmQGdnJwCcry0Bf6NkKHyvh/view?usp=sharing"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-pink-700 font-semibold flex items-center gap-1"
+                    >
+                        <IoDocumentTextOutline size="32" />
+                        <span>C.V.</span>
+                    </a>
                 </div>
-                <div className="mb-4">
-                    <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="email"
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <textarea
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="message"
-                        name="message"
-                        placeholder="Message"
-                        required
-                    ></textarea>
-                </div>
-                <div className="flex items-center justify-between">
-                    <input
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        type="submit"
-                        value="Submit"
-                    />
-                </div>
-            </form>
-        </footer>
+            </footer>
+        </>
     );
 };
 
