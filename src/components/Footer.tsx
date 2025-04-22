@@ -14,7 +14,7 @@ type pageData = {
 };
 
 const Footer = () => {
-    const { headline, name, title, email, location }: pageData = data.contact;
+    const { headline }: pageData = data.contact;
 
     return (
         <>
