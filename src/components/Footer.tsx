@@ -18,7 +18,7 @@ const Footer = () => {
 
     return (
         <>
-            <footer className="relative overflow-y-hidden py-12">
+            <footer id="contact-section" className="relative overflow-y-hidden py-12">
                 <h3 className="font-normal">{parse(headline)}</h3>
                 <div className="pt-10 flex flex-wrap gap-10">
                     <a
@@ -57,6 +57,9 @@ const Footer = () => {
                         <IoDocumentTextOutline size="32" />
                         <span>C.V.</span>
                     </a>
+                </div>
+                <div className="mt-12 pt-8 border-t border-pink-200 text-sm text-pink-600">
+                    <p>&copy; {new Date().getFullYear()} Bit Lore. Portland, OR.</p>
                 </div>
             </footer>
         </>

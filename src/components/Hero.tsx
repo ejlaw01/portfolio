@@ -52,7 +52,7 @@ function Hero() {
     });
 
     return (
-        <section className="hero min-h-screen flex flex-col-reverse sm:flex-row justify-between items-center sm:gap-12">
+        <section className="hero min-h-[85vh] flex flex-col-reverse sm:flex-row justify-between items-center sm:gap-12">
             <div className="hero__content basis-3/5 grow-0 flex flex-col justify-between gap-5 sm:h-3/4 py-6 sm:py-12 z-20">
                 <h1>{parse(headline)}</h1>
                 <p className="text-3xl">

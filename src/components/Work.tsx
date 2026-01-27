@@ -62,7 +62,7 @@ function Work() {
                                     index < projects.length - 1 && " border-b-2 border-pink-100"
                                 }`}
                             >
-                                <div className="basis-1/2">
+                                <div className="basis-1/2 shrink-0">
                                     {media && (
                                         <div className="border-8 border-white">
                                             <img src={getImgPath(media.filename)} alt={media.alt} />

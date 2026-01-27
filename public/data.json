@@ -7,32 +7,30 @@
         "location": "Portland, OR"
     },
     "hero": {
-        "headline": "Hi, my name is <span className='font-semibold'>Ethan</span>",
-        "subheadline":
-            "I am a front&nbsp;end <span className='font-semibold'>web&nbsp;developer</span> from <span class='font-semibold'>Portland,&nbsp;OR</span>",
-        "bodyText" : "I specialize in building accessible and responsive user interfaces and experiences with modern web technologies.  This site is a showcase of my work and skills built in <span class='font-semibold'>React</span> with <span class='font-semibold'>Typescript</span>.",
-            "avatarImg": {
+        "headline": "I'm Ethan, founder of <span className='font-semibold'>Bit Lore</span>",
+        "subheadline": "We build custom digital solutions tailored to your business.",
+        "bodyText": "Bit Lore is a Portland-based studio building custom digital tools and web applications for small businesses.",
+        "avatarImg": {
             "filename": "portfolio-avatar.jpeg",
-            "alt": "Ethan's headshot"
+            "alt": "Ethan Law, founder of Bit Lore"
         }
     },
     "work": {
         "headline": "Work",
         "projects": [
             {
-                "title": "Bit Lore",
-                "type": "Next JS website",
-                "description": "Design and build of a website for my wife's and my freelance web development company.",
+                "title": "Caveon Observatory",
+                "type": "interactive 3D experience",
+                "description": "Interactive Three.js product launch experience featuring a 3D observatory model with countdown timer and event registration.",
                 "media": {
-                    "filename": "bitlore_about.png",
-                    "alt": "Bit Lore website about page"
+                    "filename": "caveon_observatory.png",
+                    "alt": "Caveon Observatory 3D experience"
                 },
                 "btnLink": {
-                    "text": "Go to website",
-                    "url": "https://www.bitlore.io"
+                    "text": "View demo",
+                    "url": "https://observer.bitlore.io/"
                 },
-                "tech": ["React", "Next.js", "Vercel"],
-                "repoUrl": "https://github.com/bitlore/bitlore-react"
+                "tech": ["Three.js", "JavaScript", "WebGL"]
             },
             {
                 "title": "OnlineEd",
@@ -81,45 +79,32 @@
                 "tech": ["Javascript", "jQuery", "SCSS"]
             },
             {
-                "title": "A-dec",
-                "type": "website",
-                "description": "Website design refresh and new features, including:",
-                "features": [
-                    {
-                        "text": "Home page redesign",
-                        "url": "https://www.a-dec.com/",
-                        "filename": "adec_homepage.png"
-                    },
-                    {
-                        "text": "Color sample picker",
-                        "url": "https://www.a-dec.com/color",
-                        "filename": "adec_colorpicker.png"
-                    },
-                    {
-                        "text": "Blog",
-                        "url": "https://www.a-dec.com/blog",
-                        "filename": "adec_blog.png"
-                    },
-                    {
-                        "text": "Video Library",
-                        "url": "https://www.a-dec.com/video-library",
-                        "filename": "adec_videolibrary.png"
-                    },
-                    {
-                        "text": "Search",
-                        "url": "https://www.a-dec.com/search-results",
-                        "filename": "adec_search.png"
-                    }
-                ],
+                "title": "A-dec Certified Reservations",
+                "type": "Shopify app extension",
+                "description": "Custom Shopify app for A-dec allowing customers to reserve certified pre-owned equipment packages. Features include custom customer and admin email notifications, reservation status tracking, and a backend dashboard for managing reservations.",
+                "media": {
+                    "filename": "adec_certified.png",
+                    "alt": "A-dec Certified Pre-Owned reservation page"
+                },
                 "btnLink": {
-                    "text": "Go to website",
-                    "url": "https://www.a-dec.com/"
+                    "text": "View site",
+                    "url": "https://certified.a-dec.com/"
+                },
+                "tech": ["Shopify CLI", "Netlify", "OAuth"]
+            },
+            {
+                "title": "A-dec Color Picker",
+                "type": "interactive tool",
+                "description": "Interactive upholstery color sample picker for dental equipment manufacturer A-dec, allowing customers to browse and select color combinations for their equipment.",
+                "btnLink": {
+                    "text": "View color picker",
+                    "url": "https://www.a-dec.com/color"
                 },
                 "media": {
                     "filename": "adec_colorpicker.png",
-                    "alt": "A-dec upholstery Color Picker page"
+                    "alt": "A-dec upholstery Color Picker"
                 },
-                "tech": ["Javascript", "jQuery", "Slick JS", "Bootstrap", "SCSS"]
+                "tech": ["JavaScript", "jQuery", "SCSS"]
             },
             {
                 "title": "Providence Health Plan",
@@ -134,12 +119,6 @@
                     "url": "https://www.providencehealthplan.com/"
                 },
                 "tech": ["Javascript", "Foundation", "Brightcove", "SCSS"]
-            },
-            {
-                "title": "...and this site!",
-                "description": "My personal portfolio site built with React, Typescript, Tailwind CSS, and GSAP animations.",
-                "tech": ["React", "Typescript", "Tailwind", "GSAP", "Vite", "Vercel"],
-                "repoUrl": "https://github.com/ejlaw01/portfolio"
             }
         ]
     }

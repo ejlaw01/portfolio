@@ -7,6 +7,8 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route index path='/' element={<Home />} />
+                {/* Future case study routes */}
+                <Route path='/projects/:slug' element={<Home />} />
                 <Route path='*' element={<Home />} />
             </Routes>
         </BrowserRouter>

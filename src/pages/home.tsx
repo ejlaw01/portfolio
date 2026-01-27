@@ -1,12 +1,19 @@
+import { useEffect } from "react";
 import Container from "../components/Container";
+import Nav from "../components/Nav";
 import Hero from "../components/Hero";
 import Work from "../components/Work";
 import Footer from "../components/Footer";
 import Checkerboard from "../components/Checkerboard";
+import preventOrphans from "../utils/preventOrphans";
 
 function Home() {
+    useEffect(() => {
+        preventOrphans();
+    }, []);
     return (
         <main>
+            <Nav />
             <Container>
                 <Hero />
             </Container>
