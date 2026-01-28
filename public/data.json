@@ -8,8 +8,8 @@
     },
     "hero": {
         "headline": "I'm Ethan, founder of <span className='font-semibold'>Bit Lore</span>",
-        "subheadline": "We build custom digital solutions tailored to your business.",
-        "bodyText": "Bit Lore is a Portland-based studio building custom digital tools and web applications for small businesses.",
+        "subheadline": "I build custom digital solutions tailored to your business.",
+        "bodyText": "Bit Lore is a Portland studio building custom digital tools and web applications for agencies and small businesses.",
         "avatarImg": {
             "filename": "portfolio-avatar.jpeg",
             "alt": "Ethan Law, founder of Bit Lore"
