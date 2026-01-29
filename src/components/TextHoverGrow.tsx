@@ -15,6 +15,10 @@ function TextHoverGrow({ text, className = "", as: Tag = "span" }: TextHoverGrow
         const container = containerRef.current;
         if (!container) return;
 
+        // Disable on mobile/touch devices
+        const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+        if (!isDesktop) return;
+
         let animationId: number;
         let targetScales = Array(text.length).fill(1);
         let currentScales = Array(text.length).fill(1);

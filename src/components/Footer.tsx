@@ -6,6 +6,8 @@ import { FaGithub } from "react-icons/fa";
 import { IoDocumentTextOutline } from "react-icons/io5";
 
 type pageData = {
+    intro: string;
+    body: string;
     headline: string;
     name: string;
     title: string;
@@ -14,12 +16,20 @@ type pageData = {
 };
 
 const Footer = () => {
-    const { headline }: pageData = data.contact;
+    const { intro, body, headline }: pageData = data.contact;
 
     return (
         <>
-            <footer id="contact-section" className="relative overflow-y-hidden py-12">
-                <h3 className="font-normal">{parse(headline)}</h3>
+            <footer id="contact-section" className="relative overflow-y-hidden py-12 snap-end">
+                <div className="max-w-3xl">
+                    <p className="text-2xl md:text-3xl leading-relaxed mb-6">
+                        {parse(intro)}
+                    </p>
+                    <p className="text-lg mb-10 max-w-2xl">
+                        {parse(body)}
+                    </p>
+                    <h3 className="font-normal">{parse(headline)}</h3>
+                </div>
                 <div className="pt-10 flex flex-wrap gap-10">
                     <a
                         href="mailto:ethan@bitlore.io"

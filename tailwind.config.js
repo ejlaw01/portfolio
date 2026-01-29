@@ -3,7 +3,7 @@ import typographyPlugin from "@tailwindcss/typography";
 
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-    safelist: ["font-light", "font-regular", "font-semibold", "font-bold", "italic", "underline", "line-through", "text-sm", "text-base"],
+    safelist: ["font-light", "font-regular", "font-semibold", "font-bold", "italic", "underline", "line-through", "text-sm", "text-base", "bg-pink-25"],
     theme: {
         fontFamily: {
             serif: ["Bitter", "Courier", "Georgia", "Times New Roman", "serif"],
@@ -19,6 +19,7 @@ export default {
         extend: {
             colors: {
                 pink: {
+                    25: "#FCF9F9",
                     50: "#F8F1F1",
                     100: "#F1E4E4",
                     200: "#EBD5D5",
@@ -33,16 +34,14 @@ export default {
                 },
             },
         },
-        // default breakpoints
-        // theme: {
-        //     screens: {
-        //         sm: "640px",
-        //         md: "768px",
-        //         lg: "1024px",
-        //         xl: "1280px",
-        //         "2xl": "1536px",
-        //     },
-        // },
+        //default breakpoints
+        //screens: {
+        //  sm: "640px",
+        //  md: "768px",
+        //  lg: "1024px",
+        //  xl: "1280px",
+        //  "2xl": "1536px",
+        //},
     },
     plugins: [typographyPlugin],
 };

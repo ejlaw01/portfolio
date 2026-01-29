@@ -1,6 +1,8 @@
 {
     "contact": {
-        "headline": "Let's build something <span class='italic'>great</span> together.",
+        "intro": "I'm a web developer with 8&nbsp;years of experience creating custom tools that solve real problems.",
+        "body": "Instead of fitting businesses into off-the-shelf solutions, I build proprietary software tailored to your specific needs.",
+        "headline": "Let's build something that <span class='italic'>works</span>.",
         "name": "Ethan Law",
         "title": "Front End Web Developer",
         "email": "ethan@bitlore.io",
@@ -9,7 +11,7 @@
     "hero": {
         "headline": "I'm Ethan, founder of <span className='font-semibold'>Bit Lore</span>",
         "subheadline": "I build custom digital solutions tailored to your business.",
-        "bodyText": "Bit Lore is a Portland studio building custom digital tools and web applications for agencies and small businesses.",
+        "bodyText": "Bit Lore is a Portland studio creating custom digital tools and web applications to help agencies and small businesses succeed.",
         "avatarImg": {
             "filename": "portfolio-avatar.jpeg",
             "alt": "Ethan Law, founder of Bit Lore"
@@ -81,7 +83,7 @@
             {
                 "title": "A-dec Certified Reservations",
                 "type": "Shopify app extension",
-                "description": "Custom Shopify app for A-dec allowing customers to reserve certified pre-owned equipment packages. Features include custom customer and admin email notifications, reservation status tracking, and a backend dashboard for managing reservations.",
+                "description": "Custom Shopify app for A-dec allowing customers to reserve certified pre-owned equipment packages. Features include custom email notifications, reservation status tracking, and a backend dashboard for managing reservations.",
                 "media": {
                     "filename": "adec_certified.png",
                     "alt": "A-dec Certified Pre-Owned reservation page"
