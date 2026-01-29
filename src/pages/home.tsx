@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import Container from "../components/Container";
-import Nav from "../components/Nav";
+// import Nav from "../components/Nav";
 import Hero from "../components/Hero";
 import Work from "../components/Work";
 import Footer from "../components/Footer";

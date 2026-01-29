@@ -3,10 +3,9 @@ import { useRef, useEffect, useState } from "react";
 type TextHoverGrowProps = {
     text: string;
     className?: string;
-    as?: keyof JSX.IntrinsicElements;
 };
 
-function TextHoverGrow({ text, className = "", as: Tag = "span" }: TextHoverGrowProps) {
+function TextHoverGrow({ text, className = "" }: TextHoverGrowProps) {
     const containerRef = useRef<HTMLSpanElement>(null);
     const [scales, setScales] = useState<number[]>(Array(text.length).fill(1));
     const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
@@ -43,7 +42,7 @@ function TextHoverGrow({ text, className = "", as: Tag = "span" }: TextHoverGrow
 
         const handleMouseMove = (e: MouseEvent) => {
             const letters = lettersRef.current;
-            const newTargets = letters.map((letter, i) => {
+            const newTargets = letters.map((letter) => {
                 if (!letter) return 1;
 
                 const rect = letter.getBoundingClientRect();
@@ -85,8 +84,8 @@ function TextHoverGrow({ text, className = "", as: Tag = "span" }: TextHoverGrow
     }, [text.length]);
 
     return (
-        <Tag
-            ref={containerRef as React.RefObject<HTMLSpanElement>}
+        <span
+            ref={containerRef}
             className={`inline-block cursor-default ${className}`}
         >
             {text.split("").map((char, i) => (
@@ -102,7 +101,7 @@ function TextHoverGrow({ text, className = "", as: Tag = "span" }: TextHoverGrow
                     {char === " " ? "\u00A0" : char}
                 </span>
             ))}
-        </Tag>
+        </span>
     );
 }
 

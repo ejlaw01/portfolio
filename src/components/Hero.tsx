@@ -11,7 +11,6 @@ import TextHoverGrow from "./TextHoverGrow";
 gsap.registerPlugin(ScrollTrigger);
 
 type pageData = {
-    headline: string;
     subheadline?: string;
     bodyText?: string;
     avatarImg: { filename: string; alt: string };
@@ -22,7 +21,7 @@ type HeroProps = {
 };
 
 function Hero({ isLoaded = false }: HeroProps) {
-    const { headline, subheadline, bodyText, avatarImg }: pageData = data.hero;
+    const { subheadline, bodyText, avatarImg }: pageData = data.hero;
 
     const heroRef = useRef<HTMLElement>(null);
 
