@@ -48,7 +48,7 @@ function Work() {
                 });
 
                 // Create scroll-linked opacity/scale for each project
-                projectEls.forEach((project, index) => {
+                projectEls.forEach((project) => {
                     ScrollTrigger.create({
                         trigger: project,
                         start: "top 80%",
@@ -79,8 +79,8 @@ function Work() {
             if (stickyHeaderRef.current && stickyWrapperRef.current) {
                 ScrollTrigger.create({
                     trigger: stickyWrapperRef.current,
-                    start: "bottom 20%", // When wrapper bottom reaches near top of viewport
-                    end: "bottom top",   // When wrapper bottom exits viewport
+                    start: "bottom 20%",
+                    end: "bottom top",
                     scrub: true,
                     onUpdate: (self) => {
                         if (stickyHeaderRef.current) {
@@ -99,13 +99,11 @@ function Work() {
 
     const renderProject = (
         { title, type, description, features, media, tech, btnLink, repoUrl }: project,
-        index: number,
-        enableSnap: boolean = true
+        index: number
     ) => (
         <li
             key={`project-${index}`}
-            className={`project flex items-center py-8 ${enableSnap ? "snap-center" : ""}`}
-            style={index === 0 ? { scrollMarginTop: "30vh" } : undefined}
+            className="project flex items-center py-8"
         >
             <div className="container">
                 <div
@@ -195,12 +193,12 @@ function Work() {
                     </div>
                 </div>
                 <ul className="projects" ref={projectsRef}>
-                    {allButLast.map((project, index) => renderProject(project, index, true))}
+                    {allButLast.map((project, index) => renderProject(project, index))}
                 </ul>
             </div>
             {/* Last project outside the sticky wrapper */}
             <ul className="projects">
-                {renderProject(lastProject, projects.length - 1, true)}
+                {renderProject(lastProject, projects.length - 1)}
             </ul>
         </section>
     );
