@@ -22,7 +22,7 @@ type HeroProps = {
 };
 
 function Hero({ isLoaded = false }: HeroProps) {
-    const { headline, subheadline, bodyText, avatarImg }: pageData = data.hero;
+    const { subheadline, bodyText, avatarImg }: pageData = data.hero;
 
     const heroRef = useRef<HTMLElement>(null);
 
