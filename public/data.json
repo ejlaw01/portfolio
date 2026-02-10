@@ -78,7 +78,7 @@
                     "filename": "onlineed_testresults.png",
                     "alt": "OnlineEd demo course test results page"
                 },
-                "tech": ["Aurelia JS", "Moment.js", "CKEditor", "SCSS"]
+                "tech": ["Aurelia (JS framework)", "Moment.js", "CKEditor", "JW Player", "SCSS"]
             },
             {
                 "title": "gMC Snowflake Simulator",
@@ -109,16 +109,16 @@
                 "tech": ["JavaScript", "jQuery", "SCSS"]
             },
             {
-                "title": "Bit Lore 1.0",
-                "type": "website",
-                "description": "Original Bit Lore website featuring company information, services, and portfolio showcase.",
+                "title": "Bit Lore v1",
+                "type": "React website",
+                "description": "Where it all started. The original Bit Lore website that launched our journey as a digital studio.",
                 "media": {
                     "filename": "bitlore_about.png",
                     "alt": "Bit Lore website about page"
                 },
                 "btnLink": {
                     "text": "View site",
-                    "url": "https://www.bitlore.io/"
+                    "url": "https://original.bitlore.io/"
                 },
                 "tech": ["React", "Next.js", "Vercel"]
             },
