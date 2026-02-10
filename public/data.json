@@ -21,6 +21,20 @@
         "headline": "Work",
         "projects": [
             {
+                "title": "A-dec Certified Reservations",
+                "type": "Shopify app extension",
+                "description": "Custom Shopify app for A-dec allowing customers to reserve certified pre-owned equipment packages. Features include custom email notifications, reservation status tracking, and a backend dashboard for managing reservations.",
+                "media": {
+                    "filename": "adec_certified.png",
+                    "alt": "A-dec Certified Pre-Owned reservation page"
+                },
+                "btnLink": {
+                    "text": "View site",
+                    "url": "https://certified.a-dec.com/"
+                },
+                "tech": ["Shopify CLI", "Netlify", "OAuth"]
+            },
+            {
                 "title": "Caveon Observatory",
                 "type": "interactive 3D experience",
                 "description": "Interactive Three.js product launch experience featuring a 3D observatory model with countdown timer and event registration.",
@@ -81,20 +95,6 @@
                 "tech": ["Javascript", "jQuery", "SCSS"]
             },
             {
-                "title": "A-dec Certified Reservations",
-                "type": "Shopify app extension",
-                "description": "Custom Shopify app for A-dec allowing customers to reserve certified pre-owned equipment packages. Features include custom email notifications, reservation status tracking, and a backend dashboard for managing reservations.",
-                "media": {
-                    "filename": "adec_certified.png",
-                    "alt": "A-dec Certified Pre-Owned reservation page"
-                },
-                "btnLink": {
-                    "text": "View site",
-                    "url": "https://certified.a-dec.com/"
-                },
-                "tech": ["Shopify CLI", "Netlify", "OAuth"]
-            },
-            {
                 "title": "A-dec Color Picker",
                 "type": "interactive tool",
                 "description": "Interactive upholstery color sample picker for dental equipment manufacturer A-dec, allowing customers to browse and select color combinations for their equipment.",
@@ -107,6 +107,20 @@
                     "alt": "A-dec upholstery Color Picker"
                 },
                 "tech": ["JavaScript", "jQuery", "SCSS"]
+            },
+            {
+                "title": "Bit Lore v1",
+                "type": "React website",
+                "description": "Where it all started. The original Bit Lore website that launched our journey as a digital studio.",
+                "media": {
+                    "filename": "bitlore_about.png",
+                    "alt": "Bit Lore website about page"
+                },
+                "btnLink": {
+                    "text": "View site",
+                    "url": "https://original.bitlore.io/"
+                },
+                "tech": ["React", "Next.js", "Vercel"]
             },
             {
                 "title": "Providence Health Plan",
