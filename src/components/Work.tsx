@@ -1,8 +1,9 @@
 import data from "../../public/data.json";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
 import parse from "html-react-parser";
 import { FaGithub } from "react-icons/fa";
 
@@ -27,178 +28,200 @@ type project = {
 function Work() {
     const { headline, projects }: pageData = data.work;
     const sectionRef = useRef<HTMLElement>(null);
-    const projectsRef = useRef<HTMLUListElement>(null);
-    const stickyHeaderRef = useRef<HTMLDivElement>(null);
-    const stickyWrapperRef = useRef<HTMLDivElement>(null);
 
     function getImgPath(filename: string) {
         return filename ? `/img/work/${filename}` : "https://placehold.co/1440x1024";
     }
 
+    // Lenis smooth scroll
+    useEffect(() => {
+        const lenis = new Lenis();
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+        return () => {
+            lenis.destroy();
+        };
+    }, []);
+
     useGSAP(
         () => {
-            const projectEls = gsap.utils.toArray(".project") as HTMLElement[];
             const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+            if (!isDesktop) return;
 
-            // Project fade effect only on desktop
-            if (isDesktop) {
-                // Set initial state - first project visible, rest faded
-                projectEls.forEach((project, i) => {
-                    gsap.set(project, { opacity: i === 0 ? 1 : 0.1 });
+            const cards = gsap.utils.toArray<HTMLElement>(".stack-card");
+            const totalCards = cards.length;
+            const segmentSize = 1 / totalCards;
+
+            const cardYOffset = 5;
+            const cardScaleStep = 0.075;
+
+            // Initial stacked positions
+            cards.forEach((card, i) => {
+                gsap.set(card, {
+                    xPercent: -50,
+                    yPercent: -50 + i * cardYOffset,
+                    scale: 1 - i * cardScaleStep,
                 });
+            });
 
-                // Create scroll-linked opacity/scale for each project
-                projectEls.forEach((project) => {
-                    ScrollTrigger.create({
-                        trigger: project,
-                        start: "top 80%",
-                        end: "bottom 20%",
-                        onUpdate: (self) => {
-                            const progress = self.progress;
-                            // Peak opacity at center (progress = 0.5), with dead zone
-                            const deadZone = 0.2; // No fade within 20% of center
-                            const rawDistance = Math.abs(progress - 0.5) * 2;
-                            const distanceFromCenter = Math.max(0, (rawDistance - deadZone) / (1 - deadZone));
-                            const fadeOut = distanceFromCenter;
-                            // Aggressive fade - use power curve
-                            const opacity = 1 - Math.pow(Math.max(0, fadeOut), 0.5) * 0.95;
-                            const scale = 1 - Math.max(0, fadeOut) * 0.1;
+            ScrollTrigger.create({
+                trigger: ".sticky-cards",
+                start: "top top",
+                end: `+=${window.innerHeight * 8}px`,
+                pin: true,
+                pinSpacing: true,
+                scrub: 1,
+                onUpdate: (self) => {
+                    const progress = self.progress;
 
-                            gsap.to(project, {
-                                opacity: Math.max(0.05, opacity),
-                                scale: Math.max(0.9, scale),
-                                duration: 0.1,
-                                ease: "none",
+                    const activeIndex = Math.min(
+                        Math.floor(progress / segmentSize),
+                        totalCards - 1,
+                    );
+                    const segProgress = (progress - activeIndex * segmentSize) / segmentSize;
+
+                    cards.forEach((card, i) => {
+                        if (i < activeIndex) {
+                            // Already peeled away
+                            gsap.set(card, {
+                                yPercent: -250,
+                                rotationX: 35,
                             });
-                        },
-                    });
-                });
-            }
+                        } else if (i === activeIndex) {
+                            // Currently peeling
+                            gsap.set(card, {
+                                yPercent: gsap.utils.interpolate(-50, -200, segProgress),
+                                rotationX: gsap.utils.interpolate(0, 35, segProgress),
+                                scale: 1,
+                            });
+                        } else {
+                            // Behind — waiting in stack
+                            const behindIndex = i - activeIndex;
+                            const currentYOffset = (behindIndex - segProgress) * cardYOffset;
+                            const currentScale = 1 - (behindIndex - segProgress) * cardScaleStep;
 
-            // Fade out "Work" heading after it stops being sticky (when wrapper ends)
-            if (stickyHeaderRef.current && stickyWrapperRef.current) {
-                ScrollTrigger.create({
-                    trigger: stickyWrapperRef.current,
-                    start: "bottom 20%",
-                    end: "bottom top",
-                    scrub: true,
-                    onUpdate: (self) => {
-                        if (stickyHeaderRef.current) {
-                            gsap.set(stickyHeaderRef.current, { opacity: 1 - self.progress });
+                            gsap.set(card, {
+                                yPercent: -50 + currentYOffset,
+                                rotationX: 0,
+                                scale: currentScale,
+                            });
                         }
-                    },
-                });
-            }
-
+                    });
+                },
+            });
         },
         { scope: sectionRef }
     );
 
-    const allButLast = projects.slice(0, -1);
-    const lastProject = projects[projects.length - 1];
-
-    const renderProject = (
+    const renderProjectCard = (
         { title, type, description, features, media, tech, btnLink, repoUrl }: project,
-        index: number
     ) => (
-        <li
-            key={`project-${index}`}
-            className="project flex items-center py-8"
-        >
-            <div className="container">
-                <div
-                    className="flex flex-col-reverse md:flex-row gap-10 items-center bg-[#FCF9F9] rounded-3xl p-8 py-12 md:p-12 md:py-16 overflow-hidden min-h-[60vh]"
-                    style={{ boxShadow: "0 8px 0 0 #F1E4E4" }}
-                >
-                    <div className="basis-1/2 shrink-0 min-w-0">
-                        {media && (
-                            <div className="border-8 border-white rounded-lg overflow-hidden">
-                                <img src={getImgPath(media.filename)} alt={media.alt} />
-                            </div>
-                        )}
-                    </div>
-                    <div className="basis-1/2 flex flex-col gap-4 min-w-0 overflow-hidden">
-                        <div className="flex flex-col min-[1200px]:flex-row min-[1200px]:items-baseline flex-wrap">
-                            <h3>{parse(title)}</h3>
-                            {type && (
-                                <span className="min-[1200px]:ms-2 italic text-base font-sans font-light">
-                                    {type}
-                                </span>
-                            )}
-                        </div>
-                        {tech && tech.length ? (
-                            <ul className="flex flex-wrap gap-2">
-                                {tech.map((item, idx) => (
-                                    <li
-                                        key={`tech-${idx}`}
-                                        className="rounded-full bg-pink-100 px-3 py-1 text-sm font-semibold leading-5 text-pink-800 font-sans"
-                                    >
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            ""
-                        )}
-                        {description && <p className="mt-3">{parse(description)}</p>}
-                        {features && features.length ? (
-                            <ul className="-mt-3 font-sans">
-                                {features.map(({ text, url }, idx) => (
-                                    <li key={`feature-${idx}`}>
-                                        —&ensp;{url ? <a href={url}>{text}</a> : text}
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            ""
-                        )}
-                        {btnLink && (
-                            <a
-                                className="btn self-start"
-                                href={btnLink.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {btnLink.text}
-                            </a>
-                        )}
-                        {repoUrl && (
-                            <a
-                                className="mt-auto self-start text-pink-900"
-                                href={repoUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <FaGithub size={32} />
-                            </a>
-                        )}
-                    </div>
-                </div>
+        <>
+            <div className="stack-card__col stack-card__col--media">
+                {media && (
+                    <img src={getImgPath(media.filename)} alt={media.alt} />
+                )}
             </div>
-        </li>
+            <div className="stack-card__col stack-card__col--info">
+                <div className="flex flex-col min-[1200px]:flex-row min-[1200px]:items-baseline flex-wrap">
+                    <h3>{parse(title)}</h3>
+                    {type && (
+                        <span className="min-[1200px]:ms-2 italic text-base font-sans font-light">
+                            {type}
+                        </span>
+                    )}
+                </div>
+                {tech && tech.length ? (
+                    <ul className="flex flex-wrap gap-2">
+                        {tech.map((item, idx) => (
+                            <li
+                                key={`tech-${idx}`}
+                                className="rounded-full bg-pink-100 px-3 py-1 text-sm font-semibold leading-5 text-pink-800 font-sans"
+                            >
+                                {item}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    ""
+                )}
+                {description && <p className="mt-3">{parse(description)}</p>}
+                {features && features.length ? (
+                    <ul className="-mt-3 font-sans">
+                        {features.map(({ text, url }, idx) => (
+                            <li key={`feature-${idx}`}>
+                                —&ensp;{url ? <a href={url}>{text}</a> : text}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    ""
+                )}
+                {btnLink && (
+                    <a
+                        className="btn self-start"
+                        href={btnLink.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {btnLink.text}
+                    </a>
+                )}
+                {repoUrl && (
+                    <a
+                        className="mt-auto self-start text-pink-900"
+                        href={repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <FaGithub size={32} />
+                    </a>
+                )}
+            </div>
+        </>
     );
 
     return (
         <section ref={sectionRef} id="work-section" className="py-12">
-            {/* Wrapper for sticky header - ends before last project */}
-            <div ref={stickyWrapperRef} className="relative">
-                <div ref={stickyHeaderRef} className="md:sticky top-4 z-10 py-4">
-                    <div className="container">
-                        <h2
-                            className="text-outline"
-                            style={{ "--bg": "#F8F1F1" } as React.CSSProperties}
-                        >
-                            {parse(headline)}
-                        </h2>
-                    </div>
-                </div>
-                <ul className="projects" ref={projectsRef}>
-                    {allButLast.map((project, index) => renderProject(project, index))}
-                </ul>
+            <div className="container mb-8">
+                <h2
+                    className="text-outline"
+                    style={{ "--bg": "#F8F1F1" } as React.CSSProperties}
+                >
+                    {parse(headline)}
+                </h2>
             </div>
-            {/* Last project outside the sticky wrapper */}
-            <ul className="projects">
-                {renderProject(lastProject, projects.length - 1)}
+
+            {/* Desktop stacking cards */}
+            <div className="sticky-cards hidden md:block">
+                {projects.map((project, index) => (
+                    <div
+                        key={`project-${index}`}
+                        className="stack-card"
+                        style={{ zIndex: projects.length - index }}
+                    >
+                        {renderProjectCard(project)}
+                    </div>
+                ))}
+            </div>
+
+            {/* Mobile stacked layout */}
+            <ul className="md:hidden">
+                {projects.map((project, index) => (
+                    <li key={`project-mobile-${index}`} className="flex items-center py-8">
+                        <div className="container">
+                            <div
+                                className="flex flex-col-reverse gap-10 items-center bg-[#FCF9F9] rounded-3xl p-8 py-12 overflow-hidden"
+                                style={{ boxShadow: "0 8px 0 0 #F1E4E4" }}
+                            >
+                                {renderProjectCard(project)}
+                            </div>
+                        </div>
+                    </li>
+                ))}
             </ul>
         </section>
     );
