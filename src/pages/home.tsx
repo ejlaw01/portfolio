@@ -80,8 +80,6 @@ function Home() {
     useGSAP(() => {
         if (!brandingRef.current || !entranceDone) return;
 
-        const letters = brandingRef.current.querySelectorAll(".brand-letter");
-
         // Font weight wipe on scroll
         gsap.fromTo(
             brandingRef.current,
