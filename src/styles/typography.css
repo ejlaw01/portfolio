@@ -78,4 +78,18 @@
         background-color: white;
         padding: 4px 8px 4px 0;
     }
+    .text-background-dark {
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        background-color: black;
+        padding: 4px 8px 4px 0;
+    }
+    .hero-cursor {
+        animation: blink 0.8s step-end infinite;
+    }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }

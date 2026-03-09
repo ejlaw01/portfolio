@@ -2,7 +2,6 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import parse from "html-react-parser";
 import data from "../../public/data.json";
 import PixelGrid from "./PixelGrid";
 
@@ -13,43 +12,145 @@ type PageData = {
     bodyText?: string;
 };
 
+const WAVE_HEIGHT = 120;
+
+// Sine-wave: white fill above the curve, transparent below (grid shows through)
+function generateSinePath() {
+    const points: string[] = [];
+    const steps = 200;
+    for (let i = 0; i <= steps; i++) {
+        const x = (i / steps) * 100;
+        const y = WAVE_HEIGHT / 2 + Math.sin((i / steps) * Math.PI * 3) * (WAVE_HEIGHT * 0.35);
+        points.push(`${i === 0 ? "M" : "L"} ${x} ${y}`);
+    }
+    // Close upward: white fills from wave curve to top edge
+    return `${points.join(" ")} L 100 0 L 0 0 Z`;
+}
+
+const sinePath = generateSinePath();
+
 function Hero() {
     const { subheadline, bodyText }: PageData = data.hero;
     const sectionRef = useRef<HTMLElement>(null);
+    const waveRef = useRef<SVGSVGElement>(null);
+    const cursorRef = useRef<HTMLSpanElement>(null);
 
     useGSAP(() => {
         if (!sectionRef.current) return;
-        const lines = sectionRef.current.querySelectorAll(".hero-line");
-        gsap.set(lines, { opacity: 0, y: 40 });
+
+        const headlineChars = sectionRef.current.querySelectorAll(".hero-headline .hero-char");
+        const bodyChars = sectionRef.current.querySelectorAll(".hero-body .hero-char");
+        const cursor = cursorRef.current;
+
+        gsap.set([headlineChars, bodyChars], { visibility: "hidden" });
+        if (cursor) gsap.set(cursor, { visibility: "hidden" });
+
+        const positionCursor = (char: Element) => {
+            if (!cursor) return;
+            const rect = char.getBoundingClientRect();
+            cursor.style.left = `${rect.right}px`;
+            cursor.style.top = `${rect.top}px`;
+            cursor.style.fontSize = window.getComputedStyle(char).fontSize;
+            cursor.style.lineHeight = window.getComputedStyle(char).lineHeight;
+        };
+
         ScrollTrigger.create({
             trigger: sectionRef.current,
             start: "top 75%",
             once: true,
             onEnter: () => {
-                gsap.to(lines, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: "power3.out",
-                    stagger: 0.15,
+                const tl = gsap.timeline();
+
+                // Show cursor at first headline char position
+                tl.call(() => {
+                    if (cursor && headlineChars[0]) {
+                        const rect = headlineChars[0].getBoundingClientRect();
+                        cursor.style.left = `${rect.left}px`;
+                        cursor.style.top = `${rect.top}px`;
+                        cursor.style.fontSize = window.getComputedStyle(headlineChars[0]).fontSize;
+                        cursor.style.visibility = "visible";
+                    }
                 });
+
+                // Type headline chars
+                headlineChars.forEach((char) => {
+                    tl.call(() => {
+                        (char as HTMLElement).style.visibility = "visible";
+                        positionCursor(char);
+                    }, [], "+=0.03");
+                });
+
+                // Pause before body
+                tl.call(() => {
+                    if (cursor && bodyChars[0]) {
+                        const rect = bodyChars[0].getBoundingClientRect();
+                        cursor.style.left = `${rect.left}px`;
+                        cursor.style.top = `${rect.top}px`;
+                        cursor.style.fontSize = window.getComputedStyle(bodyChars[0]).fontSize;
+                    }
+                }, [], "+=0.3");
+
+                // Type body chars
+                bodyChars.forEach((char) => {
+                    tl.call(() => {
+                        (char as HTMLElement).style.visibility = "visible";
+                        positionCursor(char);
+                    }, [], "+=0.02");
+                });
+
+                // Hide cursor after typing finishes
+                if (cursor) {
+                    tl.to(cursor, { opacity: 0, duration: 0.3 }, "+=1");
+                }
             },
         });
     });
 
+    const renderChars = (text: string | undefined) =>
+        text?.split("").map((char, i) => (
+            <span key={i} className="hero-char" style={{ visibility: "hidden" }}>
+                {char}
+            </span>
+        ));
+
     return (
         <section
             ref={sectionRef}
-            style={{ position: "relative", overflow: "hidden", height: "100svh", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }}
+            className="bg-black"
+            style={{ position: "relative", height: "100svh", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }}
         >
-            <PixelGrid style={{ position: "absolute", inset: 0, zIndex: 0 }} />
-            <div style={{ position: "relative", zIndex: 1, padding: "0 2rem", maxWidth: "64rem", margin: "0 auto", width: "100%" }}>
-                <p className="hero-line" style={{ fontSize: "clamp(1.875rem, 4vw, 3rem)", lineHeight: 1.3, fontFamily: "serif" }}>
-                    {parse(subheadline)}
+            {/* Grid covers full section including wave area */}
+            <PixelGrid style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, pointerEvents: "none" }} />
+
+            {/* Sine-wave: white fill above curve, grid visible below curve */}
+            <svg
+                ref={waveRef}
+                viewBox={`0 0 100 ${WAVE_HEIGHT}`}
+                preserveAspectRatio="none"
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: `${WAVE_HEIGHT}px`,
+                    zIndex: 1,
+                }}
+            >
+                <path d={sinePath} fill="white" />
+            </svg>
+
+            <div className="px-8 md:px-16 max-w-2xl mx-auto w-full" style={{ position: "relative", zIndex: 2 }}>
+                <p className="hero-headline text-2xl sm:text-3xl md:text-4xl leading-snug md:leading-snug font-serif text-white">
+                    <span className="text-background-dark hero-headline-bg">
+                        {renderChars(subheadline)}
+                    </span>
                 </p>
-                <p className="hero-line" style={{ fontSize: "clamp(1.125rem, 2vw, 1.25rem)", lineHeight: 1.7, marginTop: "2rem", maxWidth: "42rem", fontFamily: "sans-serif", color: "#be185d" }}>
-                    {parse(bodyText)}
+                <p className="hero-body text-base sm:text-lg leading-relaxed mt-8 max-w-xl font-sans text-white">
+                    <span className="text-background-dark hero-body-bg">
+                        {renderChars(bodyText)}
+                    </span>
                 </p>
+                <span ref={cursorRef} className="hero-cursor text-white" style={{ visibility: "hidden", position: "fixed", pointerEvents: "none" }}>|</span>
             </div>
         </section>
     );

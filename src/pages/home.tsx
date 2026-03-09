@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Container from "../components/Container";
 import Hero from "../components/Hero";
 import Nav from "../components/Nav";
@@ -14,17 +14,12 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger);
 
 function Home() {
-    const [isLoaded, setIsLoaded] = useState(false);
     const [entranceDone, setEntranceDone] = useState(false);
     const brandingRef = useRef<HTMLHeadingElement>(null);
     const heroLogoRef = useRef<HTMLImageElement>(null);
 
     useEffect(() => {
         preventOrphans();
-    }, []);
-
-    const handleLoadComplete = useCallback(() => {
-        setIsLoaded(true);
     }, []);
 
     // Entrance animation: reveal letters, then pixelated → sharp
@@ -114,8 +109,8 @@ function Home() {
                 ease: "none",
                 scrollTrigger: {
                     trigger: brandingRef.current,
-                    start: "top top",
-                    end: "center top",
+                    start: "center top",
+                    end: "bottom top",
                     scrub: 0.5,
                 },
                 onUpdate: () => {
@@ -136,7 +131,7 @@ function Home() {
 
     return (
         <main>
-            <PageLoader onComplete={handleLoadComplete} />
+            <PageLoader onComplete={() => {}} />
             <Nav />
 
             {/* SVG pixelate filter */}
@@ -151,7 +146,7 @@ function Home() {
             </svg>
 
             {/* Section 1: Full-viewport brand moment */}
-            <section className="brand-section h-svh flex items-center justify-center">
+            <section className="brand-section flex items-center justify-center" style={{ height: "80svh" }}>
                 <h1 ref={brandingRef} className="font-sans text-[14vw] md:text-[12vw] leading-none flex justify-between items-center w-full px-8 md:px-16" style={{ fontWeight: 800, filter: "url(#pixelate)" }}>
                     {"BIT LORE".split("").map((char, i) => (
                         char === "O" ? (
@@ -167,9 +162,7 @@ function Home() {
 
             {/* Section 2: Hero / Intro */}
             <div className="hero-section">
-                <Container>
-                    <Hero isLoaded={isLoaded} />
-                </Container>
+                <Hero />
             </div>
 
             {/* Section 3: Work */}
