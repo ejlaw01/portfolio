@@ -6,9 +6,33 @@ interface PixelGridProps {
 
 const CELL_SIZE = 90;
 const GAP = 1;
+const STEP = CELL_SIZE + GAP;
 
 const BASE_COLOR = "rgb(0, 0, 0)";
 const LINE_COLOR = "rgb(213, 174, 174)";
+
+const WARP_RADIUS = 300;
+const WARP_STRENGTH = 0.4;
+
+function warpPoint(
+    gx: number,
+    gy: number,
+    mx: number,
+    my: number,
+    active: boolean
+): [number, number] {
+    if (!active) return [gx, gy];
+    const dx = mx - gx;
+    const dy = my - gy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist >= WARP_RADIUS) return [gx, gy];
+    const t = 1 - dist / WARP_RADIUS;
+    const influence = t * t;
+    return [
+        gx + dx * influence * WARP_STRENGTH,
+        gy + dy * influence * WARP_STRENGTH,
+    ];
+}
 
 function PixelGrid({ style }: PixelGridProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -74,36 +98,45 @@ function PixelGrid({ style }: PixelGridProps) {
             const w = canvas.width / (window.devicePixelRatio || 1);
             const h = canvas.height / (window.devicePixelRatio || 1);
 
-            const step = CELL_SIZE + GAP;
-
-            // Fill with grid line color, then draw cells on top
+            // Fill with grid line color — gaps between warped cells show this
             ctx.fillStyle = LINE_COLOR;
             ctx.fillRect(0, 0, w, h);
 
-            const cols = Math.ceil(w / step);
-            const rows = Math.ceil(h / step);
+            // Extra cells beyond edges so warping doesn't reveal bare background
+            const pad = Math.ceil(WARP_RADIUS * WARP_STRENGTH / STEP) + 2;
+            const cols = Math.ceil(w / STEP) + pad * 2;
+            const rows = Math.ceil(h / STEP) + pad * 2;
+            const offsetX = -pad * STEP;
+            const offsetY = -pad * STEP;
             const mouse = mouseRef.current;
-
-            // Find which cell the mouse is over
-            let hoveredCol = -1;
-            let hoveredRow = -1;
-            if (!isMobile && mouse.active) {
-                hoveredCol = Math.floor(mouse.x / step);
-                hoveredRow = Math.floor(mouse.y / step);
-            }
+            const active = !isMobile && mouse.active;
+            const mx = mouse.x;
+            const my = mouse.y;
 
             ctx.fillStyle = BASE_COLOR;
+
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
-                    if (col === hoveredCol && row === hoveredRow) continue;
-                    ctx.fillRect(col * step, row * step, CELL_SIZE, CELL_SIZE);
-                }
-            }
+                    // Grid intersection points (corners of this cell)
+                    const x0 = offsetX + col * STEP;
+                    const y0 = offsetY + row * STEP;
+                    const x1 = x0 + CELL_SIZE;
+                    const y1 = y0 + CELL_SIZE;
 
-            // Hovered cell — draw as line color (light pink)
-            if (hoveredCol >= 0 && hoveredRow >= 0) {
-                ctx.fillStyle = LINE_COLOR;
-                ctx.fillRect(hoveredCol * step, hoveredRow * step, CELL_SIZE, CELL_SIZE);
+                    // Warp each corner
+                    const [tlx, tly] = warpPoint(x0, y0, mx, my, active);
+                    const [trx, try_] = warpPoint(x1, y0, mx, my, active);
+                    const [brx, bry] = warpPoint(x1, y1, mx, my, active);
+                    const [blx, bly] = warpPoint(x0, y1, mx, my, active);
+
+                    ctx.beginPath();
+                    ctx.moveTo(tlx, tly);
+                    ctx.lineTo(trx, try_);
+                    ctx.lineTo(brx, bry);
+                    ctx.lineTo(blx, bly);
+                    ctx.closePath();
+                    ctx.fill();
+                }
             }
         }
 

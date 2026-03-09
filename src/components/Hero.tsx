@@ -34,6 +34,7 @@ function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const waveRef = useRef<SVGSVGElement>(null);
     const cursorRef = useRef<HTMLSpanElement>(null);
+    const textContainerRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
         if (!sectionRef.current) return;
@@ -45,11 +46,13 @@ function Hero() {
         gsap.set([headlineChars, bodyChars], { visibility: "hidden" });
         if (cursor) gsap.set(cursor, { visibility: "hidden" });
 
+        const container = textContainerRef.current;
         const positionCursor = (char: Element) => {
-            if (!cursor) return;
-            const rect = char.getBoundingClientRect();
-            cursor.style.left = `${rect.right}px`;
-            cursor.style.top = `${rect.top}px`;
+            if (!cursor || !container) return;
+            const charRect = char.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            cursor.style.left = `${charRect.right - containerRect.left}px`;
+            cursor.style.top = `${charRect.top - containerRect.top}px`;
             cursor.style.fontSize = window.getComputedStyle(char).fontSize;
             cursor.style.lineHeight = window.getComputedStyle(char).lineHeight;
         };
@@ -63,10 +66,11 @@ function Hero() {
 
                 // Show cursor at first headline char position
                 tl.call(() => {
-                    if (cursor && headlineChars[0]) {
-                        const rect = headlineChars[0].getBoundingClientRect();
-                        cursor.style.left = `${rect.left}px`;
-                        cursor.style.top = `${rect.top}px`;
+                    if (cursor && headlineChars[0] && container) {
+                        const charRect = headlineChars[0].getBoundingClientRect();
+                        const containerRect = container.getBoundingClientRect();
+                        cursor.style.left = `${charRect.left - containerRect.left}px`;
+                        cursor.style.top = `${charRect.top - containerRect.top}px`;
                         cursor.style.fontSize = window.getComputedStyle(headlineChars[0]).fontSize;
                         cursor.style.visibility = "visible";
                     }
@@ -82,10 +86,11 @@ function Hero() {
 
                 // Pause before body
                 tl.call(() => {
-                    if (cursor && bodyChars[0]) {
-                        const rect = bodyChars[0].getBoundingClientRect();
-                        cursor.style.left = `${rect.left}px`;
-                        cursor.style.top = `${rect.top}px`;
+                    if (cursor && bodyChars[0] && container) {
+                        const charRect = bodyChars[0].getBoundingClientRect();
+                        const containerRect = container.getBoundingClientRect();
+                        cursor.style.left = `${charRect.left - containerRect.left}px`;
+                        cursor.style.top = `${charRect.top - containerRect.top}px`;
                         cursor.style.fontSize = window.getComputedStyle(bodyChars[0]).fontSize;
                     }
                 }, [], "+=0.3");
@@ -139,7 +144,7 @@ function Hero() {
                 <path d={sinePath} fill="white" />
             </svg>
 
-            <div className="px-8 md:px-16 max-w-2xl mx-auto w-full" style={{ position: "relative", zIndex: 2 }}>
+            <div ref={textContainerRef} className="px-8 md:px-16 max-w-2xl mx-auto w-full" style={{ position: "relative", zIndex: 2 }}>
                 <p className="hero-headline text-2xl sm:text-3xl md:text-4xl leading-snug md:leading-snug font-serif text-white">
                     <span className="text-background-dark hero-headline-bg">
                         {renderChars(subheadline)}
@@ -150,7 +155,7 @@ function Hero() {
                         {renderChars(bodyText)}
                     </span>
                 </p>
-                <span ref={cursorRef} className="hero-cursor text-white" style={{ visibility: "hidden", position: "fixed", pointerEvents: "none" }}>|</span>
+                <span ref={cursorRef} className="hero-cursor text-white" style={{ visibility: "hidden", position: "absolute", pointerEvents: "none" }}>|</span>
             </div>
         </section>
     );
