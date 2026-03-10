@@ -100,7 +100,7 @@ const Nav = () => {
                 <BitLoreLogo className="h-7 w-auto text-pink-900" />
             </div>
 
-            <div ref={itemsRef} className="menu-items">
+            <div ref={itemsRef} className="menu-items" style={{ width: 0, marginRight: 0 }}>
                 <div className="menu-item">
                     <button onClick={() => scrollToSection("work-section")}>Work</button>
                 </div>

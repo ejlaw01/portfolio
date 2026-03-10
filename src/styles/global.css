@@ -1,7 +1,9 @@
 @tailwind utilities;
 
-html {
-    scroll-snap-type: none;
+@media (min-width: 1024px) {
+    html {
+        scroll-snap-type: y proximity;
+    }
 }
 
 @layer utilities {

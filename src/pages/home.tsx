@@ -2,8 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import Container from "../components/Container";
 import Hero from "../components/Hero";
 import Nav from "../components/Nav";
-import Work from "../components/Work";
+// import Work from "../components/Work";
 import About from "../components/About";
+import CrtDisplay from "../components/CrtDisplay";
 import Footer from "../components/Footer";
 import Checkerboard from "../components/Checkerboard";
 import PageLoader from "../components/PageLoader";
@@ -145,11 +146,14 @@ function Home() {
             </svg>
 
             {/* Section 1: Full-viewport brand moment */}
-            <section className="brand-section flex items-center justify-center" style={{ height: "80svh" }}>
-                <h1 ref={brandingRef} className="font-sans text-[14vw] md:text-[12vw] leading-none flex justify-between items-center w-full px-8 md:px-16" style={{ fontWeight: 800, filter: "url(#pixelate)" }}>
+            <section className="brand-section flex items-center justify-center snap-start" style={{ height: "80svh" }}>
+                <h1 ref={brandingRef} className="font-sans text-[14vw] md:text-[12vw] leading-none flex justify-between items-center w-full px-8 md:px-16 cursor-default select-none" style={{ fontWeight: 800, filter: "url(#pixelate)" }}>
                     {"BIT LORE".split("").map((char, i) => (
                         char === "O" ? (
-                            <img key={i} ref={heroLogoRef} src="/img/logo.svg" alt="O" className="h-[0.75em] brand-logo" />
+                            <span key={i} className="brand-letter relative" aria-label="O">
+                                <span className="sr-only">O</span>
+                                <img ref={heroLogoRef} src="/img/logo.svg" alt="" className="h-[0.75em] brand-logo" aria-hidden="true" />
+                            </span>
                         ) : (
                             <span key={i} className="brand-letter">
                                 {char === " " ? "\u00A0" : char}
@@ -160,13 +164,13 @@ function Home() {
             </section>
 
             {/* Section 2: Hero / Intro */}
-            <div className="hero-section">
+            <div className="hero-section relative z-10 snap-start">
                 <Hero />
             </div>
 
-            {/* Section 3: Work */}
-            <div className="bg-pink-50">
-                <Work />
+            {/* Section 3: Work — sits behind hero, revealed as hero scrolls away */}
+            <div className="bg-pink-50 relative z-0 snap-start" style={{ marginTop: "-100svh", paddingTop: "100svh" }}>
+                <CrtDisplay />
             </div>
 
             {/* Section 4: About */}
@@ -175,7 +179,7 @@ function Home() {
             </Container>
 
             {/* Section 5: Footer */}
-            <Container>
+            <Container classes="snap-end">
                 <Footer />
             </Container>
             <Checkerboard classes="-mb-14 w-full h-[100px] bg-[length:100px]" />

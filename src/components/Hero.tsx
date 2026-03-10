@@ -99,7 +99,7 @@ function Hero() {
 
     const renderChars = (text: string | undefined) =>
         text?.split("").map((char, i) => (
-            <span key={i} className="hero-char" style={{ visibility: "hidden", backgroundColor: "black", padding: "4px 0" }}>
+            <span key={i} className="hero-char" style={{ visibility: "hidden", backgroundColor: "#121212", padding: "4px 0" }}>
                 {char}
             </span>
         ));
