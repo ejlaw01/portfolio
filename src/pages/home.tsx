@@ -3,6 +3,7 @@ import Container from "../components/Container";
 import Hero from "../components/Hero";
 import Nav from "../components/Nav";
 import Work from "../components/Work";
+import About from "../components/About";
 import Footer from "../components/Footer";
 import Checkerboard from "../components/Checkerboard";
 import PageLoader from "../components/PageLoader";
@@ -168,7 +169,12 @@ function Home() {
                 <Work />
             </div>
 
-            {/* Section 4: Contact / Footer */}
+            {/* Section 4: About */}
+            <Container>
+                <About />
+            </Container>
+
+            {/* Section 5: Footer */}
             <Container>
                 <Footer />
             </Container>

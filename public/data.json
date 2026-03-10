@@ -1,7 +1,7 @@
 {
     "contact": {
-        "intro": "I'm a web developer with 8&nbsp;years of experience creating custom tools that solve real problems.",
-        "body": "Instead of fitting businesses into off-the-shelf solutions, I build proprietary software tailored to your specific needs.",
+        "intro": "Hi, I'm Ethan, founder of Bit Lore.",
+        "body": "I'm a Portland-based web developer with 8+&nbsp;years of experience building websites and applications. I've worked with everyone from mom &amp; pop shops to enterprise corporations, and the approach is always the same: understand how you work, then build something that fits.",
         "headline": "Let's build something that <span class='italic'>works</span>.",
         "name": "Ethan Law",
         "title": "Front End Web Developer",
@@ -10,8 +10,9 @@
     },
     "hero": {
         "headline": "I'm Ethan, founder of <span className='font-semibold'>Bit Lore</span>",
-        "subheadline": "I build custom digital solutions tailored to your business.",
-        "bodyText": "Bit Lore is a Portland studio creating custom digital tools and web applications to help agencies and small businesses succeed.",
+        "subheadline": "Digital tools designed around your business, not the other way around.",
+        "bodyText": "Purpose-built applications tailored to your needs are finally accessible to small businesses and agencies. I work with you to understand your business and build streamlined tools that eliminate the everyday friction from your workflow.",
+        "tagline": "Your tools, built for you.",
         "avatarImg": {
             "filename": "portfolio-avatar.jpeg",
             "alt": "Ethan Law, founder of Bit Lore"
