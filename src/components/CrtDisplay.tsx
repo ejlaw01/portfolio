@@ -52,6 +52,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
     const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
     const setDisplayImageRef = useRef<((src: string) => void) | null>(null);
     const panelRef = useRef<HTMLDivElement>(null);
+    const buttonsRef = useRef<HTMLUListElement>(null);
     const panelTimelineRef = useRef<gsap.core.Timeline | null>(null);
     const prevProjectRef = useRef<number | null>(null);
     const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -363,7 +364,18 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
     const displayProject = lastProjectRef.current;
 
     return (
-        <div ref={containerRef} className={`relative w-full h-[100svh] overflow-hidden ${className}`}>
+        <div
+            ref={containerRef}
+            className={`relative w-full h-[100svh] overflow-hidden ${className}`}
+            onClick={(e) => {
+                if (activeProject === null) return;
+                const target = e.target as Node;
+                if (panelRef.current?.contains(target) || buttonsRef.current?.contains(target)) return;
+                setPinned(false);
+                cancelClose();
+                setActiveProject(null);
+            }}
+        >
             {/* Slide-in panel */}
             <div
                 ref={panelRef}
@@ -403,7 +415,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             </div>
 
             {/* Project buttons */}
-            <ul className="absolute left-1/2 bottom-16 -translate-x-1/2 w-full flex justify-center gap-2 list-none z-10 flex-wrap">
+            <ul ref={buttonsRef} className="absolute left-1/2 bottom-16 -translate-x-1/2 w-full flex justify-center gap-2 list-none z-10 flex-wrap">
                 {projects.map((project, i) => (
                     <li
                         key={i}
