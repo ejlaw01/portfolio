@@ -1,14 +1,14 @@
-import { useRef, useEffect, type CSSProperties } from "react";
+import { useRef, useEffect } from "react";
 
 interface PixelGridProps {
-    style?: CSSProperties;
+    className?: string;
 }
 
 const CELL_SIZE = 90;
 const GAP = 1;
 const STEP = CELL_SIZE + GAP;
 
-const BASE_COLOR = "rgb(0, 0, 0)";
+const BASE_COLOR = "#121212";
 const LINE_COLOR = "rgb(213, 174, 174)";
 
 const WARP_RADIUS = 300;
@@ -34,7 +34,7 @@ function warpPoint(
     ];
 }
 
-function PixelGrid({ style }: PixelGridProps) {
+function PixelGrid({ className = "" }: PixelGridProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const mouseRef = useRef<{ x: number; y: number; active: boolean }>({
         x: -9999,
@@ -153,12 +153,7 @@ function PixelGrid({ style }: PixelGridProps) {
     return (
         <canvas
             ref={canvasRef}
-            style={{
-                display: "block",
-                width: "100%",
-                height: "100%",
-                ...style,
-            }}
+            className={`pixel-grid ${className}`}
         />
     );
 }

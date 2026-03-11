@@ -327,25 +327,25 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         }
 
         if (activeProject !== null && prev === null) {
-            // Panel open: position panel, stagger children in
-            gsap.set(panel, { x: "0%" });
+            // Panel open: fade in gradient, then stagger children
+            gsap.set(panel, { opacity: 0, visibility: "visible" });
             gsap.set(children, { y: 20, opacity: 0 });
             const tl = gsap.timeline();
-            tl.to(children, { y: 0, opacity: 1, duration: 0.4, stagger: 0.06, ease: "power2.out" });
+            tl.to(panel, { opacity: 1, duration: 0.4, ease: "power2.out" });
+            tl.to(children, { y: 0, opacity: 1, duration: 0.4, stagger: 0.06, ease: "power2.out" }, "-=0.2");
             panelTimelineRef.current = tl;
         } else if (activeProject !== null && prev !== null && activeProject !== prev) {
-            // Project swap: ensure panel is in place, restagger text
-            gsap.set(panel, { x: "0%" });
+            // Project swap: ensure panel is visible, restagger text
+            gsap.set(panel, { opacity: 1, visibility: "visible" });
             gsap.set(children, { y: 12, opacity: 0 });
             const tl = gsap.timeline();
             tl.to(children, { y: 0, opacity: 1, duration: 0.3, stagger: 0.04, ease: "power2.out" });
             panelTimelineRef.current = tl;
         } else if (activeProject === null && prev !== null) {
-            // Panel close: reverse stagger children out, then hide panel
-            gsap.set(panel, { x: "0%" });
+            // Panel close: stagger children out, then fade out gradient
             const tl = gsap.timeline({
                 onComplete: () => {
-                    gsap.set(panel, { x: "-100%" });
+                    gsap.set(panel, { visibility: "hidden" });
                 },
             });
             tl.to(children, {
@@ -355,6 +355,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 stagger: 0.04,
                 ease: "power2.in",
             });
+            tl.to(panel, { opacity: 0, duration: 0.3, ease: "power2.in" }, "-=0.15");
             panelTimelineRef.current = tl;
         }
 
@@ -379,24 +380,24 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             {/* Slide-in panel */}
             <div
                 ref={panelRef}
-                className="hidden lg:flex absolute left-0 top-0 h-full w-[30%] z-10 flex-col justify-center px-8 bg-gradient-to-r from-pink-50/90 to-transparent"
-                style={{ transform: "translateX(-100%)" }}
+                className="hidden lg:flex absolute left-0 top-0 h-full w-[30%] z-10 flex-col justify-center px-8 bg-gradient-to-r from-[#121212] via-[#121212]/80 to-transparent"
+                style={{ visibility: "hidden", opacity: 0 }}
                 onMouseEnter={cancelClose}
                 onMouseLeave={scheduleClose}
             >
-                <span className="panel-type font-sans text-xs uppercase tracking-widest text-pink-500 mb-2">
-                    <span className="text-background-pink">{displayProject.type}</span>
+                <span className="panel-type font-sans text-xs uppercase tracking-widest text-pink-300 mb-2">
+                    <span className="text-background-dark">{displayProject.type}</span>
                 </span>
-                <h3 className="panel-title font-serif text-3xl font-bold text-pink-900 mb-3">
-                    <span className="text-background-pink">{displayProject.title}</span>
+                <h3 className="panel-title font-serif text-3xl font-bold text-pink-100 mb-3">
+                    <span className="text-background-dark">{displayProject.title}</span>
                 </h3>
-                <hr className="panel-divider w-12 border-pink-300 mb-4" />
-                <p className="panel-desc font-sans text-sm text-pink-800 leading-relaxed mb-5">
-                    <span className="text-background-pink">{displayProject.description}</span>
+                <hr className="panel-divider w-12 border-pink-400 mb-4" />
+                <p className="panel-desc font-sans text-sm text-pink-200 leading-relaxed mb-5">
+                    <span className="text-background-dark">{displayProject.description}</span>
                 </p>
                 <div className="panel-tags flex flex-wrap gap-2 mb-6">
                     {displayProject.tech.map((tag) => (
-                        <span key={tag} className="bg-pink-100 text-pink-800 text-xs font-sans px-3 py-1 rounded-full">
+                        <span key={tag} className="bg-pink-300/40 text-pink-100 text-xs font-sans px-3 py-1 rounded-full border border-pink-300/50">
                             {tag}
                         </span>
                     ))}
@@ -406,7 +407,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                         href={displayProject.btnLink.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="panel-cta pointer-events-auto inline-flex items-center gap-2 font-sans text-sm font-medium text-pink-800 bg-white border border-pink-200 px-4 py-2 rounded hover:bg-pink-50 transition-colors w-fit"
+                        className="panel-cta pointer-events-auto inline-flex items-center gap-2 font-sans text-sm font-medium text-white bg-pink-500/80 border border-pink-400/50 px-4 py-2 rounded hover:bg-pink-400/80 transition-colors w-fit"
                     >
                         {displayProject.btnLink.text}
                         <span aria-hidden="true">&rarr;</span>
@@ -419,10 +420,10 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 {projects.map((project, i) => (
                     <li
                         key={i}
-                        className={`uppercase font-sans text-xs font-medium px-4 py-2 border border-black shadow-[4px_4px_0px_-1px_rgba(0,0,0,1)] cursor-pointer transition-colors ${
+                        className={`uppercase font-sans text-xs font-medium px-4 py-2 border border-pink-300 shadow-[4px_4px_0px_-1px_theme(colors.pink.400)] cursor-pointer transition-colors ${
                             pinned && activeProject === i
-                                ? "text-white bg-black"
-                                : "text-black bg-white hover:text-white hover:bg-black"
+                                ? "text-white bg-pink-800"
+                                : "text-pink-800 bg-pink-50 hover:text-pink-900 hover:bg-pink-200"
                         }`}
                         onMouseEnter={() => {
                             cancelClose();

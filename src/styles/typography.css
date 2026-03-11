@@ -81,8 +81,15 @@
     .text-background-dark {
         -webkit-box-decoration-break: clone;
         box-decoration-break: clone;
-        background-color: black;
+        background-color: #121212;
         padding: 4px 8px 4px 0;
+    }
+    .text-background-pink {
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        background-color: #F8F1F1;
+        padding: 4px 8px 4px 0;
+        line-height: 1.8;
     }
     .hero-cursor {
         animation: blink 0.8s step-end infinite;

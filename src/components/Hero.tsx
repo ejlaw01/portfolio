@@ -3,7 +3,6 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import data from "../../public/data.json";
-import PixelGrid from "./PixelGrid";
 gsap.registerPlugin(ScrollTrigger);
 
 type PageData = {
@@ -107,11 +106,9 @@ function Hero() {
     return (
         <section
             ref={sectionRef}
-            className="bg-black"
+            className="bg-transparent"
             style={{ position: "relative", height: "100svh", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }}
         >
-            <PixelGrid style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, pointerEvents: "none" }} />
-
             <svg
                 ref={waveRef}
                 viewBox={`0 0 100 ${WAVE_HEIGHT}`}
@@ -128,7 +125,7 @@ function Hero() {
                 <path d={sinePath} fill="white" />
             </svg>
 
-            <div ref={textContainerRef} className="px-8 md:px-16 max-w-3xl mx-auto w-full" style={{ position: "relative", zIndex: 2 }}>
+            <div ref={textContainerRef} className="hero-text-container px-8 md:px-16 max-w-3xl mx-auto w-full" style={{ position: "relative", zIndex: 2 }}>
                 <h2 className="hero-headline text-2xl sm:text-3xl md:text-4xl leading-snug md:leading-snug font-serif text-white">
                     {renderChars(subheadline)}
                 </h2>

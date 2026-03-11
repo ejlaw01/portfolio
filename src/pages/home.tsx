@@ -7,6 +7,7 @@ import About from "../components/About";
 import CrtDisplay from "../components/CrtDisplay";
 import Footer from "../components/Footer";
 import Checkerboard from "../components/Checkerboard";
+import PixelGrid from "../components/PixelGrid";
 import PageLoader from "../components/PageLoader";
 import preventOrphans from "../utils/preventOrphans";
 import gsap from "gsap";
@@ -163,14 +164,17 @@ function Home() {
                 </h1>
             </section>
 
-            {/* Section 2: Hero / Intro */}
-            <div className="hero-section relative z-10 snap-start">
-                <Hero />
-            </div>
+            {/* Sections 2 & 3: shared PixelGrid behind Hero + CrtDisplay */}
+            <div className="relative bg-[#121212]">
+                <PixelGrid />
 
-            {/* Section 3: Work — sits behind hero, revealed as hero scrolls away */}
-            <div className="bg-pink-50 relative z-0 snap-start" style={{ marginTop: "-100svh", paddingTop: "100svh" }}>
-                <CrtDisplay />
+                <div className="hero-section relative z-10 snap-start">
+                    <Hero />
+                </div>
+
+                <div className="relative z-0 snap-start" style={{ marginTop: "-100svh", paddingTop: "100svh" }}>
+                    <CrtDisplay />
+                </div>
             </div>
 
             {/* Section 4: About */}
