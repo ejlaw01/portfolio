@@ -413,12 +413,22 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         >
             {/* Mobile static image fallback (no Three.js) */}
             {isMobile && (
-                <div className="lg:hidden absolute inset-0 flex items-center justify-center p-8 pt-16">
-                    <img
-                        src={activeProject !== null ? projects[activeProject].image : defaultImage}
-                        alt={activeProject !== null ? projects[activeProject].title : "Projects"}
-                        className="max-w-[85%] max-h-[50%] object-contain rounded-lg shadow-2xl"
-                    />
+                <div className="lg:hidden absolute inset-0 flex items-center justify-center p-8 pt-12">
+                    <div className="relative max-w-[90%] max-h-[55%]">
+                        <img
+                            src="/img/apple_iie.png"
+                            alt=""
+                            className="w-full h-full object-contain"
+                        />
+                        {/* Screen overlay — positioned over the monitor's screen area */}
+                        <div className="absolute rounded-[3px] overflow-hidden" style={{ left: "21.5%", top: "9.5%", width: "37%", height: "45%" }}>
+                            <img
+                                src={activeProject !== null ? projects[activeProject].image : defaultImage}
+                                alt={activeProject !== null ? projects[activeProject].title : "Projects"}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                    </div>
                 </div>
             )}
 

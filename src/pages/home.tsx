@@ -138,7 +138,7 @@ function Home() {
     }, { dependencies: [entranceDone] });
 
     return (
-        <main>
+        <main className="overflow-x-clip">
             <PageLoader onComplete={() => {}} />
             <Nav />
 
