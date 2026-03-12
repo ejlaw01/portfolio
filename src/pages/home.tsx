@@ -35,8 +35,9 @@ function Home() {
         const filterEl = document.getElementById("pixelate-composite");
         const morphEl = document.getElementById("pixelate-morph");
 
-        if (!logo || !filterEl || !morphEl) return;
+        if (!logo) return;
 
+        const hasFilter = filterEl && morphEl;
         const allChars = [...Array.from(letters), logo];
 
         // Start hidden, type in: BIT (pause) LORE using visibility
@@ -55,28 +56,34 @@ function Home() {
             });
         }
 
-        // Phase 2: De-pixelate (slow start, accelerates)
-        const proxy = { size: 24 };
+        if (hasFilter) {
+            // Phase 2: De-pixelate (slow start, accelerates)
+            const proxy = { size: 24 };
 
-        gsap.to(proxy, {
-            size: 1,
-            duration: 3.5,
-            ease: "power2.in",
-            delay: 0.2,
-            onUpdate: () => {
-                const s = Math.round(proxy.size);
-                filterEl.setAttribute("width", String(s));
-                filterEl.setAttribute("height", String(s));
-                morphEl.setAttribute("radius", String(Math.floor(s / 2)));
+            gsap.to(proxy, {
+                size: 1,
+                duration: 3.5,
+                ease: "power2.in",
+                delay: 0.2,
+                onUpdate: () => {
+                    const s = Math.round(proxy.size);
+                    filterEl.setAttribute("width", String(s));
+                    filterEl.setAttribute("height", String(s));
+                    morphEl.setAttribute("radius", String(Math.floor(s / 2)));
 
-                if (s <= 1) {
-                    h1.style.filter = "none";
-                }
-            },
-            onComplete: () => {
-                setEntranceDone(true);
-            },
-        });
+                    if (s <= 1) {
+                        h1.style.filter = "none";
+                    }
+                },
+                onComplete: () => {
+                    setEntranceDone(true);
+                },
+            });
+        } else {
+            // Mobile fallback: skip pixelate, just remove filter and mark done
+            h1.style.filter = "none";
+            gsap.delayedCall(0.8, () => setEntranceDone(true));
+        }
     });
 
     // Scroll animation: font weight wipe + re-pixelate on scroll
