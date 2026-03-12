@@ -39,13 +39,16 @@ function Home() {
         if (!logo) return;
 
         const isMobile = window.innerWidth < 768;
-        const hasFilter = !isMobile && filterEl && morphEl;
-        const allChars = [...Array.from(letters), logo];
 
-        // Remove SVG filter on mobile (not supported in mobile Safari)
-        if (!hasFilter) {
+        // Skip all animation on mobile
+        if (isMobile) {
             h1.style.filter = "none";
+            setEntranceDone(true);
+            return;
         }
+
+        const hasFilter = filterEl && morphEl;
+        const allChars = [...Array.from(letters), logo];
 
         // Start hidden, type in: BIT (pause) LORE using visibility
         allChars.forEach((el) => { (el as HTMLElement).style.visibility = "hidden"; });
@@ -87,15 +90,15 @@ function Home() {
                 },
             });
         } else {
-            // Mobile fallback: skip pixelate, just remove filter and mark done
             h1.style.filter = "none";
             gsap.delayedCall(0.8, () => setEntranceDone(true));
         }
     });
 
-    // Scroll animation: font weight wipe + re-pixelate on scroll
+    // Scroll animation: font weight wipe + re-pixelate on scroll (desktop only)
     useGSAP(() => {
         if (!brandingRef.current || !entranceDone) return;
+        if (window.innerWidth < 768) return;
 
         // Font weight wipe on scroll
         gsap.fromTo(

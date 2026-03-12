@@ -430,6 +430,14 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         prevMobileProjectRef.current = activeProject;
     }, [activeProject]);
 
+    // Preload all project images
+    useEffect(() => {
+        projects.forEach((p) => {
+            const img = new Image();
+            img.src = p.image;
+        });
+    }, [projects]);
+
     const displayProject = lastProjectRef.current;
 
     return (
