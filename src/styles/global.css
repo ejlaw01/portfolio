@@ -89,7 +89,7 @@ html {
     background: none;
     border: none;
     font-size: 0.8rem;
-    font-family: inherit;
+    font-family: ui-sans-serif, system-ui, sans-serif;
 }
 
 .menu-toggler {

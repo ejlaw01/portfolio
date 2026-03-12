@@ -132,7 +132,7 @@ const About = () => {
                 </div>
                 <div className="basis-2/5 relative self-stretch flex flex-col max-h-screen py-6 sm:py-12">
                     <div
-                        className="about__avatar-wrapper relative w-2/3 sm:w-full mt-[50px] sm:mt-auto ms-auto my-auto z-10"
+                        className="about__avatar-wrapper relative w-2/3 sm:w-full mt-[50px] sm:mt-auto ms-auto my-auto z-[1]"
                         style={{ opacity: 0, transform: "translateY(60px)" }}
                     >
                         <img
@@ -143,7 +143,7 @@ const About = () => {
                         />
                     </div>
                     <div
-                        className="about__checkerboard-wrapper absolute h-[450px] sm:h-[550px] w-[250px] sm:w-[350px] sm:top-[20%] right-[40%] lg:right-[60%]"
+                        className="about__checkerboard-wrapper absolute h-[450px] sm:h-[550px] w-[250px] sm:w-[350px] sm:top-[20%] right-[40%] lg:right-[60%] z-0"
                         style={{ transform: "translateY(80px)" }}
                     >
                         <Checkerboard

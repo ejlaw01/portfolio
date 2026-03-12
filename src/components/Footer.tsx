@@ -5,7 +5,7 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 
 const Footer = () => {
     return (
-        <footer className="py-12">
+        <footer className="relative z-10 py-12">
             <div className="flex flex-wrap gap-10">
                 <a
                     href="mailto:ethan@bitlore.io"
