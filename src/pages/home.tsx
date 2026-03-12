@@ -37,10 +37,11 @@ function Home() {
 
         if (!logo) return;
 
-        const hasFilter = filterEl && morphEl;
+        const isMobile = window.innerWidth < 768;
+        const hasFilter = !isMobile && filterEl && morphEl;
         const allChars = [...Array.from(letters), logo];
 
-        // Remove broken SVG filter on mobile before anything renders
+        // Remove SVG filter on mobile (not supported in mobile Safari)
         if (!hasFilter) {
             h1.style.filter = "none";
         }
