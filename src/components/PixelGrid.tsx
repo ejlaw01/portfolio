@@ -11,49 +11,24 @@ const STEP = CELL_SIZE + GAP;
 const BASE_COLOR = "#121212";
 const LINE_COLOR = "rgb(213, 174, 174)";
 
-const WARP_RADIUS = 300;
-const WARP_STRENGTH = 0.4;
-
-function warpPoint(
-    gx: number,
-    gy: number,
-    mx: number,
-    my: number,
-    active: boolean
-): [number, number] {
-    if (!active) return [gx, gy];
-    const dx = mx - gx;
-    const dy = my - gy;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist >= WARP_RADIUS) return [gx, gy];
-    const t = 1 - dist / WARP_RADIUS;
-    const influence = t * t;
-    return [
-        gx + dx * influence * WARP_STRENGTH,
-        gy + dy * influence * WARP_STRENGTH,
-    ];
-}
+const PARALLAX_FACTOR = 0.075;
+const BREATH_AMPLITUDE = 2;
+const MOBILE_BREAKPOINT = 768;
 
 function PixelGrid({ className = "" }: PixelGridProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const mouseRef = useRef<{ x: number; y: number; active: boolean }>({
-        x: -9999,
-        y: -9999,
-        active: false,
-    });
     const rafRef = useRef<number>(0);
-    const isMobileRef = useRef(false);
+    const scrollYRef = useRef(0);
 
     useEffect(() => {
         if (typeof window === "undefined") return;
-
-        const checkMobile = () => window.innerWidth < 768;
-        isMobileRef.current = checkMobile();
 
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
+
+        let isMobile = window.innerWidth < MOBILE_BREAKPOINT;
 
         function sizeCanvas() {
             if (!canvas) return;
@@ -65,69 +40,68 @@ function PixelGrid({ className = "" }: PixelGridProps) {
             ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
-        sizeCanvas();
+        function drawParallaxOnly() {
+            if (!ctx || !canvas) return;
+            const w = canvas.width / (window.devicePixelRatio || 1);
+            const h = canvas.height / (window.devicePixelRatio || 1);
 
-        const handleResize = () => {
-            isMobileRef.current = checkMobile();
-            sizeCanvas();
-        };
+            ctx.fillStyle = LINE_COLOR;
+            ctx.fillRect(0, 0, w, h);
 
-        const handleMouseMove = (e: MouseEvent) => {
-            if (!canvas) return;
-            const rect = canvas.getBoundingClientRect();
-            mouseRef.current.x = e.clientX - rect.left;
-            mouseRef.current.y = e.clientY - rect.top;
-            mouseRef.current.active = true;
-        };
+            const parallaxY = scrollYRef.current * PARALLAX_FACTOR;
+            const baseOffsetY = ((parallaxY % STEP) + STEP) % STEP;
 
-        const handleMouseLeave = () => {
-            mouseRef.current.active = false;
-        };
+            const cols = Math.ceil(w / STEP) + 4;
+            const rows = Math.ceil(h / STEP) + 4;
 
-        window.addEventListener("resize", handleResize);
-        window.addEventListener("mousemove", handleMouseMove);
-        const parent = canvas.parentElement;
-        if (parent) parent.addEventListener("mouseleave", handleMouseLeave);
+            ctx.fillStyle = BASE_COLOR;
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    ctx.fillRect(-STEP + col * STEP, -STEP + row * STEP + baseOffsetY, CELL_SIZE, CELL_SIZE);
+                }
+            }
+        }
 
-        function animate() {
+        function animate(time: number) {
             rafRef.current = requestAnimationFrame(animate);
 
             if (!ctx || !canvas) return;
 
-            const isMobile = isMobileRef.current;
             const w = canvas.width / (window.devicePixelRatio || 1);
             const h = canvas.height / (window.devicePixelRatio || 1);
 
-            // Fill with grid line color — gaps between warped cells show this
             ctx.fillStyle = LINE_COLOR;
             ctx.fillRect(0, 0, w, h);
 
-            // Extra cells beyond edges so warping doesn't reveal bare background
-            const pad = Math.ceil(WARP_RADIUS * WARP_STRENGTH / STEP) + 2;
+            // Scroll parallax offset (wraps seamlessly)
+            const parallaxY = scrollYRef.current * PARALLAX_FACTOR;
+            const baseOffsetY = ((parallaxY % STEP) + STEP) % STEP;
+
+            const pad = 2;
             const cols = Math.ceil(w / STEP) + pad * 2;
             const rows = Math.ceil(h / STEP) + pad * 2;
-            const offsetX = -pad * STEP;
-            const offsetY = -pad * STEP;
-            const mouse = mouseRef.current;
-            const active = !isMobile && mouse.active;
-            const mx = mouse.x;
-            const my = mouse.y;
+            const startX = -pad * STEP;
+            const startY = -pad * STEP + baseOffsetY;
+
+            // Time for breathing (seconds)
+            const t = time * 0.001;
 
             ctx.fillStyle = BASE_COLOR;
 
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
-                    // Grid intersection points (corners of this cell)
-                    const x0 = offsetX + col * STEP;
-                    const y0 = offsetY + row * STEP;
-                    const x1 = x0 + CELL_SIZE;
-                    const y1 = y0 + CELL_SIZE;
+                    const x0 = startX + col * STEP;
+                    const y0 = startY + row * STEP;
 
-                    // Warp each corner
-                    const [tlx, tly] = warpPoint(x0, y0, mx, my, active);
-                    const [trx, try_] = warpPoint(x1, y0, mx, my, active);
-                    const [brx, bry] = warpPoint(x1, y1, mx, my, active);
-                    const [blx, bly] = warpPoint(x0, y1, mx, my, active);
+                    // Subtle breathing offset per corner
+                    const tlx = x0 + Math.sin(t * 0.8 + row * 0.3 + col * 0.2) * BREATH_AMPLITUDE;
+                    const tly = y0 + Math.cos(t * 0.6 + col * 0.25 + row * 0.15) * BREATH_AMPLITUDE;
+                    const trx = x0 + CELL_SIZE + Math.sin(t * 0.8 + row * 0.3 + (col + 1) * 0.2) * BREATH_AMPLITUDE;
+                    const try_ = y0 + Math.cos(t * 0.6 + (col + 1) * 0.25 + row * 0.15) * BREATH_AMPLITUDE;
+                    const brx = x0 + CELL_SIZE + Math.sin(t * 0.8 + (row + 1) * 0.3 + (col + 1) * 0.2) * BREATH_AMPLITUDE;
+                    const bry = y0 + CELL_SIZE + Math.cos(t * 0.6 + (col + 1) * 0.25 + (row + 1) * 0.15) * BREATH_AMPLITUDE;
+                    const blx = x0 + Math.sin(t * 0.8 + (row + 1) * 0.3 + col * 0.2) * BREATH_AMPLITUDE;
+                    const bly = y0 + CELL_SIZE + Math.cos(t * 0.6 + col * 0.25 + (row + 1) * 0.15) * BREATH_AMPLITUDE;
 
                     ctx.beginPath();
                     ctx.moveTo(tlx, tly);
@@ -140,13 +114,48 @@ function PixelGrid({ className = "" }: PixelGridProps) {
             }
         }
 
-        rafRef.current = requestAnimationFrame(animate);
+        sizeCanvas();
+        scrollYRef.current = window.scrollY;
+
+        if (isMobile) {
+            drawParallaxOnly();
+        } else {
+            rafRef.current = requestAnimationFrame(animate);
+        }
+
+        const handleResize = () => {
+            const wasMobile = isMobile;
+            isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+            sizeCanvas();
+
+            if (isMobile) {
+                cancelAnimationFrame(rafRef.current);
+                drawParallaxOnly();
+            } else if (wasMobile) {
+                rafRef.current = requestAnimationFrame(animate);
+            }
+        };
+
+        const mobileScrollRaf = { id: 0, pending: false };
+        const handleScroll = () => {
+            scrollYRef.current = window.scrollY;
+            if (isMobile && !mobileScrollRaf.pending) {
+                mobileScrollRaf.pending = true;
+                mobileScrollRaf.id = requestAnimationFrame(() => {
+                    drawParallaxOnly();
+                    mobileScrollRaf.pending = false;
+                });
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+        window.addEventListener("scroll", handleScroll, { passive: true });
 
         return () => {
             cancelAnimationFrame(rafRef.current);
+            cancelAnimationFrame(mobileScrollRaf.id);
             window.removeEventListener("resize", handleResize);
-            window.removeEventListener("mousemove", handleMouseMove);
-            if (parent) parent.removeEventListener("mouseleave", handleMouseLeave);
+            window.removeEventListener("scroll", handleScroll);
         };
     }, []);
 

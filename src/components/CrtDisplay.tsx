@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import gsap from "gsap";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -56,6 +57,20 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
     const panelTimelineRef = useRef<gsap.core.Timeline | null>(null);
     const prevProjectRef = useRef<number | null>(null);
     const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const mobilePanelRef = useRef<HTMLDivElement>(null);
+    const mobilePanelTimelineRef = useRef<gsap.core.Timeline | null>(null);
+    const prevMobileProjectRef = useRef<number | null>(null);
+
+    // Hide mobile panel on scroll
+    useEffect(() => {
+        if (activeProject === null) return;
+        const handleScroll = () => {
+            setPinned(false);
+            setActiveProject(null);
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true, once: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [activeProject]);
 
     const cancelClose = useCallback(() => {
         if (closeTimeoutRef.current) {
@@ -231,6 +246,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             camera.updateProjectionMatrix();
             renderer.setSize(w, h);
             camera.position.z = Math.max(1.4, 768 / w);
+            monitorGroup.position.y = 0.1;
         };
 
         const glitchState = { intensity: 0 };
@@ -362,11 +378,34 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         prevProjectRef.current = activeProject;
     }, [activeProject]);
 
+    // Mobile panel content fade on project swap
+    useEffect(() => {
+        const panel = mobilePanelRef.current;
+        if (!panel) return;
+
+        const prev = prevMobileProjectRef.current;
+        const children = panel.querySelectorAll(".mobile-panel-content > *");
+
+        if (mobilePanelTimelineRef.current) {
+            mobilePanelTimelineRef.current.kill();
+        }
+
+        if (activeProject !== null && prev !== null && activeProject !== prev) {
+            gsap.set(children, { opacity: 0, y: 8 });
+            const tl = gsap.timeline();
+            tl.to(children, { opacity: 1, y: 0, duration: 0.25, stagger: 0.03, ease: "power2.out" });
+            mobilePanelTimelineRef.current = tl;
+        }
+
+        prevMobileProjectRef.current = activeProject;
+    }, [activeProject]);
+
     const displayProject = lastProjectRef.current;
 
     return (
         <div
             ref={containerRef}
+            id="work-section"
             className={`relative w-full h-[100svh] overflow-hidden ${className}`}
             onClick={(e) => {
                 if (activeProject === null) return;
@@ -397,7 +436,10 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 </p>
                 <div className="panel-tags flex flex-wrap gap-2 mb-6">
                     {displayProject.tech.map((tag) => (
-                        <span key={tag} className="bg-pink-300/40 text-pink-100 text-xs font-sans px-3 py-1 rounded-full border border-pink-300/50">
+                        <span
+                            key={tag}
+                            className="bg-pink-300/40 text-pink-100 text-xs font-sans px-3 py-1 rounded-full border border-pink-300/50"
+                        >
                             {tag}
                         </span>
                     ))}
@@ -415,8 +457,51 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 )}
             </div>
 
+            {/* Mobile top panel — portaled to body to escape stacking context */}
+            {createPortal(
+                <div
+                    ref={mobilePanelRef}
+                    className={`lg:hidden fixed top-0 left-0 right-0 z-[200] bg-[#121212]/85 backdrop-blur-sm border-b border-pink-400/30 px-5 py-4 transition-all duration-300 ease-out ${activeProject !== null ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}`}
+                >
+                    <div className="mobile-panel-content">
+                        <span className="font-sans text-xs uppercase tracking-widest text-pink-300 mb-1 block">
+                            {displayProject.type}
+                        </span>
+                        <h3 className="font-serif text-lg font-bold text-pink-100 mb-1">{displayProject.title}</h3>
+                        <p className="font-sans text-xs text-pink-200 leading-relaxed mb-2">
+                            {displayProject.description}
+                        </p>
+                        <div className="flex flex-wrap gap-1.5 mb-3">
+                            {displayProject.tech.map((tag) => (
+                                <span
+                                    key={tag}
+                                    className="bg-pink-300/40 text-pink-100 text-[10px] font-sans px-2 py-0.5 rounded-full border border-pink-300/50"
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                        {displayProject.btnLink && (
+                            <a
+                                href={displayProject.btnLink.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 font-sans text-xs font-medium text-white bg-pink-500/80 border border-pink-400/50 px-3 py-1.5 rounded hover:bg-pink-400/80 transition-colors w-fit"
+                            >
+                                {displayProject.btnLink.text}
+                                <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        )}
+                    </div>
+                </div>,
+                document.body,
+            )}
+
             {/* Project buttons */}
-            <ul ref={buttonsRef} className="absolute left-1/2 bottom-16 -translate-x-1/2 w-full flex justify-center gap-2 list-none z-10 flex-wrap">
+            <ul
+                ref={buttonsRef}
+                className="absolute left-1/2 bottom-16 -translate-x-1/2 w-full flex justify-center gap-2 list-none z-20 flex-wrap px-4 lg:px-0"
+            >
                 {projects.map((project, i) => (
                     <li
                         key={i}

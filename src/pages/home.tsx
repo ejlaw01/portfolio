@@ -183,7 +183,7 @@ function Home() {
             </Container>
 
             {/* Section 5: Footer */}
-            <Container classes="snap-end">
+            <Container>
                 <Footer />
             </Container>
             <Checkerboard classes="-mb-14 w-full h-[100px] bg-[length:100px]" />

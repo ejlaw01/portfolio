@@ -1,9 +1,7 @@
 @tailwind utilities;
 
-@media (min-width: 1024px) {
-    html {
-        scroll-snap-type: y proximity;
-    }
+html {
+    scroll-snap-type: y proximity;
 }
 
 @layer utilities {
@@ -29,25 +27,38 @@
 /* Expanding Nav */
 .menu-drawer {
     position: fixed;
-    top: 2rem;
-    left: 2rem;
-    padding: 0.35rem;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.25rem;
     background-color: #F1E4E4;
     border-radius: 4rem;
     display: flex;
     align-items: center;
-    z-index: 100;
+    z-index: 50;
 }
 
 .menu-logo {
-    width: 3.5rem;
-    height: 3rem;
-    padding-left: 0.5rem;
+    width: 2.5rem;
+    height: 2.25rem;
+    padding-left: 0.35rem;
     border-radius: 4rem;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+    .menu-drawer {
+        top: 2rem;
+        left: 2rem;
+        padding: 0.35rem;
+    }
+    .menu-logo {
+        width: 3.5rem;
+        height: 3rem;
+        padding-left: 0.5rem;
+    }
 }
 
 .menu-items {
@@ -58,7 +69,7 @@
 
 .menu-items .menu-item {
     width: max-content;
-    height: 3rem;
+    height: 2.25rem;
     background-color: #FCF9F9;
     border-radius: 4rem;
     display: flex;
@@ -72,20 +83,20 @@
     color: #881337;
     font-weight: 500;
     letter-spacing: -0.01rem;
-    padding: 0 1.25rem;
+    padding: 0 0.85rem;
     user-select: none;
     cursor: pointer;
     background: none;
     border: none;
-    font-size: inherit;
+    font-size: 0.8rem;
     font-family: inherit;
 }
 
 .menu-toggler {
     position: relative;
-    width: 3rem;
-    height: 3rem;
-    padding: 1rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0.7rem;
     background-color: #E0CBCB;
     border-radius: 4rem;
     display: flex;
@@ -95,6 +106,21 @@
     gap: 0.2rem;
     flex-shrink: 0;
     cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+    .menu-items .menu-item {
+        height: 3rem;
+    }
+    .menu-items .menu-item button {
+        padding: 0 1.25rem;
+        font-size: inherit;
+    }
+    .menu-toggler {
+        width: 3rem;
+        height: 3rem;
+        padding: 1rem;
+    }
 }
 
 .menu-toggler span {

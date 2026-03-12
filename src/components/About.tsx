@@ -120,13 +120,15 @@ const About = () => {
                     className="about__content relative z-10 basis-3/5 grow-0 flex flex-col gap-8 py-6 sm:py-12"
                     style={{ opacity: 0, transform: "translateY(40px)" }}
                 >
-                    <h2 className="!text-4xl !leading-snug !font-normal">
-                        <span className="text-background">{parse(intro)}</span>
-                    </h2>
-                    <p className="text-lg max-w-2xl">
-                        <span className="text-background">{parse(body)}</span>
-                    </p>
-                    <h3 className="font-normal"><span className="text-background">{parse(headline)}</span></h3>
+                    <div style={{ transform: "translate(calc(var(--mouse-x) * 10px), calc(var(--mouse-y) * 6px))" }}>
+                        <h2 className="!text-4xl !leading-snug !font-normal">
+                            <span className="text-background">{parse(intro)}</span>
+                        </h2>
+                        <p className="text-lg max-w-2xl mt-8">
+                            <span className="text-background">{parse(body)}</span>
+                        </p>
+                        <h3 className="font-normal mt-8"><span className="text-background">{parse(headline)}</span></h3>
+                    </div>
                 </div>
                 <div className="basis-2/5 relative self-stretch flex flex-col max-h-screen py-6 sm:py-12">
                     <div

@@ -1,6 +1,6 @@
 {
     "contact": {
-        "intro": "Hi, I'm Ethan, founder of Bit Lore.",
+        "intro": "I'm Ethan, founder of Bit Lore.",
         "body": "I'm a Portland-based web developer with 8+&nbsp;years of experience building websites and applications. I've worked with everyone from mom &amp; pop shops to enterprise corporations, and the approach is always the same: understand how you work, then build something that fits.",
         "headline": "Let's build something that <span class='italic'>works</span>.",
         "name": "Ethan Law",
@@ -73,7 +73,7 @@
                 ],
                 "btnLink": {
                     "text": "Go to course demo",
-                    "url": "https://demo.onlineed.com/app/mono/#/scourse/186881"
+                    "url": "https://demo.onlineed.com/"
                 },
                 "media": {
                     "filename": "onlineed_testresults.png",
