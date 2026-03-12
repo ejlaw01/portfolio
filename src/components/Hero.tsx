@@ -153,7 +153,7 @@ function Hero() {
             style={{ position: "relative", height: "100svh", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", "--mouse-x": "0", "--mouse-y": "0" } as React.CSSProperties}
         >
             {/* White strip to cover dark bg when wave shifts from mouse-follow */}
-            <div className="absolute top-0 left-0 w-full h-[30px] bg-white z-[1]" />
+            <div className="absolute top-0 left-0 w-full h-[10px] bg-white z-[1]" />
 
             <svg
                 ref={waveRef}
