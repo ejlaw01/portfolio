@@ -10,6 +10,7 @@ import Checkerboard from "../components/Checkerboard";
 import PixelGrid from "../components/PixelGrid";
 import PageLoader from "../components/PageLoader";
 import preventOrphans from "../utils/preventOrphans";
+import { bottomWavePath } from "../components/CrtDisplay";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -187,6 +188,18 @@ function Home() {
 
                 <div className="relative z-0 snap-start" style={{ marginTop: "-100svh", paddingTop: "100svh" }}>
                     <CrtDisplay />
+                </div>
+
+                {/* Bottom sine wave transition */}
+                <div className="relative z-10 -mb-1">
+                    <svg
+                        viewBox="-10 -10 120 130"
+                        preserveAspectRatio="none"
+                        className="hero-wave hero-wave--bottom"
+                        style={{ top: "auto", bottom: 0, position: "relative" }}
+                    >
+                        <path d={bottomWavePath} fill="white" />
+                    </svg>
                 </div>
             </div>
 

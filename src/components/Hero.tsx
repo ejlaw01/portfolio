@@ -152,6 +152,9 @@ function Hero() {
             className="bg-transparent"
             style={{ position: "relative", height: "100svh", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", "--mouse-x": "0", "--mouse-y": "0" } as React.CSSProperties}
         >
+            {/* White strip to cover dark bg when wave shifts from mouse-follow */}
+            <div className="absolute top-0 left-0 w-full h-[20px] bg-white z-[1]" />
+
             <svg
                 ref={waveRef}
                 viewBox={`${-WAVE_PAD} ${-WAVE_PAD} ${100 + WAVE_PAD * 2} ${WAVE_HEIGHT + WAVE_PAD}`}
@@ -164,7 +167,7 @@ function Hero() {
                 <path d={sinePath} fill="white" />
             </svg>
 
-            <div ref={textContainerRef} className="hero-text-container px-8 md:px-16 max-w-3xl mx-auto w-full" style={{ position: "relative", zIndex: 2, transform: "translate(calc(var(--mouse-x) * 10px), calc(var(--mouse-y) * 6px))" }}>
+            <div ref={textContainerRef} className="hero-text-container pt-16 px-8 md:px-16 max-w-3xl mx-auto w-full" style={{ position: "relative", zIndex: 2, transform: "translate(calc(var(--mouse-x) * 10px), calc(var(--mouse-y) * 6px))" }}>
                 <h2 className="hero-headline text-2xl sm:text-3xl md:text-4xl leading-snug md:leading-snug font-serif text-white">
                     {renderChars(subheadline)}
                 </h2>

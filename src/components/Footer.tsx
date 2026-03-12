@@ -44,7 +44,7 @@ const Footer = () => {
                     <span>C.V.</span>
                 </a>
             </div>
-            <div className="mt-12 pt-8 border-t border-pink-200 text-sm text-pink-600">
+            <div className="mt-12 pt-8 border-t border-pink-200 text-sm text-pink-600 lg:w-1/2">
                 <p>&copy; {new Date().getFullYear()} Bit Lore. Portland, OR.</p>
             </div>
         </footer>
