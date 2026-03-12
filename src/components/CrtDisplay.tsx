@@ -37,6 +37,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
 
     const [isMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 1024);
     const [activeProject, setActiveProject] = useState<number | null>(null);
+    const [mobilePanelClosing, setMobilePanelClosing] = useState(false);
     const [pinned, setPinned] = useState(false);
     const pinnedRef = useRef(false);
     pinnedRef.current = pinned;
@@ -54,12 +55,16 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
     const mobilePanelTimelineRef = useRef<gsap.core.Timeline | null>(null);
     const prevMobileProjectRef = useRef<number | null>(null);
 
-    // Hide mobile panel on scroll
+    // Hide mobile panel on scroll (with animated close)
     useEffect(() => {
         if (activeProject === null) return;
         const handleScroll = () => {
+            setMobilePanelClosing(true);
             setPinned(false);
-            setActiveProject(null);
+            setTimeout(() => {
+                setActiveProject(null);
+                setMobilePanelClosing(false);
+            }, 300);
         };
         window.addEventListener("scroll", handleScroll, { passive: true, once: true });
         return () => window.removeEventListener("scroll", handleScroll);
@@ -491,7 +496,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             {createPortal(
                 <div
                     ref={mobilePanelRef}
-                    className={`lg:hidden fixed top-0 left-0 right-0 z-[200] bg-[#121212]/85 backdrop-blur-sm border-b border-pink-400/30 px-5 py-4 transition-all duration-300 ease-out ${activeProject !== null ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}`}
+                    className={`lg:hidden fixed top-0 left-0 right-0 z-[200] bg-[#121212]/85 backdrop-blur-sm border-b border-pink-400/30 px-5 py-4 transition-all duration-300 ease-out ${activeProject !== null && !mobilePanelClosing ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}`}
                 >
                     <div className="mobile-panel-content">
                         <span className="font-sans text-xs uppercase tracking-widest text-pink-300 mb-1 block">
