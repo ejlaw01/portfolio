@@ -156,15 +156,8 @@ function Hero() {
                 ref={waveRef}
                 viewBox={`${-WAVE_PAD} ${-WAVE_PAD} ${100 + WAVE_PAD * 2} ${WAVE_HEIGHT + WAVE_PAD}`}
                 preserveAspectRatio="none"
+                className="hero-wave"
                 style={{
-                    position: "absolute",
-                    top: "-20px",
-                    left: "-20px",
-                    width: "calc(100% + 40px)",
-                    height: `${WAVE_HEIGHT + 40}px`,
-                    zIndex: 1,
-                    overflow: "visible",
-                    maxWidth: "none",
                     transform: "translate(calc(var(--mouse-x) * 5px), calc(var(--mouse-y) * 3px))",
                 }}
             >
