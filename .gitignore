@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Original uncompressed models
+public/models/*_original.glb
+
+# Old work images
+public/img/work/old

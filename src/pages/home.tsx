@@ -50,7 +50,7 @@ function Home() {
         }
         // space + L, O, R, E (indices 3, 4, 5, 6, 7)
         for (let i = 3; i < allChars.length; i++) {
-            gsap.delayedCall(0.55 + (i - 3) * 0.06, () => {
+            gsap.delayedCall(0.42 + (i - 3) * 0.06, () => {
                 (allChars[i] as HTMLElement).style.visibility = "visible";
             });
         }

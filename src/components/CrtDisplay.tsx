@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import gsap from "gsap";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { vertexShader, fragmentShader } from "../shaders/crtShaders";
 import data from "../../public/data.json";
 
@@ -21,21 +22,11 @@ interface PanelProject {
     btnLink: { text: string; url: string } | null;
 }
 
-const SHORT_TITLES: Record<string, string> = {
-    "A-dec Certified Reservations": "A-dec Certified",
-    "Caveon Observatory": "Caveon",
-    OnlineEd: "OnlineEd",
-    "gMC Snowflake Simulator": "Snowflake",
-    "A-dec Color Picker": "A-dec Color",
-    "Bit Lore v1": "Bit Lore",
-    "Providence Health Plan": "Providence",
-};
-
 function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default.png" }: CrtDisplayProps) {
     const projects: PanelProject[] = data.work.projects
         .filter((p) => p.media?.filename)
         .map((p) => ({
-            name: SHORT_TITLES[p.title] || p.title,
+            name: p.shortTitle || p.title,
             image: `/img/work/${p.media!.filename}`,
             title: p.title,
             type: p.type,
@@ -190,7 +181,9 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         const defaultTexture = loadTexture(defaultImage);
         displayMaterial.uniforms.map.value = defaultTexture;
 
-        new GLTFLoader().load("/models/apple_ii.glb", (gltf) => {
+        const loader = new GLTFLoader();
+        loader.setMeshoptDecoder(MeshoptDecoder);
+        loader.load("/models/apple_ii_opt.glb", (gltf) => {
             const model = gltf.scene;
             let screenCenter: THREE.Vector3 | null = null;
 
@@ -449,7 +442,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                         href={displayProject.btnLink.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="panel-cta pointer-events-auto inline-flex items-center gap-2 font-sans text-sm font-medium text-white bg-pink-500/80 border border-pink-400/50 px-4 py-2 rounded hover:bg-pink-400/80 transition-colors w-fit"
+                        className="panel-cta pointer-events-auto inline-flex items-center gap-2 font-sans text-sm font-medium text-white bg-pink-500/80 border border-pink-400/50 px-4 py-2 rounded hover:bg-pink-400/80 hover:no-underline transition-colors w-fit"
                     >
                         {displayProject.btnLink.text}
                         <span aria-hidden="true">&rarr;</span>

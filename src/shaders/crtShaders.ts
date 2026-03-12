@@ -18,6 +18,8 @@ export const fragmentShader = `
   }
 
   vec2 coverUV(vec2 uv) {
+    float scale = 1.4;
+    uv = (uv - 0.5) * scale + 0.5;
     if (planeAspect > imageAspect) {
       float s = imageAspect / planeAspect;
       uv.y = uv.y * s + (1.0 - s) * 0.5;
