@@ -18,7 +18,7 @@
     top: 0;
     left: -20px;
     width: calc(100% + 40px);
-    height: 80px;
+    height: 100px;
     z-index: 1;
     overflow: visible;
     max-width: none;
