@@ -35,6 +35,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             btnLink: p.btnLink || null,
         }));
 
+    const [isMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 1024);
     const [activeProject, setActiveProject] = useState<number | null>(null);
     const [pinned, setPinned] = useState(false);
     const pinnedRef = useRef(false);
@@ -78,8 +79,9 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         }, 300);
     }, [cancelClose]);
 
-    // Three.js setup effect
+    // Three.js setup effect (desktop only)
     useEffect(() => {
+        if (isMobile) return;
         const container = containerRef.current;
         if (!container) return;
 
@@ -303,7 +305,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             setDisplayImageRef.current = null;
             cancelClose();
         };
-    }, [defaultImage, cancelClose]);
+    }, [defaultImage, cancelClose, isMobile]);
 
     // Texture swap effect — watches activeProject
     useEffect(() => {
@@ -409,6 +411,17 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 setActiveProject(null);
             }}
         >
+            {/* Mobile static image fallback (no Three.js) */}
+            {isMobile && (
+                <div className="lg:hidden absolute inset-0 flex items-center justify-center p-8 pt-16">
+                    <img
+                        src={activeProject !== null ? projects[activeProject].image : defaultImage}
+                        alt={activeProject !== null ? projects[activeProject].title : "Projects"}
+                        className="max-w-[85%] max-h-[50%] object-contain rounded-lg shadow-2xl"
+                    />
+                </div>
+            )}
+
             {/* Slide-in panel */}
             <div
                 ref={panelRef}
