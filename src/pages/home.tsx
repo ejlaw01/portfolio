@@ -40,6 +40,11 @@ function Home() {
         const hasFilter = filterEl && morphEl;
         const allChars = [...Array.from(letters), logo];
 
+        // Remove broken SVG filter on mobile before anything renders
+        if (!hasFilter) {
+            h1.style.filter = "none";
+        }
+
         // Start hidden, type in: BIT (pause) LORE using visibility
         allChars.forEach((el) => { (el as HTMLElement).style.visibility = "hidden"; });
 

@@ -44,6 +44,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
     const containerRef = useRef<HTMLDivElement>(null);
     const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
     const setDisplayImageRef = useRef<((src: string) => void) | null>(null);
+    const triggerGlitchRef = useRef<(() => void) | null>(null);
     const panelRef = useRef<HTMLDivElement>(null);
     const buttonsRef = useRef<HTMLUListElement>(null);
     const panelTimelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -285,6 +286,18 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
 
         // Store setDisplayImage in ref so React effects can call it
         setDisplayImageRef.current = setDisplayImage;
+        triggerGlitchRef.current = () => {
+            if (glitchAnimation) glitchAnimation.kill();
+            glitchState.intensity = 1.0;
+            glitchAnimation = gsap.to(glitchState, {
+                intensity: 0,
+                duration: 0.75,
+                ease: "power3.out",
+                onUpdate() {
+                    displayMaterial.uniforms.glitchIntensity.value = glitchState.intensity;
+                },
+            });
+        };
 
         container.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("resize", handleResize);
@@ -403,9 +416,10 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             id="work-section"
             className={`relative w-full h-[100svh] overflow-hidden ${className}`}
             onClick={(e) => {
-                if (activeProject === null) return;
                 const target = e.target as Node;
                 if (panelRef.current?.contains(target) || buttonsRef.current?.contains(target)) return;
+                triggerGlitchRef.current?.();
+                if (activeProject === null) return;
                 setPinned(false);
                 cancelClose();
                 setActiveProject(null);
