@@ -129,14 +129,14 @@ function Hero() {
                 <path d={sinePath} fill="white" />
             </svg>
 
-            <div ref={textContainerRef} className="hero-text-container pt-16 px-8 md:px-16 max-w-3xl mx-auto w-full" style={{ position: "relative", zIndex: 2, transform: "translate(calc(var(--mouse-x) * 10px), calc(var(--mouse-y) * 6px))" }}>
-                <h2 className="hero-headline text-2xl sm:text-3xl md:text-4xl leading-snug md:leading-snug font-serif text-white">
+            <div ref={textContainerRef} className="hero-text-container pt-16 px-8 md:px-16 max-w-3xl 3xl:max-w-6xl mx-auto w-full" style={{ position: "relative", zIndex: 2, transform: "translate(calc(var(--mouse-x) * 10px), calc(var(--mouse-y) * 6px))" }}>
+                <h2 className="hero-headline text-2xl sm:text-3xl md:text-4xl 3xl:text-6xl leading-snug md:leading-snug font-serif text-white">
                     {renderWords(subheadline)}
                 </h2>
-                <p className="hero-body text-base sm:text-lg leading-relaxed mt-8 max-w-xl font-sans text-white">
+                <p className="hero-body text-base sm:text-lg 3xl:text-3xl leading-relaxed mt-8 3xl:mt-12 max-w-xl 3xl:max-w-4xl font-sans text-white">
                     {renderWords(bodyText)}
                 </p>
-                <p className="hero-tagline text-xl sm:text-2xl md:text-3xl mt-10 font-serif text-white">
+                <p className="hero-tagline text-xl sm:text-2xl md:text-3xl 3xl:text-5xl mt-10 3xl:mt-14 font-serif text-white">
                     {renderWords(tagline)}
                 </p>
             </div>

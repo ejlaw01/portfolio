@@ -565,7 +565,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 {projects.map((project, i) => (
                     <li
                         key={i}
-                        className={`uppercase font-sans text-xs xl:text-sm font-medium px-4 py-2 xl:px-5 xl:py-2.5 border border-pink-300 shadow-[4px_4px_0px_-1px_theme(colors.pink.400)] cursor-pointer transition-colors ${
+                        className={`uppercase font-sans text-xs xl:text-sm 3xl:text-lg font-medium px-4 py-2 xl:px-5 xl:py-2.5 3xl:px-8 3xl:py-3.5 border border-pink-300 shadow-[4px_4px_0px_-1px_theme(colors.pink.400)] cursor-pointer transition-colors ${
                             pinned && activeProject === i
                                 ? "text-white bg-pink-800"
                                 : "text-pink-800 bg-pink-50 hover:text-pink-900 hover:bg-pink-200"
