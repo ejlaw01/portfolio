@@ -33,7 +33,6 @@ function Hero() {
     const { subheadline, bodyText, tagline }: PageData = data.hero;
     const sectionRef = useRef<HTMLElement>(null);
     const waveRef = useRef<SVGSVGElement>(null);
-    const cursorRef = useRef<HTMLSpanElement>(null);
     const textContainerRef = useRef<HTMLDivElement>(null);
 
     // Mouse-follow effect (desktop only)
@@ -82,67 +81,30 @@ function Hero() {
     useGSAP(() => {
         if (!sectionRef.current) return;
 
-        const headlineChars = sectionRef.current.querySelectorAll(".hero-headline .hero-char");
-        const bodyChars = sectionRef.current.querySelectorAll(".hero-body .hero-char");
-        const taglineChars = sectionRef.current.querySelectorAll(".hero-tagline .hero-char");
-        const cursor = cursorRef.current;
+        const words = sectionRef.current.querySelectorAll<HTMLElement>(".hero-word");
 
-        gsap.set([headlineChars, bodyChars, taglineChars], { visibility: "hidden" });
-        if (cursor) gsap.set(cursor, { visibility: "hidden" });
-
-        const container = textContainerRef.current;
-        const positionCursor = (char: Element) => {
-            if (!cursor || !container) return;
-            const charRect = char.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
-            cursor.style.left = `${charRect.right - containerRect.left}px`;
-            cursor.style.top = `${charRect.top - containerRect.top}px`;
-            cursor.style.fontSize = window.getComputedStyle(char).fontSize;
-            cursor.style.lineHeight = window.getComputedStyle(char).lineHeight;
-        };
+        gsap.set(words, { opacity: 0, y: 12 });
 
         ScrollTrigger.create({
             trigger: sectionRef.current,
             start: "top 75%",
             once: true,
             onEnter: () => {
-                const tl = gsap.timeline();
-
-                const typeSection = (chars: NodeListOf<Element>, speed: number, isFirst: boolean) => {
-                    tl.call(() => {
-                        if (cursor && chars[0] && container) {
-                            const charRect = chars[0].getBoundingClientRect();
-                            const containerRect = container.getBoundingClientRect();
-                            cursor.style.left = `${charRect.left - containerRect.left}px`;
-                            cursor.style.top = `${charRect.top - containerRect.top}px`;
-                            cursor.style.fontSize = window.getComputedStyle(chars[0]).fontSize;
-                            if (isFirst) cursor.style.visibility = "visible";
-                        }
-                    }, [], isFirst ? undefined : "+=0.15");
-
-                    chars.forEach((char) => {
-                        tl.call(() => {
-                            (char as HTMLElement).style.visibility = "visible";
-                            positionCursor(char);
-                        }, [], `+=${speed}`);
-                    });
-                };
-
-                typeSection(headlineChars, 0.015, true);
-                typeSection(bodyChars, 0.01, false);
-                typeSection(taglineChars, 0.015, false);
-
-                if (cursor) {
-                    tl.to(cursor, { opacity: 0, duration: 0.3 }, "+=1");
-                }
+                gsap.to(words, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    stagger: 0.03,
+                });
             },
         });
     });
 
-    const renderChars = (text: string | undefined) =>
-        text?.split("").map((char, i) => (
-            <span key={i} className="hero-char" style={{ visibility: "hidden", backgroundColor: "#121212", padding: "4px 0" }}>
-                {char}
+    const renderWords = (text: string | undefined) =>
+        text?.split(" ").map((word, i) => (
+            <span key={i} className="hero-word inline-block">
+                {word}&nbsp;
             </span>
         ));
 
@@ -153,7 +115,7 @@ function Hero() {
             style={{ position: "relative", height: "100svh", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", "--mouse-x": "0", "--mouse-y": "0" } as React.CSSProperties}
         >
             {/* White strip to cover dark bg when wave shifts from mouse-follow */}
-            <div className="absolute top-0 left-0 w-full h-[10px] bg-white z-[1]" />
+            <div className="absolute -top-px left-0 w-full h-[11px] bg-white z-[1]" />
 
             <svg
                 ref={waveRef}
@@ -169,15 +131,14 @@ function Hero() {
 
             <div ref={textContainerRef} className="hero-text-container pt-16 px-8 md:px-16 max-w-3xl mx-auto w-full" style={{ position: "relative", zIndex: 2, transform: "translate(calc(var(--mouse-x) * 10px), calc(var(--mouse-y) * 6px))" }}>
                 <h2 className="hero-headline text-2xl sm:text-3xl md:text-4xl leading-snug md:leading-snug font-serif text-white">
-                    {renderChars(subheadline)}
+                    {renderWords(subheadline)}
                 </h2>
                 <p className="hero-body text-base sm:text-lg leading-relaxed mt-8 max-w-xl font-sans text-white">
-                    {renderChars(bodyText)}
+                    {renderWords(bodyText)}
                 </p>
                 <p className="hero-tagline text-xl sm:text-2xl md:text-3xl mt-10 font-serif text-white">
-                    {renderChars(tagline)}
+                    {renderWords(tagline)}
                 </p>
-                <span ref={cursorRef} className="hero-cursor text-white" style={{ visibility: "hidden", position: "absolute", pointerEvents: "none", padding: "4px 0" }}>|</span>
             </div>
         </section>
     );
