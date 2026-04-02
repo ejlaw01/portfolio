@@ -11,6 +11,7 @@ import PixelGrid from "../components/PixelGrid";
 import PageLoader from "../components/PageLoader";
 import preventOrphans from "../utils/preventOrphans";
 import { bottomWavePath } from "../components/CrtDisplay";
+import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -25,6 +26,22 @@ function Home() {
     useEffect(() => {
         preventOrphans();
     }, []);
+
+    // Lenis smooth scroll + ScrollTrigger integration
+    useEffect(() => {
+        const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+        return () => {
+            lenis.destroy();
+        };
+    }, []);
+
+    // WebKit can't handle SVG filter primitive subregions — skip pixelation
+    const isWebKit = "webkitConvertPointFromNodeToPage" in window;
 
     // Entrance animation: reveal letters, then pixelated → sharp
     useGSAP(() => {
@@ -47,8 +64,8 @@ function Home() {
             return;
         }
 
-        const hasFilter = filterEl && morphEl;
-        const allChars = [...Array.from(letters), logo];
+        const hasFilter = filterEl && morphEl && !isWebKit;
+        const allChars = Array.from(letters);
 
         // Start hidden, type in: BIT (pause) LORE using visibility
         allChars.forEach((el) => { (el as HTMLElement).style.visibility = "hidden"; });
@@ -67,7 +84,7 @@ function Home() {
         }
 
         if (hasFilter) {
-            // Phase 2: De-pixelate (slow start, accelerates)
+            // De-pixelate (slow start, accelerates)
             const proxy = { size: 24 };
 
             gsap.to(proxy, {
@@ -116,34 +133,36 @@ function Home() {
             }
         );
 
-        // Re-pixelate on scroll
-        const scrollProxy = { size: 1 };
-        const scrollFilterEl = document.getElementById("pixelate-composite");
-        const scrollMorphEl = document.getElementById("pixelate-morph");
+        // Re-pixelate on scroll (skip on WebKit — filter doesn't work)
+        if (!isWebKit) {
+            const scrollProxy = { size: 1 };
+            const scrollFilterEl = document.getElementById("pixelate-composite");
+            const scrollMorphEl = document.getElementById("pixelate-morph");
 
-        if (scrollFilterEl && scrollMorphEl) {
-            gsap.to(scrollProxy, {
-                size: 30,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: brandingRef.current,
-                    start: "center top",
-                    end: "bottom top",
-                    scrub: 0.5,
-                },
-                onUpdate: () => {
-                    const s = Math.round(scrollProxy.size);
-                    scrollFilterEl.setAttribute("width", String(s));
-                    scrollFilterEl.setAttribute("height", String(s));
-                    scrollMorphEl.setAttribute("radius", String(Math.floor(s / 2)));
+            if (scrollFilterEl && scrollMorphEl) {
+                gsap.to(scrollProxy, {
+                    size: 30,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: brandingRef.current,
+                        start: "center top",
+                        end: "bottom top",
+                        scrub: 0.5,
+                    },
+                    onUpdate: () => {
+                        const s = Math.round(scrollProxy.size);
+                        scrollFilterEl.setAttribute("width", String(s));
+                        scrollFilterEl.setAttribute("height", String(s));
+                        scrollMorphEl.setAttribute("radius", String(Math.floor(s / 2)));
 
-                    if (s > 1) {
-                        brandingRef.current!.style.filter = "url(#pixelate)";
-                    } else {
-                        brandingRef.current!.style.filter = "none";
-                    }
-                },
-            });
+                        if (s > 1) {
+                            brandingRef.current!.style.filter = "url(#pixelate)";
+                        } else {
+                            brandingRef.current!.style.filter = "none";
+                        }
+                    },
+                });
+            }
         }
     }, { dependencies: [entranceDone] });
 
@@ -155,17 +174,17 @@ function Home() {
             {/* SVG pixelate filter */}
             <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style={{ position: "absolute" }}>
                 <filter id="pixelate" x="0" y="0">
-                    <feFlood x="0" y="0" height="1" width="1" />
-                    <feComposite id="pixelate-composite" width="20" height="20" />
-                    <feTile result="tileResult" />
-                    <feComposite in="SourceGraphic" in2="tileResult" operator="in" />
-                    <feMorphology id="pixelate-morph" operator="dilate" radius="10" />
+                    <feFlood x="0" y="0" height="1" width="1" result="flood" />
+                    <feComposite id="pixelate-composite" in="flood" in2="flood" width="20" height="20" result="comp" />
+                    <feTile in="comp" result="tileResult" />
+                    <feComposite in="SourceGraphic" in2="tileResult" operator="in" result="masked" />
+                    <feMorphology id="pixelate-morph" in="masked" operator="dilate" radius="10" />
                 </filter>
             </svg>
 
             {/* Section 1: Full-viewport brand moment */}
-            <section className="brand-section flex items-center justify-center snap-start" style={{ height: "80svh" }}>
-                <h1 ref={brandingRef} className="font-sans text-[14vw] md:text-[12vw] leading-none flex justify-between items-center w-full px-8 md:px-16 cursor-default select-none" style={{ fontWeight: 800, filter: "url(#pixelate)" }}>
+            <section className="brand-section flex items-center justify-center" style={{ height: "80svh" }}>
+                <h1 ref={brandingRef} className="font-sans text-[14vw] md:text-[12vw] leading-none flex justify-between items-center w-full px-8 md:px-16 cursor-default select-none" style={{ fontWeight: 800, filter: isWebKit ? "none" : "url(#pixelate)" }}>
                     {"BIT LORE".split("").map((char, i) => (
                         char === "O" ? (
                             <span key={i} className="brand-letter relative" aria-label="O">
@@ -185,11 +204,11 @@ function Home() {
             <div className="relative bg-[#121212]">
                 <PixelGrid />
 
-                <div className="hero-section relative z-10 snap-start">
+                <div className="hero-section relative z-10">
                     <Hero />
                 </div>
 
-                <div className="relative z-0 snap-start" style={{ marginTop: "-100svh", paddingTop: "100svh" }}>
+                <div className="relative z-0" style={{ marginTop: "-100svh", paddingTop: "100svh" }}>
                     <CrtDisplay />
                 </div>
 
