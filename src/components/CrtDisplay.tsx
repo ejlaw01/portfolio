@@ -99,7 +99,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         cancelClose();
         closeTimeoutRef.current = setTimeout(() => {
             setActiveProject(null);
-        }, 300);
+        }, 600);
     }, [cancelClose]);
 
     // Three.js setup effect (desktop only)
@@ -565,20 +565,30 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 {projects.map((project, i) => (
                     <li
                         key={i}
-                        className={`uppercase font-sans text-xs font-medium px-4 py-2 border border-pink-300 shadow-[4px_4px_0px_-1px_theme(colors.pink.400)] cursor-pointer transition-colors ${
+                        className={`uppercase font-sans text-xs xl:text-sm font-medium px-4 py-2 xl:px-5 xl:py-2.5 border border-pink-300 shadow-[4px_4px_0px_-1px_theme(colors.pink.400)] cursor-pointer transition-colors ${
                             pinned && activeProject === i
                                 ? "text-white bg-pink-800"
                                 : "text-pink-800 bg-pink-50 hover:text-pink-900 hover:bg-pink-200"
                         }`}
                         onMouseEnter={() => {
-                            cancelClose();
-                            setActiveProject(i);
+                            if (!isMobile) {
+                                cancelClose();
+                                if (!pinnedRef.current) {
+                                    setActiveProject(i);
+                                }
+                            }
                         }}
-                        onMouseLeave={scheduleClose}
+                        onMouseLeave={() => {
+                            if (!isMobile) scheduleClose();
+                        }}
                         onClick={() => {
                             if (pinned && activeProject === i) {
                                 setPinned(false);
-                                scheduleClose();
+                                if (isMobile) {
+                                    setActiveProject(null);
+                                } else {
+                                    scheduleClose();
+                                }
                             } else {
                                 setPinned(true);
                                 setActiveProject(i);
