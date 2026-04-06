@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import Container from "../components/Container";
 import Hero from "../components/Hero";
 import Nav from "../components/Nav";
-// import Work from "../components/Work";
 import About from "../components/About";
 import CrtDisplay from "../components/CrtDisplay";
 import Footer from "../components/Footer";
