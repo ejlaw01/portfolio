@@ -462,7 +462,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             {/* Slide-in panel */}
             <div
                 ref={panelRef}
-                className="hidden lg:flex absolute left-0 top-0 h-full w-[30%] z-10 flex-col justify-center px-8 bg-gradient-to-r from-[#121212] via-[#121212]/80 to-transparent"
+                className="hidden lg:flex absolute left-0 top-0 h-full w-[30%] z-10 flex-col justify-center px-8 bg-gradient-to-r from-dark via-dark/80 to-transparent"
                 style={{ visibility: "hidden", opacity: 0 }}
                 onMouseEnter={cancelClose}
                 onMouseLeave={scheduleClose}
@@ -504,7 +504,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             {createPortal(
                 <div
                     ref={mobilePanelRef}
-                    className={`lg:hidden fixed top-0 left-0 right-0 z-[200] bg-[#121212]/85 backdrop-blur-sm border-b border-pink-400/30 px-5 py-4 transition-all duration-300 ease-out ${activeProject !== null && !mobilePanelClosing ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}`}
+                    className={`lg:hidden fixed top-0 left-0 right-0 z-[200] bg-dark/85 backdrop-blur-sm border-b border-pink-400/30 px-5 py-4 transition-all duration-300 ease-out ${activeProject !== null && !mobilePanelClosing ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}`}
                 >
                     <div className="mobile-panel-content">
                         <span className="font-sans text-xs uppercase tracking-widest text-pink-300 mb-1 block">

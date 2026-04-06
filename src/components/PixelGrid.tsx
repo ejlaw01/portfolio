@@ -8,8 +8,8 @@ const CELL_SIZE = 90;
 const GAP = 1;
 const STEP = CELL_SIZE + GAP;
 
-const BASE_COLOR = "#121212";
-const LINE_COLOR = "rgb(213, 174, 174)";
+const BASE_COLOR = "#121212"; // colors.dark
+const LINE_COLOR = "rgb(213, 174, 174)"; // ~pink-300
 
 const PARALLAX_FACTOR = 0.075;
 const BREATH_AMPLITUDE = 2;

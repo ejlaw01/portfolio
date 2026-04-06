@@ -168,7 +168,7 @@ function Home() {
             <Nav />
 
             {/* SVG pixelate filter */}
-            <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style={{ position: "absolute" }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" className="absolute">
                 <filter id="pixelate" x="0" y="0">
                     <feFlood x="0" y="0" height="1" width="1" result="flood" />
                     <feComposite id="pixelate-composite" in="flood" in2="flood" width="20" height="20" result="comp" />
@@ -179,7 +179,7 @@ function Home() {
             </svg>
 
             {/* Section 1: Full-viewport brand moment */}
-            <section className="brand-section flex items-center justify-center" style={{ height: "80svh" }}>
+            <section className="brand-section flex items-center justify-center h-[80svh]">
                 <h1 ref={brandingRef} className="font-sans text-[14vw] md:text-[12vw] leading-none flex justify-between items-center w-full px-8 md:px-16 cursor-default select-none" style={{ fontWeight: 800, filter: isWebKit ? "none" : "url(#pixelate)" }}>
                     {"BIT LORE".split("").map((char, i) => (
                         char === "O" ? (
@@ -197,14 +197,14 @@ function Home() {
             </section>
 
             {/* Sections 2 & 3: shared PixelGrid behind Hero + CrtDisplay */}
-            <div className="relative bg-[#121212]">
+            <div className="relative bg-dark">
                 <PixelGrid />
 
                 <div className="hero-section relative z-10">
                     <Hero />
                 </div>
 
-                <div className="relative z-0" style={{ marginTop: "-100svh", paddingTop: "100svh" }}>
+                <div className="relative z-0 mt-[-100svh] pt-[100svh]">
                     <CrtDisplay />
                 </div>
 
@@ -213,8 +213,7 @@ function Home() {
                     <svg
                         viewBox="-10 -10 120 130"
                         preserveAspectRatio="none"
-                        className="hero-wave hero-wave--bottom"
-                        style={{ top: "auto", bottom: 0, position: "relative" }}
+                        className="hero-wave hero-wave--bottom relative top-auto bottom-0"
                     >
                         <path d={bottomWavePath} fill="white" />
                     </svg>
