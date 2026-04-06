@@ -1,9 +1,9 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import data from "../../public/data.json";
-gsap.registerPlugin(ScrollTrigger);
+import { useMouseFollow } from "../hooks/useMouseFollow";
+import { topWavePath, WAVE_HEIGHT, WAVE_PAD } from "../utils/wavePaths";
 
 type PageData = {
     subheadline?: string;
@@ -11,72 +11,13 @@ type PageData = {
     tagline?: string;
 };
 
-const WAVE_HEIGHT = 120;
-
-// Sine-wave: white fill above the curve, transparent below (grid shows through)
-const WAVE_PAD = 10; // extra viewBox units on each side
-
-function generateSinePath() {
-    const points: string[] = [];
-    const steps = 200;
-    for (let i = 0; i <= steps; i++) {
-        const x = -WAVE_PAD + (i / steps) * (100 + WAVE_PAD * 2);
-        const y = WAVE_HEIGHT / 2 + Math.sin((i / steps) * Math.PI * 3) * (WAVE_HEIGHT * 0.35);
-        points.push(`${i === 0 ? "M" : "L"} ${x} ${y}`);
-    }
-    return `${points.join(" ")} L ${100 + WAVE_PAD} -${WAVE_PAD} L -${WAVE_PAD} -${WAVE_PAD} Z`;
-}
-
-const sinePath = generateSinePath();
-
 function Hero() {
     const { subheadline, bodyText, tagline }: PageData = data.hero;
     const sectionRef = useRef<HTMLElement>(null);
     const waveRef = useRef<SVGSVGElement>(null);
     const textContainerRef = useRef<HTMLDivElement>(null);
 
-    // Mouse-follow effect (desktop only)
-    useEffect(() => {
-        const section = sectionRef.current;
-        if (!section) return;
-
-        const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-        if (!isDesktop) return;
-
-        let mouseX = 0;
-        let mouseY = 0;
-        let currentX = 0;
-        let currentY = 0;
-        let rafId: number;
-
-        const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
-
-        const animate = () => {
-            currentX = lerp(currentX, mouseX, 0.06);
-            currentY = lerp(currentY, mouseY, 0.06);
-
-            section.style.setProperty("--mouse-x", currentX.toString());
-            section.style.setProperty("--mouse-y", currentY.toString());
-
-            rafId = requestAnimationFrame(animate);
-        };
-
-        const handleMouseMove = (e: MouseEvent) => {
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-
-            mouseX = (e.clientX - centerX) / centerX;
-            mouseY = (e.clientY - centerY) / centerY;
-        };
-
-        rafId = requestAnimationFrame(animate);
-        window.addEventListener("mousemove", handleMouseMove);
-
-        return () => {
-            window.removeEventListener("mousemove", handleMouseMove);
-            cancelAnimationFrame(rafId);
-        };
-    }, []);
+    useMouseFollow(sectionRef, 0.06);
 
     useGSAP(() => {
         if (!sectionRef.current) return;
@@ -126,7 +67,7 @@ function Hero() {
                     transform: "translate(calc(var(--mouse-x) * 5px), calc(var(--mouse-y) * 3px))",
                 }}
             >
-                <path d={sinePath} fill="white" />
+                <path d={topWavePath} fill="white" />
             </svg>
 
             <div ref={textContainerRef} className="hero-text-container pt-16 px-8 md:px-16 max-w-3xl 3xl:max-w-6xl mx-auto w-full" style={{ position: "relative", zIndex: 2, transform: "translate(calc(var(--mouse-x) * 10px), calc(var(--mouse-y) * 6px))" }}>

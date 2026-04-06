@@ -1,12 +1,10 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import data from "../../public/data.json";
 import parse from "html-react-parser";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Checkerboard from "./Checkerboard";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useMouseFollow } from "../hooks/useMouseFollow";
 
 type pageData = {
     intro: string;
@@ -19,48 +17,7 @@ const About = () => {
     const { avatarImg } = data.hero;
     const sectionRef = useRef<HTMLElement>(null);
 
-    // Mouse-follow effect (desktop only)
-    useEffect(() => {
-        const section = sectionRef.current;
-        if (!section) return;
-
-        const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-        if (!isDesktop) return;
-
-        let mouseX = 0;
-        let mouseY = 0;
-        let currentX = 0;
-        let currentY = 0;
-        let rafId: number;
-
-        const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
-
-        const animate = () => {
-            currentX = lerp(currentX, mouseX, 0.08);
-            currentY = lerp(currentY, mouseY, 0.08);
-
-            section.style.setProperty("--mouse-x", currentX.toString());
-            section.style.setProperty("--mouse-y", currentY.toString());
-
-            rafId = requestAnimationFrame(animate);
-        };
-
-        const handleMouseMove = (e: MouseEvent) => {
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-
-            mouseX = (e.clientX - centerX) / centerX;
-            mouseY = (e.clientY - centerY) / centerY;
-        };
-
-        rafId = requestAnimationFrame(animate);
-        window.addEventListener("mousemove", handleMouseMove);
-
-        return () => {
-            window.removeEventListener("mousemove", handleMouseMove);
-            cancelAnimationFrame(rafId);
-        };
-    }, []);
+    useMouseFollow(sectionRef, 0.08);
 
     // Staggered entrance animation on scroll
     useGSAP(() => {

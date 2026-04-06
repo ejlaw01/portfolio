@@ -9,13 +9,10 @@ import Checkerboard from "../components/Checkerboard";
 import PixelGrid from "../components/PixelGrid";
 import PageLoader from "../components/PageLoader";
 import preventOrphans from "../utils/preventOrphans";
-import { bottomWavePath } from "../components/CrtDisplay";
+import { bottomWavePath } from "../utils/wavePaths";
 import Lenis from "lenis";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(ScrollTrigger);
 
 function Home() {
     const [entranceDone, setEntranceDone] = useState(false);

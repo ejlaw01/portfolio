@@ -5,7 +5,8 @@
       "Bash(which gltf-transform:*)",
       "Bash(npx --yes @gltf-transform/cli optimize /Users/law/Sites/portfolio/public/models/apple_ii.glb /Users/law/Sites/portfolio/public/models/apple_ii_opt.glb --compress meshopt --texture-compress webp 2>&1)",
       "Bash(npx @gltf-transform/cli optimize /Users/law/Sites/portfolio/public/models/monitor.glb /Users/law/Sites/portfolio/public/models/monitor_opt.glb --compress meshopt --texture-compress webp 2>&1)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
