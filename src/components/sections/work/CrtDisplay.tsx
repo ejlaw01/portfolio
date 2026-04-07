@@ -4,9 +4,9 @@ import gsap from "gsap";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
-import { vertexShader, fragmentShader } from "../shaders/crtShaders";
-import data from "../../public/data.json";
-import type { ProjectLink } from "../types/data";
+import { vertexShader, fragmentShader } from "@/shaders/crtShaders";
+import data from "@/data/data.json";
+import type { ProjectLink } from "@/types/data";
 
 interface CrtDisplayProps {
     className?: string;

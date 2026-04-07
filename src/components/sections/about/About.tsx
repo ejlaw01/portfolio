@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import data from "../../public/data.json";
+import data from "@/data/data.json";
 import parse from "html-react-parser";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import Checkerboard from "./Checkerboard";
-import { useMouseFollow } from "../hooks/useMouseFollow";
-import type { ContactData } from "../types/data";
+import Checkerboard from "@/components/ui/Checkerboard";
+import { useMouseFollow } from "@/hooks/useMouseFollow";
+import type { ContactData } from "@/types/data";
 
 const About = () => {
     const { intro, body, headline }: ContactData = data.contact;

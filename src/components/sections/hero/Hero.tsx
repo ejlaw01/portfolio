@@ -1,10 +1,10 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import data from "../../public/data.json";
-import { useMouseFollow } from "../hooks/useMouseFollow";
-import { topWavePath, WAVE_HEIGHT, WAVE_PAD } from "../utils/wavePaths";
-import type { HeroData } from "../types/data";
+import data from "@/data/data.json";
+import { useMouseFollow } from "@/hooks/useMouseFollow";
+import { topWavePath, WAVE_HEIGHT, WAVE_PAD } from "@/utils/wavePaths";
+import type { HeroData } from "@/types/data";
 
 function Hero() {
     const { subheadline, bodyText, tagline }: HeroData = data.hero;
