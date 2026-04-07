@@ -6,6 +6,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { vertexShader, fragmentShader } from "../shaders/crtShaders";
 import data from "../../public/data.json";
+import type { ProjectLink } from "../types/data";
 
 interface CrtDisplayProps {
     className?: string;
@@ -19,7 +20,7 @@ interface PanelProject {
     type: string;
     description: string;
     tech: string[];
-    btnLink: { text: string; url: string } | null;
+    btnLink: ProjectLink | null;
 }
 
 function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default.png" }: CrtDisplayProps) {

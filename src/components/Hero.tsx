@@ -4,15 +4,10 @@ import { useGSAP } from "@gsap/react";
 import data from "../../public/data.json";
 import { useMouseFollow } from "../hooks/useMouseFollow";
 import { topWavePath, WAVE_HEIGHT, WAVE_PAD } from "../utils/wavePaths";
-
-type PageData = {
-    subheadline?: string;
-    bodyText?: string;
-    tagline?: string;
-};
+import type { HeroData } from "../types/data";
 
 function Hero() {
-    const { subheadline, bodyText, tagline }: PageData = data.hero;
+    const { subheadline, bodyText, tagline }: HeroData = data.hero;
     const sectionRef = useRef<HTMLElement>(null);
     const waveRef = useRef<SVGSVGElement>(null);
     const textContainerRef = useRef<HTMLDivElement>(null);

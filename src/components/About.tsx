@@ -5,15 +5,10 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Checkerboard from "./Checkerboard";
 import { useMouseFollow } from "../hooks/useMouseFollow";
-
-type pageData = {
-    intro: string;
-    body: string;
-    headline: string;
-};
+import type { ContactData } from "../types/data";
 
 const About = () => {
-    const { intro, body, headline }: pageData = data.contact;
+    const { intro, body, headline }: ContactData = data.contact;
     const { avatarImg } = data.hero;
     const sectionRef = useRef<HTMLElement>(null);
 
