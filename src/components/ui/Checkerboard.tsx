@@ -1,15 +1,15 @@
 import { forwardRef, CSSProperties } from "react";
 
 type CheckerboardProps = {
-    classes?: string;
+    className?: string;
     style?: CSSProperties;
 };
 
-const Checkerboard = forwardRef<HTMLDivElement, CheckerboardProps>(({ classes, style }, ref) => {
+const Checkerboard = forwardRef<HTMLDivElement, CheckerboardProps>(({ className, style }, ref) => {
     return (
         <div
             ref={ref}
-            className={`checkerboard ${classes}`}
+            className={`checkerboard${className ? " " + className : ""}`}
             style={{
                 backgroundImage: "url('/img/checkers.svg')",
                 ...style,

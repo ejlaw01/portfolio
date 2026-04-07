@@ -1,18 +1,8 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route index path='/' element={<Home />} />
-                {/* Future case study routes */}
-                <Route path='/projects/:slug' element={<Home />} />
-                <Route path='*' element={<Home />} />
-            </Routes>
-        </BrowserRouter>
-    );
+    return <Home />;
 }
 
 export default App;

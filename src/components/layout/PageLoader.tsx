@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 type Props = {
-    onComplete: () => void;
+    onComplete?: () => void;
 };
 
 const PageLoader = ({ onComplete }: Props) => {
@@ -31,7 +31,7 @@ const PageLoader = ({ onComplete }: Props) => {
             // Remove loader after fade
             setTimeout(() => {
                 setIsLoading(false);
-                onComplete();
+                onComplete?.();
             }, 400);
         };
 

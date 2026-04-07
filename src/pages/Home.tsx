@@ -164,7 +164,7 @@ function Home() {
 
     return (
         <main className="overflow-x-clip">
-            <PageLoader onComplete={() => {}} />
+            <PageLoader />
             <Nav />
 
             {/* SVG pixelate filter */}
@@ -229,7 +229,7 @@ function Home() {
             <Container>
                 <Footer />
             </Container>
-            <Checkerboard classes="-mb-14 w-full h-[100px] bg-[length:100px]" />
+            <Checkerboard className="-mb-14 w-full h-[100px] bg-[length:100px]" />
         </main>
     );
 }

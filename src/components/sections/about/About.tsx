@@ -99,7 +99,7 @@ const About = () => {
                         style={{ transform: "translateY(80px)" }}
                     >
                         <Checkerboard
-                            classes="h-full w-full rounded-2xl bg-[length:100px]"
+                            className="h-full w-full rounded-2xl bg-[length:100px]"
                             style={{ transform: "translate(calc(var(--mouse-x) * 8px), calc(var(--mouse-y) * 6px))" }}
                         />
                     </div>
