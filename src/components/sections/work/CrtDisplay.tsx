@@ -46,6 +46,8 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
     const mobilePanelRef = useRef<HTMLDivElement>(null);
     const mobilePanelTimelineRef = useRef<gsap.core.Timeline | null>(null);
     const prevMobileProjectRef = useRef<number | null>(null);
+    const cycleProjectRef = useRef<(() => void) | null>(null);
+    const lastCycleRef = useRef(0);
 
     // Hide mobile panel on scroll
     useEffect(() => {
@@ -178,6 +180,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
 
         const loader = new GLTFLoader();
         loader.setMeshoptDecoder(MeshoptDecoder);
+        let loadedModel: THREE.Object3D | null = null;
         loader.load("/models/apple_ii_opt.glb", (gltf) => {
             const model = gltf.scene;
             let screenCenter: THREE.Vector3 | null = null;
@@ -195,7 +198,21 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             const center = screenCenter || new THREE.Box3().setFromObject(model).getCenter(new THREE.Vector3());
             model.position.sub(center);
             monitorGroup.add(model);
+            loadedModel = model;
         });
+
+        const raycaster = new THREE.Raycaster();
+        const pointer = new THREE.Vector2();
+        const handleCanvasClick = (e: MouseEvent) => {
+            if (!loadedModel) return;
+            const rect = container.getBoundingClientRect();
+            pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+            raycaster.setFromCamera(pointer, camera);
+            const hit = raycaster.intersectObject(loadedModel, true);
+            if (hit.length > 0) cycleProjectRef.current?.();
+        };
+        renderer.domElement.addEventListener("click", handleCanvasClick);
 
         const mouse = { x: 0, y: 0 };
         const lerpedMouse = { x: 0, y: 0 };
@@ -220,6 +237,13 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             const rect = container.getBoundingClientRect();
             mouse.x = ((e.clientX - rect.left) / rect.width - 0.5) * 10;
             mouse.y = ((e.clientY - rect.top) / rect.height - 0.5) * 5;
+            if (loadedModel) {
+                pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+                raycaster.setFromCamera(pointer, camera);
+                const hit = raycaster.intersectObject(loadedModel, true);
+                renderer.domElement.style.cursor = hit.length > 0 ? "pointer" : "";
+            }
         };
 
         const handleResize = () => {
@@ -281,6 +305,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         return () => {
             cancelAnimationFrame(rafId);
             container.removeEventListener("mousemove", handleMouseMove);
+            renderer.domElement.removeEventListener("click", handleCanvasClick);
             window.removeEventListener("resize", handleResize);
             if (glitchAnimation) glitchAnimation.kill();
             videoElements.forEach((v) => { v.pause(); v.src = ""; });
@@ -384,25 +409,28 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         if (!pinnedRef.current) setActiveProject(i);
     }, [cancelClose]);
 
+    const cycleProject = useCallback(() => {
+        const now = performance.now();
+        if (now - lastCycleRef.current < 200) return;
+        lastCycleRef.current = now;
+        triggerGlitchRef.current?.();
+        cancelClose();
+        const next = activeProject === null ? 0 : (activeProject + 1) % projects.length;
+        setPinned(true);
+        setActiveProject(next);
+    }, [activeProject, projects.length, cancelClose]);
+    cycleProjectRef.current = cycleProject;
+
     return (
         <div
             ref={containerRef}
             id="work-section"
             className={`relative w-full h-[100svh] overflow-hidden ${className}`}
-            onClick={(e) => {
-                const target = e.target as Node;
-                if (panelRef.current?.contains(target) || buttonsRef.current?.contains(target)) return;
-                triggerGlitchRef.current?.();
-                if (activeProject === null) return;
-                setPinned(false);
-                cancelClose();
-                setActiveProject(null);
-            }}
         >
             {/* Mobile static image fallback */}
             {isMobile && (
                 <div className="lg:hidden absolute inset-0 flex items-center justify-center p-8 pt-12">
-                    <div className="relative max-w-[90%] max-h-[55%]">
+                    <div className="relative max-w-[90%] max-h-[55%] cursor-pointer" onClick={cycleProject}>
                         <img src="/img/apple_iie.png" alt="" className="w-full h-full object-contain" />
                         <div className="absolute rounded-[3px] overflow-hidden" style={{ left: "21.5%", top: "9.5%", width: "37%", height: "45%" }}>
                             <img
