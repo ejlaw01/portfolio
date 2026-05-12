@@ -278,7 +278,7 @@ const Credibility = () => (
                     <img
                         src="/img/hero/headshot-ethan.jpg"
                         alt="Ethan Law, founder of Bit Lore"
-                        className="aspect-[3/4] w-full object-cover rounded-2xl"
+                        className="aspect-[3/4] w-full max-w-[340px] object-cover rounded-2xl"
                     />
                     <div>
                         <h2 className="font-serif font-medium leading-[1.25] tracking-tight text-pink-900">
