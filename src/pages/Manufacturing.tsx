@@ -186,7 +186,7 @@ const Problem = () => (
                 <FadeIn delay={0.15}>
                     <div className="mt-10 lg:mt-14 max-w-3xl">
                         <p className="text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
-                            Enterprise software costs six figures and takes months to implement. Spreadsheets are free but break under pressure. Most manufacturers are stuck choosing between the two, adapting their workflow to rigid software or managing everything manually.
+                            Enterprise software costs six figures and takes months to implement. Spreadsheets are free but break under pressure. Most manufacturers are stuck choosing between the two: adapting their workflow to rigid software, or managing everything manually.
                         </p>
 
                         <ul className="mt-10 lg:mt-14 space-y-5">
@@ -222,15 +222,15 @@ const Offerings = () => (
                     </h2>
                 </FadeIn>
             </div>
-            <div className="mt-14 lg:mt-20 max-w-4xl mx-auto">
-                <FadeInStagger delay={0.15} stagger={0.08} className="divide-y divide-pink-200 border-y border-pink-200">
+            <div className="mt-12 lg:mt-16 max-w-4xl mx-auto">
+                <FadeInStagger delay={0.15} stagger={0.08} className="grid grid-cols-1 md:grid-cols-2 gap-x-12 lg:gap-x-16 gap-y-10 lg:gap-y-12">
                     {offerings.map(({ Icon, title, body }) => (
-                        <div key={title} className="py-8 lg:py-10">
+                        <div key={title}>
                             <Icon className="text-pink-600" size={28} strokeWidth={1.5} />
                             <h3 className="mt-4 font-serif font-medium text-2xl leading-snug text-pink-900">
                                 {title}
                             </h3>
-                            <p className="mt-3 text-base lg:text-lg text-pink-800 leading-relaxed font-sans max-w-2xl">
+                            <p className="mt-3 text-base lg:text-lg text-pink-800 leading-relaxed font-sans">
                                 {body}
                             </p>
                         </div>
@@ -281,12 +281,15 @@ const Credibility = () => (
                         className="aspect-[3/4] w-full max-w-[340px] object-cover rounded-2xl"
                     />
                     <div>
-                        <h2 className="font-serif font-medium leading-[1.25] tracking-tight text-pink-900">
+                        <h2 className="font-serif font-medium text-3xl lg:text-4xl leading-[1.25] tracking-tight text-pink-900">
                             Built in Portland, for the Northwest.
                         </h2>
-                        <p className="mt-8 lg:mt-10 text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
-                            Eight years building dealer portals, configurators, and custom tools for dental equipment manufacturers, component manufacturers, and B2B dealer networks across the region.
+                        <p className="mt-6 lg:mt-8 text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
+                            I've been working with Oregon manufacturers for years to create the exact software they need for their business.
                         </p>
+                        {/* Add client logos here once permissions are confirmed. Each child gets muted/grayscale treatment, brightens on hover. */}
+                        <div className="mt-8 lg:mt-10 flex flex-wrap items-center gap-8 lg:gap-12 [&>*]:opacity-50 [&>*]:grayscale [&>*]:transition [&>*]:duration-300 [&>*:hover]:opacity-100 [&>*:hover]:grayscale-0">
+                        </div>
                     </div>
                 </div>
             </FadeIn>
@@ -322,12 +325,32 @@ const Ownership = () => (
 );
 
 const Contact = () => {
-    const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
+    const [form, setForm] = useState({ name: "", company: "", email: "", message: "", _hp: "" });
     const [submitted, setSubmitted] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setSubmitted(true);
+        if (submitting) return;
+        setError(null);
+        setSubmitting(true);
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form),
+            });
+            if (!res.ok) {
+                const data = await res.json().catch(() => ({}));
+                throw new Error(data?.error ?? "Something went wrong. Please try again or email me directly.");
+            }
+            setSubmitted(true);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     const fieldClass =
@@ -365,7 +388,20 @@ const Contact = () => {
                         </FadeIn>
                     ) : (
                         <FadeIn delay={0.15}>
-                            <form onSubmit={onSubmit} className="space-y-8">
+                            <form onSubmit={onSubmit} className="space-y-8" noValidate>
+                                {/* Honeypot — hidden from humans, bots fill it and we drop the submission */}
+                                <div aria-hidden="true" style={{ position: "absolute", left: "-10000px", width: 1, height: 1, overflow: "hidden" }}>
+                                    <label>
+                                        Leave this field empty
+                                        <input
+                                            type="text"
+                                            tabIndex={-1}
+                                            autoComplete="off"
+                                            value={form._hp}
+                                            onChange={(e) => setForm({ ...form, _hp: e.target.value })}
+                                        />
+                                    </label>
+                                </div>
                                 <label className="block">
                                     <span className="block font-sans text-xs uppercase tracking-[0.15em] text-pink-600 mb-1">Name</span>
                                     <input
@@ -405,12 +441,18 @@ const Contact = () => {
                                         className={`${fieldClass} resize-none`}
                                     />
                                 </label>
+                                {error && (
+                                    <p className="text-sm font-sans text-pink-700" role="alert">
+                                        {error}
+                                    </p>
+                                )}
                                 <div className="pt-4">
                                     <button
                                         type="submit"
-                                        className="inline-flex items-center gap-2 px-7 py-4 bg-pink-900 text-pink-25 font-sans font-medium text-base rounded-full hover:bg-pink-800 transition-colors"
+                                        disabled={submitting}
+                                        className="inline-flex items-center gap-2 px-7 py-4 bg-pink-900 text-pink-25 font-sans font-medium text-base rounded-full hover:bg-pink-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
-                                        Send
+                                        {submitting ? "Sending…" : "Send"}
                                     </button>
                                 </div>
                             </form>
