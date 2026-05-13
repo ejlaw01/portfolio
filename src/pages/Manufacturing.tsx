@@ -377,13 +377,6 @@ const Contact = () => {
                         <FadeIn>
                             <div className="font-sans">
                                 <p className="text-xl lg:text-2xl text-pink-900 font-serif">Thanks. I'll be in touch soon.</p>
-                                <p className="mt-3 text-pink-800">
-                                    In the meantime, feel free to reach me directly at{" "}
-                                    <a href="mailto:ethan@bitlore.io" className="text-pink-700 underline decoration-pink-300 underline-offset-4">
-                                        ethan@bitlore.io
-                                    </a>
-                                    .
-                                </p>
                             </div>
                         </FadeIn>
                     ) : (
@@ -459,15 +452,6 @@ const Contact = () => {
                         </FadeIn>
                     )}
                   </div>
-
-                    <FadeIn delay={0.25}>
-                        <p className="mt-8 text-base text-pink-700 font-sans">
-                            Or email me directly at{" "}
-                            <a href="mailto:ethan@bitlore.io" className="text-pink-800 underline decoration-pink-300 underline-offset-4 hover:decoration-pink-700">
-                                ethan@bitlore.io
-                            </a>
-                        </p>
-                    </FadeIn>
                   </div>
                 </div>
             </Container>
