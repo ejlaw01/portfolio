@@ -88,7 +88,7 @@ const offerings = [
     {
         Icon: FiFileText,
         title: "Quoting Tools",
-        body: "Your pricing rules built in. Customer-specific tiers, volume breaks, margin thresholds, all calculated automatically.",
+        body: "Your pricing rules built in. Customer-specific tiers, volume breaks, margin thresholds.",
     },
     {
         Icon: FiBarChart2,
@@ -111,7 +111,7 @@ const steps = [
     {
         n: "01",
         title: "Discovery",
-        body: "I learn your operation, map your workflow, and identify where the friction is. The goal is understanding your business deeply enough to build exactly the right tool.",
+        body: "One conversation to understand your workflow and where the friction is. Then a clear proposal with options.",
     },
     {
         n: "02",
@@ -218,7 +218,7 @@ const Offerings = () => (
             <div className="max-w-4xl mx-auto">
                 <FadeIn>
                     <h2 className="font-serif font-medium leading-[1.25] tracking-tight text-pink-900">
-                        Built around how you actually work.
+                        What I build.
                     </h2>
                 </FadeIn>
             </div>
@@ -285,7 +285,7 @@ const Credibility = () => (
                             Built in Portland, for the Northwest.
                         </h2>
                         <p className="mt-6 lg:mt-8 text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
-                            I've been working with Oregon manufacturers for years to create the exact software they need for their business.
+                            Portland-based, with deep experience building dealer portals, configurators, and custom tools for manufacturers across the region.
                         </p>
                         {/* Add client logos here once permissions are confirmed. Each child gets muted/grayscale treatment, brightens on hover. */}
                         <div className="mt-8 lg:mt-10 flex flex-wrap items-center gap-8 lg:gap-12 [&>*]:opacity-50 [&>*]:grayscale [&>*]:transition [&>*]:duration-300 [&>*:hover]:opacity-100 [&>*:hover]:grayscale-0">
@@ -309,7 +309,7 @@ const Ownership = () => (
                 <FadeIn delay={0.15}>
                     <div className="max-w-3xl">
                         <p className="mt-10 lg:mt-14 text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
-                            Every tool I build comes with an unlimited perpetual license. You own the code. You're never locked in.
+                            Every tool I build comes with an unlimited perpetual license. You own the code.
                         </p>
                         <p className="mt-10 lg:mt-14 text-lg lg:text-xl text-pink-800 font-sans leading-relaxed">
                             No vendor raising your prices. No features disappearing. No platform standing between you and your own data.
@@ -487,7 +487,7 @@ const Manufacturing = () => {
         document.title = "Bit Lore | Custom Tools for Manufacturers";
         desc?.setAttribute(
             "content",
-            "Custom digital tools for small and mid-size manufacturers in Portland and the Pacific Northwest. Dealer portals, quoting systems, dashboards, built around how you actually work."
+            "Custom digital tools for small and mid-size manufacturers in Portland and the Pacific Northwest. Dealer portals, quoting systems, dashboards — built around how you actually work."
         );
 
         return () => {
