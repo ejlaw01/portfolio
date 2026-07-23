@@ -48,11 +48,19 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
     const prevMobileProjectRef = useRef<number | null>(null);
     const cycleProjectRef = useRef<(() => void) | null>(null);
     const lastCycleRef = useRef(0);
+    // Timestamp of the last selection; scroll won't reset selection within this grace window
+    const lastSelectRef = useRef(0);
+    const SELECT_SCROLL_GRACE_MS = 2500;
 
     // Hide mobile panel on scroll
     useEffect(() => {
         if (activeProject === null) return;
         const handleScroll = () => {
+            // Ignore leftover scroll momentum right after a selection so a floaty
+            // scroll doesn't immediately reset the just-clicked project. The listener
+            // stays armed and will act on the next scroll past the grace window.
+            if (performance.now() - lastSelectRef.current < SELECT_SCROLL_GRACE_MS) return;
+            window.removeEventListener("scroll", handleScroll);
             setMobilePanelClosing(true);
             setPinned(false);
             setTimeout(() => {
@@ -60,7 +68,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 setMobilePanelClosing(false);
             }, 300);
         };
-        window.addEventListener("scroll", handleScroll, { passive: true, once: true });
+        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, [activeProject]);
 
@@ -399,6 +407,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 scheduleClose();
             }
         } else {
+            lastSelectRef.current = performance.now();
             setPinned(true);
             setActiveProject(i);
         }
@@ -413,6 +422,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         const now = performance.now();
         if (now - lastCycleRef.current < 200) return;
         lastCycleRef.current = now;
+        lastSelectRef.current = now;
         triggerGlitchRef.current?.();
         cancelClose();
         const next = activeProject === null ? 0 : (activeProject + 1) % projects.length;
