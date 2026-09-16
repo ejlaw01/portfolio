@@ -10,12 +10,11 @@ function BrandSection() {
     const brandingRef = useRef<HTMLHeadingElement>(null);
     const heroLogoRef = useRef<HTMLImageElement>(null);
 
-    // Entrance animation: reveal letters, then pixelated → sharp
+    // Entrance animation: pixelated → sharp
     useGSAP(() => {
         if (!brandingRef.current) return;
 
         const h1 = brandingRef.current;
-        const letters = h1.querySelectorAll(".brand-letter");
         const logo = heroLogoRef.current;
         const filterEl = document.getElementById("pixelate-composite");
         const morphEl = document.getElementById("pixelate-morph");
@@ -31,22 +30,6 @@ function BrandSection() {
         }
 
         const hasFilter = filterEl && morphEl && !isWebKit;
-        const allChars = Array.from(letters);
-
-        allChars.forEach((el) => { (el as HTMLElement).style.visibility = "hidden"; });
-
-        // B, I, T (indices 0, 1, 2)
-        for (let i = 0; i < 3; i++) {
-            gsap.delayedCall(0.2 + i * 0.06, () => {
-                (allChars[i] as HTMLElement).style.visibility = "visible";
-            });
-        }
-        // space + L, O, R, E (indices 3, 4, 5, 6, 7)
-        for (let i = 3; i < allChars.length; i++) {
-            gsap.delayedCall(0.42 + (i - 3) * 0.06, () => {
-                (allChars[i] as HTMLElement).style.visibility = "visible";
-            });
-        }
 
         if (hasFilter) {
             const proxy = { size: 24 };
