@@ -3,18 +3,14 @@ import type { PanelProject } from "./types";
 
 interface ProjectPanelProps {
     project: PanelProject;
-    onMouseEnter: () => void;
-    onMouseLeave: () => void;
 }
 
 const ProjectPanel = forwardRef<HTMLDivElement, ProjectPanelProps>(
-    ({ project, onMouseEnter, onMouseLeave }, ref) => (
+    ({ project }, ref) => (
         <div
             ref={ref}
             className="hidden lg:flex absolute left-0 top-0 h-full w-[30%] z-10 flex-col justify-center px-8 bg-gradient-to-r from-dark via-dark/80 to-transparent"
             style={{ visibility: "hidden", opacity: 0 }}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
         >
             <span className="panel-type font-sans text-xs uppercase tracking-widest text-pink-300 mb-2">
                 <span className="text-background-dark">{project.type}</span>

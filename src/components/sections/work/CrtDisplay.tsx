@@ -31,9 +31,6 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
     const [isMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 1024);
     const [activeProject, setActiveProject] = useState<number | null>(null);
     const [mobilePanelClosing, setMobilePanelClosing] = useState(false);
-    const [pinned, setPinned] = useState(false);
-    const pinnedRef = useRef(false);
-    pinnedRef.current = pinned;
     const lastProjectRef = useRef<PanelProject>(projects[0]);
     const containerRef = useRef<HTMLDivElement>(null);
     const setDisplayImageRef = useRef<((src: string) => void) | null>(null);
@@ -42,7 +39,6 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
     const buttonsRef = useRef<HTMLUListElement>(null);
     const panelTimelineRef = useRef<gsap.core.Timeline | null>(null);
     const prevProjectRef = useRef<number | null>(null);
-    const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const mobilePanelRef = useRef<HTMLDivElement>(null);
     const mobilePanelTimelineRef = useRef<gsap.core.Timeline | null>(null);
     const prevMobileProjectRef = useRef<number | null>(null);
@@ -62,7 +58,6 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             if (performance.now() - lastSelectRef.current < SELECT_SCROLL_GRACE_MS) return;
             window.removeEventListener("scroll", handleScroll);
             setMobilePanelClosing(true);
-            setPinned(false);
             setTimeout(() => {
                 setActiveProject(null);
                 setMobilePanelClosing(false);
@@ -71,21 +66,6 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, [activeProject]);
-
-    const cancelClose = useCallback(() => {
-        if (closeTimeoutRef.current) {
-            clearTimeout(closeTimeoutRef.current);
-            closeTimeoutRef.current = null;
-        }
-    }, []);
-
-    const scheduleClose = useCallback(() => {
-        if (pinnedRef.current) return;
-        cancelClose();
-        closeTimeoutRef.current = setTimeout(() => {
-            setActiveProject(null);
-        }, 600);
-    }, [cancelClose]);
 
     // Three.js setup (desktop only)
     useEffect(() => {
@@ -320,9 +300,8 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
             renderer.dispose();
             if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
             setDisplayImageRef.current = null;
-            cancelClose();
         };
-    }, [defaultImage, cancelClose, isMobile]);
+    }, [defaultImage, isMobile]);
 
     // Texture swap on project change
     useEffect(() => {
@@ -399,24 +378,13 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
     const displayProject = lastProjectRef.current;
 
     const handleButtonSelect = useCallback((i: number) => {
-        if (pinned && activeProject === i) {
-            setPinned(false);
-            if (isMobile) {
-                setActiveProject(null);
-            } else {
-                scheduleClose();
-            }
+        if (activeProject === i) {
+            setActiveProject(null);
         } else {
             lastSelectRef.current = performance.now();
-            setPinned(true);
             setActiveProject(i);
         }
-    }, [pinned, activeProject, isMobile, scheduleClose]);
-
-    const handleButtonHover = useCallback((i: number) => {
-        cancelClose();
-        if (!pinnedRef.current) setActiveProject(i);
-    }, [cancelClose]);
+    }, [activeProject]);
 
     const cycleProject = useCallback(() => {
         const now = performance.now();
@@ -424,11 +392,9 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
         lastCycleRef.current = now;
         lastSelectRef.current = now;
         triggerGlitchRef.current?.();
-        cancelClose();
         const next = activeProject === null ? 0 : (activeProject + 1) % projects.length;
-        setPinned(true);
         setActiveProject(next);
-    }, [activeProject, projects.length, cancelClose]);
+    }, [activeProject, projects.length]);
     cycleProjectRef.current = cycleProject;
 
     return (
@@ -453,12 +419,7 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 </div>
             )}
 
-            <ProjectPanel
-                ref={panelRef}
-                project={displayProject}
-                onMouseEnter={cancelClose}
-                onMouseLeave={scheduleClose}
-            />
+            <ProjectPanel ref={panelRef} project={displayProject} />
 
             <MobilePanel
                 ref={mobilePanelRef}
@@ -471,10 +432,6 @@ function CrtDisplay({ className = "", defaultImage = "/img/work/projects_default
                 ref={buttonsRef}
                 projects={projects}
                 activeProject={activeProject}
-                pinned={pinned}
-                isMobile={isMobile}
-                onHover={handleButtonHover}
-                onLeave={scheduleClose}
                 onSelect={handleButtonSelect}
             />
         </div>
