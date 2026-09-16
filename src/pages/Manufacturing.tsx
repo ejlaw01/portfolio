@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { FiUsers, FiFileText, FiBarChart2, FiLayers, FiTablet, FiGrid, FiPhoneCall, FiRepeat } from "react-icons/fi";
+import { FiUsers, FiFileText, FiBarChart2, FiLayers, FiTablet, FiGlobe, FiGrid, FiPhoneCall, FiRepeat } from "react-icons/fi";
 import Container from "@/components/layout/Container";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
@@ -105,6 +105,11 @@ const offerings = [
         title: "Shop Floor Tablet Apps",
         body: "Replace paper logs with a tablet app your operators can use in seconds. Works offline, syncs when connected.",
     },
+    {
+        Icon: FiGlobe,
+        title: "Web Presence & SEO",
+        body: "Your website should generate leads, not just exist. Site speed, search visibility, analytics, and ongoing maintenance so your digital presence works as hard as your shop floor.",
+    },
 ];
 
 const steps = [
@@ -157,7 +162,7 @@ const Hero = () => (
                 <FadeIn delay={0.15}>
                     <div>
                         <p className="mt-10 lg:mt-12 text-xl lg:text-2xl text-pink-800 max-w-3xl leading-relaxed font-sans">
-                            I build custom digital tools for small and mid-size manufacturers — designed around how your operation runs.
+                            I build custom digital tools and optimize web presence for small and mid-size manufacturers — designed around how your operation runs.
                         </p>
                         <div className="mt-12 lg:mt-16">
                             <a
