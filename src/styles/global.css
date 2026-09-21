@@ -84,7 +84,8 @@
     flex-shrink: 0;
 }
 
-.menu-items .menu-item button {
+.menu-items .menu-item button,
+.menu-items .menu-item a {
     text-decoration: none;
     color: theme(colors.pink.850);
     font-weight: 500;
@@ -118,7 +119,8 @@
     .menu-items .menu-item {
         height: 3rem;
     }
-    .menu-items .menu-item button {
+    .menu-items .menu-item button,
+    .menu-items .menu-item a {
         padding: 0 1.25rem;
         font-size: inherit;
     }
@@ -145,4 +147,31 @@
 
 .menu-toggler.close span:nth-child(2) {
     transform: rotate(-45deg) translateX(0.125rem) translateY(-0.1rem) scaleX(0.9);
+}
+
+/* Page transitions (View Transitions API, driven by <Link viewTransition>) */
+
+/* Naming the drawer lifts it out of the root crossfade, so it animates between
+   its two sizes instead of dissolving and reappearing with the page behind it. */
+.menu-drawer {
+    view-transition-name: nav;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.35s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-group(nav) {
+    animation-duration: 0.35s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
 }

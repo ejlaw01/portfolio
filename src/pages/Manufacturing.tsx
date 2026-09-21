@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { FiUsers, FiFileText, FiBarChart2, FiLayers, FiTablet, FiGlobe, FiGrid, FiPhoneCall, FiRepeat } from "react-icons/fi";
 import Container from "@/components/layout/Container";
+import Nav from "@/components/layout/Nav";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 const BitLoreLogo = ({ className }: { className?: string }) => (
@@ -129,25 +130,6 @@ const steps = [
         body: "I handle the hosting, security, and updates. Your team uses the tool. When something needs adjusting, I'm a phone call away.",
     },
 ];
-
-const Header = () => (
-    <header className="absolute top-0 left-0 right-0 z-50">
-        <Container>
-            <div className="max-w-4xl mx-auto flex items-center justify-between py-6 lg:py-8">
-                <a href="/" className="flex items-center gap-3 text-pink-900 hover:no-underline">
-                    <BitLoreLogo className="h-6 w-auto" />
-                    <span className="font-sans font-semibold text-base tracking-tight">Bit Lore</span>
-                </a>
-                <a
-                    href="#contact"
-                    className="font-sans text-sm lg:text-base text-pink-900 hover:text-pink-600 hover:no-underline"
-                >
-                    Let's talk
-                </a>
-            </div>
-        </Container>
-    </header>
-);
 
 const Hero = () => (
     <section className="pt-40 lg:pt-56 pb-20 lg:pb-32">
@@ -503,7 +485,7 @@ const Manufacturing = () => {
 
     return (
         <main className="overflow-x-clip bg-pink-25 min-h-screen">
-            <Header />
+            <Nav page="manufacturing" />
             <Hero />
             <Problem />
             <Offerings />

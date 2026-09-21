@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { Link } from "react-router";
 import gsap from "gsap";
 
 const BitLoreLogo = ({ className }: { className?: string }) => (
@@ -11,7 +12,27 @@ const BitLoreLogo = ({ className }: { className?: string }) => (
     </svg>
 );
 
-const Nav = () => {
+export type NavPage = "home" | "manufacturing";
+
+type NavItem =
+    | { label: string; sectionId: string }
+    | { label: string; to: string };
+
+// Scroll targets are listed only under the page that actually renders that
+// section, so a page never offers an anchor that resolves to nothing.
+const NAV_ITEMS: Record<NavPage, NavItem[]> = {
+    home: [
+        { label: "Work", sectionId: "work-section" },
+        { label: "Manufacturing", to: "/manufacturing" },
+        { label: "Contact", sectionId: "contact-section" },
+    ],
+    manufacturing: [
+        { label: "Home", to: "/" },
+        { label: "Contact", sectionId: "contact" },
+    ],
+};
+
+const Nav = ({ page }: { page: NavPage }) => {
     const itemsRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(false);
     const isOpenRef = useRef(false);
@@ -101,12 +122,17 @@ const Nav = () => {
             </div>
 
             <div ref={itemsRef} className="menu-items" style={{ width: 0, marginRight: 0 }}>
-                <div className="menu-item">
-                    <button onClick={() => scrollToSection("work-section")}>Work</button>
-                </div>
-                <div className="menu-item">
-                    <button onClick={() => scrollToSection("contact-section")}>Contact</button>
-                </div>
+                {NAV_ITEMS[page].map((item) => (
+                    <div key={item.label} className="menu-item">
+                        {"sectionId" in item ? (
+                            <button onClick={() => scrollToSection(item.sectionId)}>{item.label}</button>
+                        ) : (
+                            <Link to={item.to} viewTransition>
+                                {item.label}
+                            </Link>
+                        )}
+                    </div>
+                ))}
             </div>
 
             <div

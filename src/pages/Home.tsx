@@ -20,7 +20,7 @@ function Home() {
     return (
         <main className="overflow-x-clip">
             <PageLoader />
-            <Nav />
+            <Nav page="home" />
 
             <BrandSection />
 

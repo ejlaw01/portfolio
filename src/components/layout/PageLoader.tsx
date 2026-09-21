@@ -4,11 +4,17 @@ type Props = {
     onComplete?: () => void;
 };
 
+// Home remounts on client-side navigation, so without this the loading overlay
+// would replay every time the user comes back from another route.
+let hasLoadedOnce = false;
+
 const PageLoader = ({ onComplete }: Props) => {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(!hasLoadedOnce);
     const [isFading, setIsFading] = useState(false);
 
     useEffect(() => {
+        if (hasLoadedOnce) return;
+
         const loadAssets = async () => {
             // Wait for fonts
             await document.fonts.ready;
@@ -30,6 +36,7 @@ const PageLoader = ({ onComplete }: Props) => {
 
             // Remove loader after fade
             setTimeout(() => {
+                hasLoadedOnce = true;
                 setIsLoading(false);
                 onComplete?.();
             }, 400);
