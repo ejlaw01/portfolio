@@ -6,7 +6,7 @@ export default {
     safelist: ["font-light", "font-regular", "font-semibold", "font-bold", "italic", "underline", "line-through", "text-sm", "text-base", "bg-pink-25"],
     theme: {
         fontFamily: {
-            serif: ["Bitter", "Courier", "Georgia", "Times New Roman", "serif"],
+            serif: ["Bitter", "Georgia", "Times New Roman", "serif"],
             sans: ["Plus Jakarta Sans", "Arial", "Helvetica", "sans-serif"],
         },
         container: {

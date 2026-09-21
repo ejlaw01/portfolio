@@ -6,35 +6,42 @@
 }
 
 @layer base {
+    /* Weight ranges must match each file's wght axis, or the browser treats the
+       variable font as a single 400 face and fakes the other weights. Bitter's
+       default instance is 100, so an undeclared range renders headings Thin.
+       local() is deliberately absent: it can match a static copy installed on
+       the visitor's machine, which has no weight axis at all. */
     @font-face {
         font-family: "Bitter";
-        font-display: optional;
-        src: local("Bitter"), local("Bitter-Regular"),
+        font-weight: 100 900;
+        font-display: fallback;
+        src: url("/fonts/Bitter-VariableFont.woff2") format("woff2"),
             url("/fonts/Bitter-VariableFont.ttf") format("truetype");
     }
 
     @font-face {
         font-family: "Bitter";
         font-style: italic;
-        font-display: optional;
-        src: local("Bitter-Italic"),
+        font-weight: 100 900;
+        font-display: fallback;
+        src: url("/fonts/Bitter-Italic-VariableFont.woff2") format("woff2"),
             url("/fonts/Bitter-Italic-VariableFont.ttf") format("truetype");
     }
 
     @font-face {
         font-family: "Plus Jakarta Sans";
-        font-display: optional;
         font-weight: 200 800;
-        src: local("Plus-Jakarta-Sans"), local("Plus-Jakarta-Sans-Regular"),
+        font-display: fallback;
+        src: url("/fonts/PlusJakartaSans-VariableFont_wght.woff2") format("woff2"),
             url("/fonts/PlusJakartaSans-VariableFont_wght.ttf") format("truetype");
     }
 
     @font-face {
         font-family: "Plus Jakarta Sans";
         font-style: italic;
-        font-display: optional;
         font-weight: 200 800;
-        src: local("Plus-Jakarta-Sans-Italic"),
+        font-display: fallback;
+        src: url("/fonts/PlusJakartaSans-Italic-VariableFont_wght.woff2") format("woff2"),
             url("/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf") format("truetype");
     }
     
