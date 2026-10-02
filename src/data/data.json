@@ -85,21 +85,6 @@
                 "tech": ["Aurelia JS", "Moment.js", "CKEditor", "JW Player", "SCSS"]
             },
             {
-                "shortTitle": "Snowflake",
-                "title": "gMC Snowflake Simulator",
-                "type": "mini web app",
-                "description": "User interface build and quiz logic of symptom assessment for patients with generalized myasthenia gravis (gMG).",
-                "btnLink": {
-                    "text": "Go to quiz demo",
-                    "url": "https://snowflake.bitlore.io/"
-                },
-                "media": {
-                    "filename": "project_snowflake.png",
-                    "alt": "Alexion Snowflake simulator landing page"
-                },
-                "tech": ["Javascript", "jQuery", "SCSS"]
-            },
-            {
                 "shortTitle": "Color Picker",
                 "title": "A-dec Color Picker",
                 "type": "interactive tool",
