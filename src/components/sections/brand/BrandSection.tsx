@@ -32,13 +32,15 @@ function BrandSection() {
         const hasFilter = filterEl && morphEl && !isWebKit;
 
         if (hasFilter) {
-            const proxy = { size: 24 };
+            // onUpdate rounds to whole pixels, and successive sizes at the top
+            // of the range are visually indistinguishable, so starting too high
+            // makes the opening frames read as nothing happening.
+            const proxy = { size: 20 };
 
             gsap.to(proxy, {
                 size: 1,
-                duration: 3.5,
-                ease: "power2.in",
-                delay: 0.2,
+                duration: 1.75,
+                ease: "power1.in",
                 onUpdate: () => {
                     const s = Math.round(proxy.size);
                     filterEl.setAttribute("width", String(s));
@@ -55,7 +57,7 @@ function BrandSection() {
             });
         } else {
             h1.style.filter = "none";
-            gsap.delayedCall(0.8, () => setEntranceDone(true));
+            gsap.delayedCall(0.4, () => setEntranceDone(true));
         }
     });
 
