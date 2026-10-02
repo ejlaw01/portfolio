@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { FiUsers, FiFileText, FiBarChart2, FiLayers, FiTablet, FiGlobe, FiGrid, FiPhoneCall, FiRepeat } from "react-icons/fi";
+import { FiUsers, FiFileText, FiLayers, FiGlobe, FiMonitor, FiGrid, FiPhoneCall, FiRepeat } from "react-icons/fi";
 import Container from "@/components/layout/Container";
 import Nav from "@/components/layout/Nav";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
@@ -80,11 +80,13 @@ const FadeInStagger = ({
     );
 };
 
+// Ordered as a ladder: foundational web work first, higher-value custom
+// software after.
 const offerings = [
     {
-        Icon: FiUsers,
-        title: "Dealer Portals",
-        body: "Self-service ordering, inventory visibility, and account management for your dealer network. No more phone calls for routine orders.",
+        Icon: FiGlobe,
+        title: "Web Presence & SEO",
+        body: "Your website should generate leads, not just exist. Site speed, search visibility, analytics, and ongoing maintenance so your digital presence works as hard as your shop floor.",
     },
     {
         Icon: FiFileText,
@@ -92,37 +94,41 @@ const offerings = [
         body: "Your pricing rules built in. Customer-specific tiers, volume breaks, margin thresholds.",
     },
     {
-        Icon: FiBarChart2,
-        title: "Production Dashboards",
-        body: "Real-time visibility into the shop floor without the six-figure platform.",
-    },
-    {
         Icon: FiLayers,
         title: "Product Configurators",
         body: "Guide customers or dealers through available options and generate accurate quotes on the spot.",
     },
     {
-        Icon: FiTablet,
-        title: "Shop Floor Tablet Apps",
-        body: "Replace paper logs with a tablet app your operators can use in seconds. Works offline, syncs when connected.",
+        Icon: FiUsers,
+        title: "Dealer Portals",
+        body: "Self-service ordering, inventory visibility, and account management for your dealer network. No more phone calls for routine orders.",
     },
-    {
-        Icon: FiGlobe,
-        title: "Web Presence & SEO",
-        body: "Your website should generate leads, not just exist. Site speed, search visibility, analytics, and ongoing maintenance so your digital presence works as hard as your shop floor.",
-    },
+];
+
+// Each mark's bounding box carries a different amount of empty space — A-dec's
+// caduceus rises well above its wordmark, Fluidra's sits short — so flex
+// alignment centres the boxes while the marks still look uneven. `nudge` is a
+// per-logo vertical offset in px: negative lifts, positive drops.
+// `ratio` comes from each file's own viewBox. The logos are painted with a CSS
+// mask rather than rendered as images, so they take a palette colour instead of
+// pure black — but a masked element has no intrinsic size, so the aspect ratio
+// has to be supplied here.
+const clientLogos = [
+    { src: "/img/logos/evans-components.svg", alt: "Evans Components", ratio: 194 / 47, nudge: 0 },
+    { src: "/img/logos/a-dec.svg", alt: "A-dec", ratio: 97.217 / 32.473, nudge: -4 },
+    { src: "/img/logos/fluidra.svg", alt: "Fluidra", ratio: 260.806 / 68.583, nudge: 3 },
 ];
 
 const steps = [
     {
         n: "01",
-        title: "Discovery",
-        body: "One conversation to understand your workflow and where the friction is. Then a clear proposal with options.",
+        title: "Strategy",
+        body: "A focused audit of your current tools, workflows, and digital presence. You get a clear picture of where the friction is and a written roadmap with prioritized options. This is a standalone engagement, with no commitment to build anything.",
     },
     {
         n: "02",
         title: "Build",
-        body: "Working software delivered in weeks. You see progress at every step through regular demos with your real data. Not slides, not mockups.",
+        body: "Working software delivered in weeks. Most engagements start with the fundamentals: getting your website generating leads, fixing what's broken, setting up analytics. From there, we tackle the deeper operational problems that custom software solves.",
     },
     {
         n: "03",
@@ -144,7 +150,7 @@ const Hero = () => (
                 <FadeIn delay={0.15}>
                     <div>
                         <p className="mt-10 lg:mt-12 text-xl lg:text-2xl text-pink-800 max-w-3xl leading-relaxed font-sans">
-                            I build custom digital tools and optimize web presence for small and mid-size manufacturers — designed around how your operation runs.
+                            I build custom software and websites for small and mid-size manufacturers, designed around how your operation runs.
                         </p>
                         <div className="mt-12 lg:mt-16">
                             <a
@@ -171,16 +177,17 @@ const Problem = () => (
                     </h2>
                 </FadeIn>
                 <FadeIn delay={0.15}>
-                    <div className="mt-10 lg:mt-14 max-w-3xl">
+                    <div className="mt-8 lg:mt-10 max-w-3xl">
                         <p className="text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
                             Enterprise software costs six figures and takes months to implement. Spreadsheets are free but break under pressure. Most manufacturers are stuck choosing between the two: adapting their workflow to rigid software, or managing everything manually.
                         </p>
 
-                        <ul className="mt-10 lg:mt-14 space-y-5">
+                        <ul className="mt-6 lg:mt-8 space-y-5">
                             {[
+                                { Icon: FiMonitor, text: "Your website hasn't been touched in five years." },
                                 { Icon: FiGrid, text: "Your quoting process runs on a spreadsheet." },
                                 { Icon: FiPhoneCall, text: "Your dealers call to check inventory." },
-                                { Icon: FiRepeat, text: "Your team enters the same data in four different places." },
+                                { Icon: FiRepeat, text: "Your team enters the same data in multiple places." },
                             ].map(({ Icon, text }) => (
                                 <li key={text} className="flex items-start gap-4">
                                     <Icon className="text-pink-500 mt-1.5 shrink-0" size={20} strokeWidth={1.5} />
@@ -189,7 +196,7 @@ const Problem = () => (
                             ))}
                         </ul>
 
-                        <p className="mt-10 lg:mt-14 text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
+                        <p className="mt-6 lg:mt-8 text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
                             Not because better tools don't exist, but because nobody's built one for how you work.
                         </p>
                     </div>
@@ -207,6 +214,11 @@ const Offerings = () => (
                     <h2 className="font-serif font-medium leading-[1.25] tracking-tight text-pink-900">
                         What I build.
                     </h2>
+                </FadeIn>
+                <FadeIn delay={0.15}>
+                    <p className="mt-8 lg:mt-10 max-w-3xl text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
+                        Everything custom is yours outright, under an unlimited perpetual license.
+                    </p>
                 </FadeIn>
             </div>
             <div className="mt-12 lg:mt-16 max-w-4xl mx-auto">
@@ -272,11 +284,8 @@ const Credibility = () => (
                             Built in Portland, for the Northwest.
                         </h2>
                         <p className="mt-6 lg:mt-8 text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
-                            Portland-based, with deep experience building dealer portals, configurators, and custom tools for manufacturers across the region.
+                            I'm Ethan Law, the developer behind Bit Lore. I build software for companies that need something generic solutions can't do.
                         </p>
-                        {/* Add client logos here once permissions are confirmed. Each child gets muted/grayscale treatment, brightens on hover. */}
-                        <div className="mt-8 lg:mt-10 flex flex-wrap items-center gap-8 lg:gap-12 [&>*]:opacity-50 [&>*]:grayscale [&>*]:transition [&>*]:duration-300 [&>*:hover]:opacity-100 [&>*:hover]:grayscale-0">
-                        </div>
                     </div>
                 </div>
             </FadeIn>
@@ -284,32 +293,47 @@ const Credibility = () => (
     </section>
 );
 
-const Ownership = () => (
-    <section className="py-20 lg:py-32">
+// No padding of its own — the surrounding sections' padding supplies the gap on
+// both sides, so this sits on the seam between them.
+const Clients = () => (
+    <section>
         <Container>
-            <div className="max-w-4xl mx-auto">
-                <FadeIn>
-                    <h2 className="font-serif font-medium leading-[1.25] tracking-tight text-pink-900">
-                        Your tools. Your code.
-                    </h2>
-                </FadeIn>
-                <FadeIn delay={0.15}>
-                    <div className="max-w-3xl">
-                        <p className="mt-10 lg:mt-14 text-lg lg:text-xl text-pink-800 leading-relaxed font-sans">
-                            Every tool I build comes with an unlimited perpetual license. You own the code.
-                        </p>
-                        <p className="mt-10 lg:mt-14 text-lg lg:text-xl text-pink-800 font-sans leading-relaxed">
-                            No vendor raising your prices. No features disappearing. No platform standing between you and your own data.
-                        </p>
-                        <p className="mt-10 lg:mt-14 text-lg lg:text-xl text-pink-800 font-sans leading-relaxed">
-                            Your tool works for you, not the other way around.
-                        </p>
+            <FadeIn>
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-center font-sans text-xs uppercase tracking-[0.15em] text-pink-600">
+                        Selected clients
+                    </p>
+                    {/* Masking flattens three unrelated palettes into one silhouette
+                        and lets it take a theme colour. No hover state: these aren't
+                        links, so implying one misleads. */}
+                    <div className="mt-8 lg:mt-10 flex flex-wrap items-center justify-around gap-y-10 gap-x-6">
+                        {clientLogos.map(({ src, alt, ratio, nudge }) => (
+                            <span
+                                key={alt}
+                                role="img"
+                                aria-label={alt}
+                                className="block h-8 lg:h-10 bg-pink-800"
+                                style={{
+                                    aspectRatio: String(ratio),
+                                    maskImage: `url("${src}")`,
+                                    WebkitMaskImage: `url("${src}")`,
+                                    maskSize: "contain",
+                                    WebkitMaskSize: "contain",
+                                    maskRepeat: "no-repeat",
+                                    WebkitMaskRepeat: "no-repeat",
+                                    maskPosition: "center",
+                                    WebkitMaskPosition: "center",
+                                    ...(nudge ? { transform: `translateY(${nudge}px)` } : {}),
+                                }}
+                            />
+                        ))}
                     </div>
-                </FadeIn>
-            </div>
+                </div>
+            </FadeIn>
         </Container>
     </section>
 );
+
 
 const Contact = () => {
     const [form, setForm] = useState({ name: "", company: "", email: "", message: "", _hp: "" });
@@ -352,7 +376,7 @@ const Contact = () => {
                             Let's start with a conversation.
                         </h2>
                         <p className="mt-8 text-lg lg:text-xl text-pink-800 leading-relaxed font-sans max-w-3xl mx-auto">
-                            No pitch, no pressure. Tell me what's frustrating about your current tools and I'll tell you whether I can help.
+                            No pitch, no pressure. Tell me what's frustrating about your current setup and I'll tell you whether I can help. If it's a fit, the audit is where the work starts.
                         </p>
                     </div>
                 </FadeIn>
@@ -471,10 +495,11 @@ const Manufacturing = () => {
         const desc = document.querySelector('meta[name="description"]');
         const prevDesc = desc?.getAttribute("content") ?? null;
 
-        document.title = "Bit Lore | Custom Tools for Manufacturers";
+        document.title = "Bit Lore | Web Tooling and Online Presence for Manufacturers";
         desc?.setAttribute(
             "content",
-            "Custom digital tools for small and mid-size manufacturers in Portland and the Pacific Northwest. Dealer portals, quoting systems, dashboards — built around how you actually work."
+            // Kept under ~155 chars so Google doesn't truncate it in results.
+            "Web presence and custom software for small and mid-size manufacturers in Portland and the Pacific Northwest. Websites, SEO, quoting tools, dealer portals."
         );
 
         return () => {
@@ -491,7 +516,7 @@ const Manufacturing = () => {
             <Offerings />
             <Process />
             <Credibility />
-            <Ownership />
+            <Clients />
             <Contact />
             <Footer />
         </main>
