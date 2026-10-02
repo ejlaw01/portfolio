@@ -1,6 +1,12 @@
 import { useRef, useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import gsap from "gsap";
+
+// Shared by the open/close tweens and by the delay before a cross-page
+// navigation, so the drawer is fully shut before the wipe snapshots it.
+// Navigating any earlier unmounts the Nav mid-tween and hands the remaining
+// collapse to the view transition's group morph, which visibly stutters.
+const MENU_DURATION = 0.5;
 
 const BitLoreLogo = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 1000 968" xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className}>
@@ -23,8 +29,8 @@ type NavItem =
 const NAV_ITEMS: Record<NavPage, NavItem[]> = {
     home: [
         { label: "Work", sectionId: "work-section" },
-        { label: "Manufacturing", to: "/manufacturing" },
         { label: "Contact", sectionId: "contact-section" },
+        { label: "Manufacturing", to: "/manufacturing" },
     ],
     manufacturing: [
         { label: "Home", to: "/" },
@@ -36,6 +42,24 @@ const Nav = ({ page }: { page: NavPage }) => {
     const itemsRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(false);
     const isOpenRef = useRef(false);
+    const navigate = useNavigate();
+
+    // Navigating unmounts this Nav with the page, so the close tween would be
+    // cut off and the view transition would morph an open pill into a closed
+    // one instead. Closing first lets the same animation an in-page link gets
+    // play out, and both transition snapshots then show a shut drawer.
+    const navigateAfterClose = (e: React.MouseEvent, to: string) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        e.preventDefault();
+
+        if (!isOpenRef.current) {
+            navigate(to, { viewTransition: true });
+            return;
+        }
+
+        toggleMenu();
+        gsap.delayedCall(MENU_DURATION, () => navigate(to, { viewTransition: true }));
+    };
 
     const scrollToSection = (sectionId: string) => {
         const element = document.getElementById(sectionId);
@@ -69,7 +93,7 @@ const Nav = ({ page }: { page: NavPage }) => {
         gsap.to(items, {
             width: fullWidth,
             marginRight: 0.35 * 16,
-            duration: 0.5,
+            duration: MENU_DURATION,
             ease: "power3.inOut",
             onStart: () => {
                 gsap.to(menuItemElements, {
@@ -92,7 +116,7 @@ const Nav = ({ page }: { page: NavPage }) => {
         gsap.to(items, {
             width: 0,
             marginRight: 0,
-            duration: 0.5,
+            duration: MENU_DURATION,
             ease: "power3.inOut",
             onStart: () => {
                 gsap.to(menuItemElements, {
@@ -127,7 +151,7 @@ const Nav = ({ page }: { page: NavPage }) => {
                         {"sectionId" in item ? (
                             <button onClick={() => scrollToSection(item.sectionId)}>{item.label}</button>
                         ) : (
-                            <Link to={item.to} viewTransition>
+                            <Link to={item.to} onClick={(e) => navigateAfterClose(e, item.to)}>
                                 {item.label}
                             </Link>
                         )}

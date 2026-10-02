@@ -86,6 +86,10 @@
 
 .menu-items .menu-item button,
 .menu-items .menu-item a {
+    /* Fill the pill so the whole shape is the hit target, not just the text */
+    display: flex;
+    align-items: center;
+    height: 100%;
     text-decoration: none;
     color: theme(colors.pink.850);
     font-weight: 500;
@@ -151,16 +155,65 @@
 
 /* Page transitions (View Transitions API, driven by <Link viewTransition>) */
 
-/* Naming the drawer lifts it out of the root crossfade, so it animates between
-   its two sizes instead of dissolving and reappearing with the page behind it. */
+/* Naming the drawer lifts it out of the root snapshot, so it animates between
+   its two sizes and stays legible while the wave sweeps past underneath. */
 .menu-drawer {
     view-transition-name: nav;
 }
 
-::view-transition-old(root),
+/* The incoming page is revealed behind an edge that runs flat along the
+   bottom, rises through a cosine S, and continues flat along the top. The
+   revealed region is everything below that edge, so it enters from the right
+   and grows leftward. Both keyframes are the same curve at different offsets --
+   y is constant per point and only x translates, because clip-path interpolates
+   points by index and would otherwise flatten the curve mid-animation. The
+   outgoing page holds still underneath rather than cross-fading. */
+@keyframes wave-wipe {
+    from {
+        clip-path: polygon(
+        -160.00% 100.00%, 100.00% 100.00%, 100.80% 99.92%, 101.61% 99.69%, 102.41% 99.29%,
+        103.21% 98.75%, 104.02% 98.05%, 104.82% 97.19%, 105.63% 96.19%, 106.43% 95.05%,
+        107.23% 93.76%, 108.04% 92.34%, 108.84% 90.78%, 109.64% 89.09%, 110.45% 87.28%,
+        111.25% 85.36%, 112.05% 83.32%, 112.86% 81.17%, 113.66% 78.93%, 114.46% 76.60%,
+        115.27% 74.19%, 116.07% 71.69%, 116.88% 69.13%, 117.68% 66.51%, 118.48% 63.84%,
+        119.29% 61.13%, 120.09% 58.38%, 120.89% 55.60%, 121.70% 52.80%, 122.50% 50.00%,
+        123.30% 47.20%, 124.11% 44.40%, 124.91% 41.62%, 125.71% 38.87%, 126.52% 36.16%,
+        127.32% 33.49%, 128.13% 30.87%, 128.93% 28.31%, 129.73% 25.81%, 130.54% 23.40%,
+        131.34% 21.07%, 132.14% 18.83%, 132.95% 16.68%, 133.75% 14.64%, 134.55% 12.72%,
+        135.36% 10.91%, 136.16% 9.22%, 136.96% 7.66%, 137.77% 6.24%, 138.57% 4.95%,
+        139.38% 3.81%, 140.18% 2.81%, 140.98% 1.95%, 141.79% 1.25%, 142.59% 0.71%,
+        143.39% 0.31%, 144.20% 0.08%, 145.00% 0.00%, 405.00% 0.00%, 405.00% 125.00%,
+        -160.00% 125.00%
+        );
+    }
+    to {
+        clip-path: polygon(
+        -306.00% 100.00%, -46.00% 100.00%, -45.20% 99.92%, -44.39% 99.69%, -43.59% 99.29%,
+        -42.79% 98.75%, -41.98% 98.05%, -41.18% 97.19%, -40.38% 96.19%, -39.57% 95.05%,
+        -38.77% 93.76%, -37.96% 92.34%, -37.16% 90.78%, -36.36% 89.09%, -35.55% 87.28%,
+        -34.75% 85.36%, -33.95% 83.32%, -33.14% 81.17%, -32.34% 78.93%, -31.54% 76.60%,
+        -30.73% 74.19%, -29.93% 71.69%, -29.13% 69.13%, -28.32% 66.51%, -27.52% 63.84%,
+        -26.71% 61.13%, -25.91% 58.38%, -25.11% 55.60%, -24.30% 52.80%, -23.50% 50.00%,
+        -22.70% 47.20%, -21.89% 44.40%, -21.09% 41.62%, -20.29% 38.87%, -19.48% 36.16%,
+        -18.68% 33.49%, -17.88% 30.87%, -17.07% 28.31%, -16.27% 25.81%, -15.46% 23.40%,
+        -14.66% 21.07%, -13.86% 18.83%, -13.05% 16.68%, -12.25% 14.64%, -11.45% 12.72%,
+        -10.64% 10.91%, -9.84% 9.22%, -9.04% 7.66%, -8.23% 6.24%, -7.43% 4.95%,
+        -6.63% 3.81%, -5.82% 2.81%, -5.02% 1.95%, -4.21% 1.25%, -3.41% 0.71%,
+        -2.61% 0.31%, -1.80% 0.08%, -1.00% 0.00%, 259.00% 0.00%, 259.00% 125.00%,
+        -306.00% 125.00%
+        );
+    }
+}
+
 ::view-transition-new(root) {
-    animation-duration: 0.35s;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    animation: wave-wipe 1.2s cubic-bezier(0.65, 0, 0.35, 1) both;
+    z-index: 1;
+}
+
+::view-transition-old(root) {
+    animation: none;
+    opacity: 1;
+    z-index: 0;
 }
 
 ::view-transition-group(nav) {
